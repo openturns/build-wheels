@@ -1,21 +1,36 @@
-notifications:
-  email: false
+language: cpp
+sudo: required
+
+services:
+  - docker
+
+env:
+  global:
+    - VERSION=1.10
+    - DOCKER_IMAGE=quay.io/pypa/manylinux1_x86_64
 
 matrix:
   include:
-    - sudo: required
-      services:
-        - docker
-      env: DOCKER_IMAGE=quay.io/pypa/manylinux1_x86_64
-    #- sudo: required
-      #services:
-        #- docker
-      #env: DOCKER_IMAGE=quay.io/pypa/manylinux1_i686
-           #PRE_CMD=linux32
+    - env: ABI=cp27m
+    - env: ABI=cp27mu
+    - env: ABI=cp35m
+    - env: ABI=cp36m
 
 install:
-  - docker pull $DOCKER_IMAGE
+  - docker pull ${DOCKER_IMAGE}
 
 script:
-  - docker run --rm -v `pwd`:/io $DOCKER_IMAGE $PRE_CMD /io/build-wheels.sh
+  - PYVER=${ABI:2:2}
+  - docker run --rm -v `pwd`:/io ${DOCKER_IMAGE} /io/build-wheels.sh ${VERSION} ${PYVER} ${ABI}
   - ls wheelhouse/
+
+deploy:
+  provider: releases
+  api_key:
+    secure: ipX2MXTGKsnTTOA6yrJI//m63AdmHBBZ14ZrZLLuAn206dpE3HDf/eNZquXMJVevoFncHp1SctV2YBMz2tIQ+RAMQoTuTV1/aa+rx+gQbn2WrH1FO/50aBAo2LKK4oMAUMq3GMo8n4e/CoTcGJWI7kuwIgFZRz0IEa+Cmu56jUym9dld6JwuWNvkuCtm6UEnSrPROXqUpx5GhOkhDlWFZxpNeQ9eTnog4V6kMkF22w4q/1pQGN0No3t4KkrKxsHxZnLDUOEdF8RoiUVAF/1iYdWfKhOM/f5/88R214e8sl2j+T6ug1gne/gRe3BXjYA+w7Wv8tJTJCAOTPDHiOKbNsSVMfEyTViJGsXyq1MfAtc80Qq4+sE2ogJGBBvrqCEoFEfTrDk5rkxIms1HlLWSKAY44Xc4WAhUC8GrZd84Rf12yYK1eFa1M+3sKlFqr6yzGSaEGpjo5Vqht5hzMoNJghBvZjXmEZvMORlPbfnjDIYKJJrbiBgtb1tdkgr+ACB9eNqeGvX52NVqtflfi/d8E1hiX+LUTy2bFrPAsIk4ro8FKIvz+/Ko2cDxKedhdQ3A0N5yT2lp+5+EoUP1ZrD5J+uievYt8E+9vzxcSdKv7Ps7nop+tB22Ml5PUywq8yEoWxfNlL57JBnl8AF8PPO1r/NM44WUQIquvabEz5/jQfg=
+  file: ${TRAVIS_BUILD_DIR}/wheelhouse/openturns-${VERSION}-cp${PYVER}-${ABI}-manylinux1_x86_64.whl
+  skip_cleanup: true
+  overwrite: true
+  on:
+    tags: true
+    repo: openturns/build-wheel
