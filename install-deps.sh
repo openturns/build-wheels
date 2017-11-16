@@ -33,3 +33,17 @@ cd swig-rel-3.0.12
 make -j2
 make install
 cd ..
+
+
+curl -L https://github.com/01org/tbb/archive/2018_U1.tar.gz -o /tmp/2018_U1.tar.gz
+tar xzf /tmp/2018_U1.tar.gz
+cd tbb-2018_U1
+make -j2
+cp `find . -name "libtbb*.so*" | grep release` /usr/local/lib
+cd /usr/local/lib
+ln -sf libtbb.so.2 libtbb.so
+ln -sf libtbbmalloc.so.2 libtbbmalloc.so
+ln -sf libtbbmalloc_proxy.so.2 libtbbmalloc_proxy.so
+cd -
+cp -r ./include/tbb /usr/local/include
+cd ..
