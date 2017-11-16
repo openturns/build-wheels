@@ -16,3 +16,9 @@ Relevant links:
 - https://github.com/pypa/manylinux
 - https://hynek.me/articles/sharing-your-labor-of-love-pypi-quick-and-dirty/
 - https://testpypi.python.org/pypi/openturns/1.10
+
+Issues:
+
+- openturns.conf not loaded
+- osx & windows targets
+- tbb/hmat dependencies
