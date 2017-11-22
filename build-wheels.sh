@@ -30,7 +30,7 @@ make install -j2
 ctest -R "NLopt|Study|SymbolicFunction|SquareMatrix" -E cppcheck -j2
 
 cd install/lib/python*/site-packages/
-rm -rf openturns/__pycache__
+rm -rf openturns/__pycache__ openturns/*.pyc
 
 mkdir openturns-${VERSION}.dist-info
 cd openturns-${VERSION}.dist-info
