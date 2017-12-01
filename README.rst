@@ -16,6 +16,7 @@ Relevant links:
 - https://github.com/pypa/manylinux
 - https://hynek.me/articles/sharing-your-labor-of-love-pypi-quick-and-dirty/
 - https://testpypi.python.org/pypi/openturns/1.10
+- https://github.com/matthew-brett/multibuild
 
 Issues:
 
