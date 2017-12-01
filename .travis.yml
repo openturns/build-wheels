@@ -32,4 +32,4 @@ deploy:
   overwrite: true
   on:
     tags: true
-    repo: openturns/build-wheel
+    repo: openturns/build-wheels
