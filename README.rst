@@ -1,5 +1,5 @@
-.. image:: https://travis-ci.org/openturns/build-wheel.svg?branch=master
-    :target: https://travis-ci.org/openturns/build-wheel
+.. image:: https://travis-ci.org/openturns/build-wheels.svg?branch=master
+    :target: https://travis-ci.org/openturns/build-wheels
 
 ================
 OpenTURNS wheels
