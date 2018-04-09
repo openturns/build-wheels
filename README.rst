@@ -1,6 +1,9 @@
 .. image:: https://travis-ci.org/openturns/build-wheels.svg?branch=master
     :target: https://travis-ci.org/openturns/build-wheels
 
+.. image:: https://ci.appveyor.com/api/projects/status/a4qwm56rwe40e0m5?svg=true
+    :target: https://ci.appveyor.com/project/openturns/build-wheels
+
 ================
 OpenTURNS wheels
 ================
@@ -20,6 +23,5 @@ Relevant links:
 
 Issues:
 
-- openturns.conf not loaded
 - osx & windows targets
-- tbb/hmat dependencies
+- hmat dependency

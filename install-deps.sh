@@ -29,15 +29,15 @@ curl -L https://github.com/swig/swig/archive/rel-3.0.12.tar.gz -o /tmp/rel-3.0.1
 tar xzf /tmp/rel-3.0.12.tar.gz
 cd swig-rel-3.0.12
 ./autogen.sh
-./configure
+./configure --without-all-lang
 make -j2
 make install
 cd ..
 
 
-curl -L https://github.com/01org/tbb/archive/2018_U1.tar.gz -o /tmp/2018_U1.tar.gz
-tar xzf /tmp/2018_U1.tar.gz
-cd tbb-2018_U1
+curl -L https://github.com/01org/tbb/archive/2018_U3.tar.gz -o /tmp/2018_U3.tar.gz
+tar xzf /tmp/2018_U3.tar.gz
+cd tbb-2018_U3
 make -j2
 cp `find . -name "libtbb*.so*" | grep release` /usr/local/lib
 cd /usr/local/lib

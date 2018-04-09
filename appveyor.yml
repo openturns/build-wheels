@@ -1,0 +1,43 @@
+environment:
+  VERSION: 1.10
+  matrix:
+    - PY_MAJOR_VER: 2
+      MINICONDA_SUFFIX: ""
+      TAG: cp27-cp27m-win_amd64
+    - PY_MAJOR_VER: 3
+      MINICONDA_SUFFIX: 36
+      TAG: cp36-cp36m-win_amd64
+
+install:
+  - set CONDA_ROOT="C:\Miniconda%MINICONDA_SUFFIX%-x64"
+  - set "PATH=%CONDA_ROOT%;%CONDA_ROOT%\Scripts;%CONDA_ROOT%\Library\bin;%PATH%"
+  - conda config --add channels conda-forge
+  - conda install -y openturns
+
+build_script:
+  - set PATH=C:\msys64\usr\bin;%PATH%
+  - xcopy %CONDA_ROOT%\Lib\site-packages\openturns %cd%\openturns /E /i
+  - mkdir openturns-%VERSION%.dist-info
+  - dir /p
+  - copy METADATA openturns-%VERSION%.dist-info
+  - echo "Wheel-Version: 1.0" >> openturns-%VERSION%.dist-info\WHEEL
+  - echo "Generator: custom" >> openturns-%VERSION%.dist-info\WHEEL
+  - echo "Root-Is-Purelib: false" >> openturns-%VERSION%.dist-info\WHEEL
+  - 7z a -tzip openturns-%VERSION%-%TAG%.whl openturns openturns-%VERSION%.dist-info
+
+artifacts:
+  - path: openturns*.whl
+    name: binary
+
+deploy:
+  release: $(APPVEYOR_REPO_TAG_NAME)
+  description: 'Windows wheels'
+  provider: GitHub
+  auth_token:
+    secure: 4CkqK7ssPZsVuYY4gnYun8TlaVakivCHyw+EnT6z/KdoG3iTDcebHNdHQ+cYJFt+
+  artifact: binary
+  draft: false
+  prerelease: false
+  on:
+    branch: /v.*/
+    appveyor_repo_tag: true
