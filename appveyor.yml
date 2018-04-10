@@ -1,5 +1,5 @@
 environment:
-  VERSION: 1.10
+  VERSION: 1.11rc1
   matrix:
     - PY_MAJOR_VER: 2
       MINICONDA_SUFFIX: ""
@@ -23,6 +23,7 @@ build_script:
   - echo "Wheel-Version: 1.0" >> openturns-%VERSION%.dist-info\WHEEL
   - echo "Generator: custom" >> openturns-%VERSION%.dist-info\WHEEL
   - echo "Root-Is-Purelib: false" >> openturns-%VERSION%.dist-info\WHEEL
+  - echo "Tag:" >> openturns-%VERSION%.dist-info\WHEEL
   - 7z a -tzip openturns-%VERSION%-%TAG%.whl openturns openturns-%VERSION%.dist-info
 
 artifacts:

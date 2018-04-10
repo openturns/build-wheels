@@ -29,7 +29,7 @@ curl -L https://github.com/swig/swig/archive/rel-3.0.12.tar.gz -o /tmp/rel-3.0.1
 tar xzf /tmp/rel-3.0.12.tar.gz
 cd swig-rel-3.0.12
 ./autogen.sh
-./configure --without-all-lang
+./configure --without-alllang
 make -j2
 make install
 cd ..
