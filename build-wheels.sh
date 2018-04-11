@@ -28,14 +28,15 @@ cmake -DCMAKE_INSTALL_PREFIX=$PWD/install -DUSE_SPHINX=OFF -DLINK_PYTHON_LIBRARY
       -DPYTHON_EXECUTABLE=/opt/python/cp${PYVER}-${ABI}/bin/python ..
 make install -j2
 
-# move conf file next to lib so it can be found using dladr when relocated
-cp $PWD/install/etc/openturns/openturns.conf $PWD/install/lib
-
 # run a few tests
 ctest -R "NLopt|Study|SymbolicFunction|SquareMatrix" -E cppcheck -j2
 
 cd install/lib/python*/site-packages/
 rm -rf openturns/__pycache__ openturns/*.pyc
+
+# move conf file next to lib so it can be found using dladr when relocated
+mkdir -p openturns/.libs
+cp ../../../etc/openturns/openturns.conf openturns/.libs
 
 # write metadata
 mkdir openturns-${VERSION}.dist-info
