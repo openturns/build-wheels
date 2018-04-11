@@ -12,6 +12,7 @@ env:
 matrix:
   include:
     - env: ABI=cp27mu
+    - env: ABI=cp34m
     - env: ABI=cp35m
     - env: ABI=cp36m
 
