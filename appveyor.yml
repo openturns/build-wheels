@@ -15,6 +15,7 @@ install:
 build_script:
   - set PATH=C:\msys64\usr\bin;%PATH%
   - xcopy %CONDA_ROOT%\Lib\site-packages\openturns %cd%\openturns /E /i
+  - rm -rf openturns\*.pyc openturns\__pycache__
   - mkdir openturns-%VERSION%.dist-info
   - copy METADATA openturns-%VERSION%.dist-info
   - python write_WHEEL.py %VERSION% %TAG%
