@@ -16,14 +16,9 @@ build_script:
   - set PATH=C:\msys64\usr\bin;%PATH%
   - xcopy %CONDA_ROOT%\Lib\site-packages\openturns %cd%\openturns /E /i
   - mkdir openturns-%VERSION%.dist-info
-  - dir /p
   - copy METADATA openturns-%VERSION%.dist-info
-  - >>openturns-%VERSION%.dist-info\WHEEL echo "Wheel-Version: 1.0"
-  - >>openturns-%VERSION%.dist-info\WHEEL echo "Generator: custom"
-  - >>openturns-%VERSION%.dist-info\WHEEL echo "Root-Is-Purelib: false"
-  - >>openturns-%VERSION%.dist-info\WHEEL echo "Tag: %TAG%"
-  - type openturns-%VERSION%.dist-info\WHEEL
-  - for /f %%i in ('dir openturns /b') do echo "openturns\%%i,," >> openturns-%VERSION%.dist-info\RECORD
+  - python write_WHEEL.py %VERSION% %TAG%
+  - python write_RECORD.py %VERSION%
   - 7z a -tzip openturns-%VERSION%-%TAG%.whl openturns openturns-%VERSION%.dist-info
 
 artifacts:

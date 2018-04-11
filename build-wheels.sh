@@ -37,27 +37,13 @@ ctest -R "NLopt|Study|SymbolicFunction|SquareMatrix" -E cppcheck -j2
 cd install/lib/python*/site-packages/
 rm -rf openturns/__pycache__ openturns/*.pyc
 
+# write metadata
 mkdir openturns-${VERSION}.dist-info
-cd openturns-${VERSION}.dist-info
+cp ${SCRIPTPATH}/METADATA openturns-${VERSION}.dist-info
+/opt/python/cp${PYVER}-${ABI}/bin/python ${SCRIPTPATH}/write_WHEEL.py ${VERSION} ${TAG}
+/opt/python/cp${PYVER}-${ABI}/bin/python ${SCRIPTPATH}/write_RECORD.py ${VERSION}
 
-echo "Wheel-Version: 1.0" > WHEEL
-echo "Generator: custom" >> WHEEL
-echo "Root-Is-Purelib: false" >> WHEEL
-echo "Tag: ${TAG}" >> WHEEL
-
-cp ${SCRIPTPATH}/METADATA .
-cd ..
-
-touch openturns-${VERSION}.dist-info/RECORD
-for FILE in `ls openturns/*` `ls openturns-${VERSION}.dist-info/*`
-do
-  SHA=`sha256sum ${FILE}| cut -d " " -f 1`
-  SIZE=`du -k ${FILE}| cut -f1`
-  echo "${FILE},sha256=${SHA},${SIZE}" >> openturns-${VERSION}.dist-info/RECORD
-done
-echo "openturns-${VERSION}.dist-info/RECORD,," >> openturns-${VERSION}.dist-info/RECORD
-
-
+# create archive
 zip -r openturns-${VERSION}-${TAG}.whl openturns openturns-${VERSION}.dist-info
 
 auditwheel show openturns-${VERSION}-${TAG}.whl
