@@ -15,7 +15,6 @@ fi
 
 SCRIPT=`readlink -f "$0"`
 SCRIPTPATH=`dirname "$SCRIPT"`
-${SCRIPTPATH}/install-deps.sh
 
 rm -rf /tmp/openturns
 git clone https://github.com/openturns/openturns.git /tmp/openturns
