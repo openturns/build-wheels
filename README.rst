@@ -10,7 +10,7 @@ OpenTURNS wheels
 
 Script to build Python wheel packages for installation with pip::
 
-    pip install -i https://testpypi.python.org/pypi openturns --user
+    pip install openturns --user
 
 Relevant links:
 
@@ -18,10 +18,10 @@ Relevant links:
 - https://www.python.org/dev/peps/pep-0513/
 - https://github.com/pypa/manylinux
 - https://hynek.me/articles/sharing-your-labor-of-love-pypi-quick-and-dirty/
-- https://testpypi.python.org/pypi/openturns/1.10
+- https://pypi.python.org/pypi/openturns
 - https://github.com/matthew-brett/multibuild
 
 Todo:
 
-- osx target
+- OSX target
 - hmat dependency
