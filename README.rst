@@ -21,7 +21,7 @@ Relevant links:
 - https://testpypi.python.org/pypi/openturns/1.10
 - https://github.com/matthew-brett/multibuild
 
-Issues:
+Todo:
 
-- osx & windows targets
+- osx target
 - hmat dependency
