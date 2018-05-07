@@ -11,18 +11,27 @@ env:
 
 matrix:
   include:
-    - env: ABI=cp27mu
-    - env: ABI=cp34m
-    - env: ABI=cp35m
-    - env: ABI=cp36m
+    - os: linux
+      env: ABI=cp27mu
+    - os: linux
+      env: ABI=cp34m
+    - os: linux
+      env: ABI=cp35m
+    - os: linux
+      env: ABI=cp36m
+    #- os: osx
+    #  env: ABI=cp27mu
+    #- os: osx
+    #  env: ABI=cp36m
 
 install:
-  - docker pull ${DOCKER_IMAGE}
+  - if test "$TRAVIS_OS_NAME" = "linux"; then docker pull ${DOCKER_IMAGE}; fi
+  - if test "$TRAVIS_OS_NAME" = "osx"; then brew update && brew cask uninstall oclint && brew install swig muparser openblas bison flex nlopt; brew install python@${ABI:2:1} || brew link --overwrite python@${ABI:2:1}; fi
 
 script:
   - PYVER=${ABI:2:2}
-  - docker run --rm -v `pwd`:/io ${DOCKER_IMAGE} /io/build-wheels.sh ${VERSION} ${PYVER} ${ABI}
-  - ls wheelhouse/
+  - if test "$TRAVIS_OS_NAME" = "linux"; then docker run --rm -v `pwd`:/io ${DOCKER_IMAGE} /io/build-wheels.sh ${VERSION} ${PYVER} ${ABI}; fi
+  - if test "$TRAVIS_OS_NAME" = "osx"; then ./build-wheels-osx.sh ${VERSION} ${PYVER} ${ABI}; fi
 
 deploy:
   provider: releases
