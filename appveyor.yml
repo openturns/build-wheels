@@ -1,5 +1,5 @@
 environment:
-  VERSION: 1.11rc1
+  VERSION: 1.11
   matrix:
     - MINICONDA_SUFFIX: ""
       TAG: cp27-cp27m-win_amd64

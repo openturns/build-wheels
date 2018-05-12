@@ -1,6 +1,6 @@
 #!/bin/sh
 
-VERSION=1.11rc1
+VERSION=1.11
 
 set -e -x
 for ABI in cp27mu cp34m cp35m cp36m
