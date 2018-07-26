@@ -27,10 +27,10 @@ cmake -DCMAKE_INSTALL_PREFIX=$PWD/install -DUSE_SPHINX=OFF -DLINK_PYTHON_LIBRARY
       -DPYTHON_EXECUTABLE=/opt/python/cp${PYVER}-${ABI}/bin/python \
       -DUSE_COTIRE=ON -DCOTIRE_MAXIMUM_NUMBER_OF_UNITY_INCLUDES="-j8" \
       ..
-make install -j2
+make install
 
 # run a few tests
-ctest -R "NLopt|Study|SymbolicFunction|SquareMatrix" -E cppcheck -j2
+ctest -R "NLopt|Study|SymbolicFunction|SquareMatrix" -E cppcheck ${MAKEFLAGS}
 
 cd install/lib/python*/site-packages/
 rm -rf openturns/__pycache__ openturns/*.pyc
