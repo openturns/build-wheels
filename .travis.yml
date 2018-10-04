@@ -1,4 +1,4 @@
-language: cpp
+language: generic
 sudo: required
 
 services:
@@ -6,7 +6,7 @@ services:
 
 env:
   global:
-    - VERSION=1.11
+    - VERSION=1.12rc1
     - DOCKER_IMAGE=openturns/manylinux1_x86_64
 
 matrix:
@@ -19,6 +19,8 @@ matrix:
       env: ABI=cp35m
     - os: linux
       env: ABI=cp36m
+    - os: linux
+      env: ABI=cp37m
     #- os: osx
     #  env: ABI=cp27mu
     #- os: osx
