@@ -25,3 +25,7 @@ Todo:
 
 - OSX target
 - hmat dependency
+
+Note:
+
+The version string must be updated in .travis.yml, appveyor.yml and METADATA files.
