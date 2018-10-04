@@ -1,26 +1,25 @@
 environment:
-  VERSION: 1.11
+  VERSION: 1.12rc1
   matrix:
-    - MINICONDA_SUFFIX: ""
+    - PYBASEVER: 2.7
       TAG: cp27-cp27m-win_amd64
-    - MINICONDA_SUFFIX: 36
+    - PYBASEVER: 3.6
       TAG: cp36-cp36m-win_amd64
-
-install:
-  - set CONDA_ROOT="C:\Miniconda%MINICONDA_SUFFIX%-x64"
-  - set "PATH=%CONDA_ROOT%;%CONDA_ROOT%\Scripts;%CONDA_ROOT%\Library\bin;%PATH%"
-  - conda config --add channels conda-forge
-  - conda update -y --all
-  - conda install -y openturns
+    - PYBASEVER: 3.7
+      TAG: cp37-cp37m-win_amd64
 
 build_script:
   - set PATH=C:\msys64\usr\bin;%PATH%
-  - xcopy %CONDA_ROOT%\Lib\site-packages\openturns %cd%\openturns /E /i
-  - rm -rf openturns\*.pyc openturns\__pycache__ openturns\R-2.12.0 openturns\gs8.64 openturns\examples
+  - appveyor-retry appveyor DownloadFile https://github.com/openturns/build/releases/download/v%VERSION%/openturns-%VERSION%-py%PYBASEVER%-x86_64.exe
+  - openturns-%VERSION%-py%PYBASEVER%-x86_64.exe /userlevel=1 /S /FORCE /D=%cd%\install
+  - move %cd%\install\Lib\site-packages\openturns %cd%
+  - rm -r openturns\R-2.12.0 openturns\gs8.64 openturns\examples
+  - dir /p %cd%\openturns
   - mkdir openturns-%VERSION%.dist-info
   - copy METADATA openturns-%VERSION%.dist-info
   - python write_WHEEL.py %VERSION% %TAG%
   - python write_RECORD.py %VERSION%
+  - dir /p %cd%\openturns-%VERSION%.dist-info
   - 7z a -tzip openturns-%VERSION%-%TAG%.whl openturns openturns-%VERSION%.dist-info
 
 artifacts:
