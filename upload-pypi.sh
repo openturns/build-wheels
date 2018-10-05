@@ -1,5 +1,16 @@
 #!/bin/sh
 
+# upload wheels to PyPI repository using Twine
+# sudo apt install twine
+# it uses settings from the .pypirc file:
+
+# [test]
+# #repository = https://test.pypi.org/legacy/
+# repository: https://upload.pypi.org/legacy/
+# username = doe
+# password = moo
+
+
 VERSION=1.12rc1
 
 set -e -x
