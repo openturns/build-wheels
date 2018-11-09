@@ -22,10 +22,11 @@ cd /tmp/openturns
 git checkout v${VERSION}
 
 mkdir build && cd build
-cmake -DCMAKE_INSTALL_PREFIX=$PWD/install -DUSE_SPHINX=OFF -DLINK_PYTHON_LIBRARY=OFF \
+cmake -DCMAKE_INSTALL_PREFIX=$PWD/install -DUSE_SPHINX=OFF \
       -DPYTHON_INCLUDE_DIR=/opt/python/cp${PYVER}-${ABI}/include/python${PYVERD} \
       -DPYTHON_EXECUTABLE=/opt/python/cp${PYVER}-${ABI}/bin/python \
       -DUSE_COTIRE=ON -DCOTIRE_MAXIMUM_NUMBER_OF_UNITY_INCLUDES="-j8" \
+      -DSWIG_COMPILE_FLAGS="-O1" \
       ..
 make install
 
