@@ -22,7 +22,7 @@ wget --no-check-certificate https://repo.continuum.io/miniconda/Miniconda3-lates
 bash /tmp/Miniconda3-latest-MacOSX-x86_64.sh -b -p $HOME/miniconda
 export PATH="$HOME/miniconda/bin:$PATH"
 conda config --add channels conda-forge
-conda install -y python=${PYVERD} cmake swig muparser openblas bison flex nlopt libxml2 tbb-devel pip
+conda install -y python=${PYVERD} cmake swig muparser openblas bison flex nlopt libxml2 tbb-devel delocate
 
 rm -rf /tmp/openturns
 git clone https://github.com/openturns/openturns.git /tmp/openturns
@@ -61,7 +61,6 @@ python ${SCRIPTPATH}/write_RECORD.py ${VERSION}
 # create archive
 zip -r openturns-${VERSION}-${TAG}.whl openturns openturns-${VERSION}.dist-info
 
-pip install delocate
 delocate-listdeps openturns-${VERSION}-${TAG}.whl
 delocate-wheel -w ${TRAVIS_BUILD_DIR}/wheelhouse -v openturns-${VERSION}-${TAG}.whl
 delocate-listdeps --all ${TRAVIS_BUILD_DIR}/wheelhouse/openturns-${VERSION}-${TAG}.whl
