@@ -38,6 +38,7 @@ cmake -DCMAKE_INSTALL_PREFIX=$PWD/install \
       -DLAPACK_LIBRARIES="${HOME}/miniconda/lib/libopenblas.dylib" \
       -DUSE_COTIRE=ON -DCOTIRE_MAXIMUM_NUMBER_OF_UNITY_INCLUDES="-j8" \
       -DSWIG_COMPILE_FLAGS="-O1" \
+      -DUSE_NLOPT=OFF \
       ..
 make install -j2
 otool -L /tmp/openturns/build/install/lib/python${PYVERD:0:3}/site-packages/openturns/_common.so
