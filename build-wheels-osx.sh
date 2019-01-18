@@ -9,18 +9,11 @@ PLATFORM="$4"
 
 TAG="cp${PYVER}-${ABI}-${PLATFORM}"
 PYVERD=${PYVER:0:1}.${PYVER:1:1}
-# if test "${PYVER:0:1}" = "3"
-# then
-#   PYVERD=${PYVERD}m
-# fi
-
-# SCRIPT=`readlink -f "$0"`
-SCRIPTPATH=`dirname "$SCRIPT"`
 SCRIPTPATH=${TRAVIS_BUILD_DIR}
 
 wget --no-check-certificate https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -P /tmp
-bash /tmp/Miniconda3-latest-MacOSX-x86_64.sh -b -p $HOME/miniconda
-export PATH="$HOME/miniconda/bin:$PATH"
+bash /tmp/Miniconda3-latest-MacOSX-x86_64.sh -b -p ${HOME}/miniconda
+export PATH="${HOME}/miniconda/bin:${PATH}"
 conda config --add channels conda-forge
 conda install -y python=${PYVERD} openturns delocate
 
@@ -44,8 +37,10 @@ mkdir openturns/.dylibs
 cp ../../../etc/openturns/openturns.conf openturns/.dylibs
 zip -u ${TRAVIS_BUILD_DIR}/wheelhouse/openturns-${VERSION}-${TAG}.whl openturns/.dylibs/openturns.conf
 
-conda remove -y openturns
-rm -r openturns-${VERSION}.dist-info
+cd ${TRAVIS_BUILD_DIR}
+rm -r ${HOME}/miniconda
+bash /tmp/Miniconda3-latest-MacOSX-x86_64.sh -b -p ${HOME}/miniconda
+conda install -y python=${PYVERD} pip
 
 pip install openturns --no-index -f ${TRAVIS_BUILD_DIR}/wheelhouse
 python -c "import openturns as ot; print(ot.Normal(3).getRealization())"
