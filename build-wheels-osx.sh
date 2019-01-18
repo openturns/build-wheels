@@ -39,7 +39,13 @@ delocate-listdeps openturns-${VERSION}-${TAG}.whl
 delocate-wheel -w ${TRAVIS_BUILD_DIR}/wheelhouse -v openturns-${VERSION}-${TAG}.whl
 delocate-listdeps --all ${TRAVIS_BUILD_DIR}/wheelhouse/openturns-${VERSION}-${TAG}.whl
 
+# move conf file next to lib so it can be found using dladr when relocated
+mkdir openturns/.dylibs
+cp ../../../etc/openturns/openturns.conf openturns/.dylibs
+zip -u ${TRAVIS_BUILD_DIR}/wheelhouse/openturns-${VERSION}-${TAG}.whl openturns/.dylibs/openturns.conf
+
 conda remove -y openturns
 rm -r openturns-${VERSION}.dist-info
+
 pip install openturns --no-index -f ${TRAVIS_BUILD_DIR}/wheelhouse
 python -c "import openturns as ot; print(ot.Normal(3).getRealization())"
