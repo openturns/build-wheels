@@ -37,6 +37,17 @@ mkdir openturns/.dylibs
 cp ../../../etc/openturns/openturns.conf openturns/.dylibs
 zip -u ${TRAVIS_BUILD_DIR}/wheelhouse/openturns-${VERSION}-${TAG}.whl openturns/.dylibs/openturns.conf
 
+# missing libs
+cp ${HOME}/miniconda/lib/libquadmath.0.dylib openturns/.dylibs
+cp ${HOME}/miniconda/lib/libgcc_s.1.dylib openturns/.dylibs
+cp ${HOME}/miniconda/lib/libc++abi.1.dylib openturns/.dylibs
+cp ${HOME}/miniconda/lib/libgfortran.3.dylib openturns/.dylibs
+zip -u ${TRAVIS_BUILD_DIR}/wheelhouse/openturns-${VERSION}-${TAG}.whl openturns/.dylibs/libquadmath.0.dylib
+zip -u ${TRAVIS_BUILD_DIR}/wheelhouse/openturns-${VERSION}-${TAG}.whl openturns/.dylibs/libgcc_s.1.dylib
+zip -u ${TRAVIS_BUILD_DIR}/wheelhouse/openturns-${VERSION}-${TAG}.whl openturns/.dylibs/libc++abi.1.dylib
+zip -u ${TRAVIS_BUILD_DIR}/wheelhouse/openturns-${VERSION}-${TAG}.whl openturns/.dylibs/libgfortran.3.dylib
+
+
 cd ${TRAVIS_BUILD_DIR}
 rm -r ${HOME}/miniconda
 bash /tmp/Miniconda3-latest-MacOSX-x86_64.sh -b -p ${HOME}/miniconda
