@@ -21,9 +21,8 @@ Relevant links:
 - https://pypi.python.org/pypi/openturns
 - https://github.com/matthew-brett/multibuild
 
-Todo:
+TODO:
 
-- OSX target
 - hmat dependency
 
 Note:
