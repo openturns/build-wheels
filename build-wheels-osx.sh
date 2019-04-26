@@ -15,14 +15,12 @@ wget --no-check-certificate https://repo.continuum.io/miniconda/Miniconda3-lates
 bash /tmp/Miniconda3-latest-MacOSX-x86_64.sh -b -p ${HOME}/miniconda
 export PATH="${HOME}/miniconda/bin:${PATH}"
 conda config --add channels conda-forge
-conda install -y python=${PYVERD} openturns delocate
+conda install -y python=${PYVERD} delocate
+conda install -y openturns=${VERSION}
 
 cd ${HOME}/miniconda/lib/python${PYVERD}/site-packages/
 
 # write metadata
-mkdir openturns-${VERSION}.dist-info
-cp ${SCRIPTPATH}/METADATA openturns-${VERSION}.dist-info
-python ${SCRIPTPATH}/write_WHEEL.py ${VERSION} ${TAG}
 python ${SCRIPTPATH}/write_RECORD.py ${VERSION}
 
 # create archive

@@ -1,5 +1,5 @@
 environment:
-  VERSION: 1.12
+  VERSION: 1.13rc1
   matrix:
     - PYBASEVER: 2.7
       TAG: cp27-cp27m-win_amd64
@@ -13,11 +13,8 @@ build_script:
   - appveyor-retry appveyor DownloadFile https://github.com/openturns/build/releases/download/v%VERSION%/openturns-%VERSION%-py%PYBASEVER%-x86_64.exe
   - openturns-%VERSION%-py%PYBASEVER%-x86_64.exe /userlevel=1 /S /FORCE /D=%cd%\install
   - move %cd%\install\Lib\site-packages\openturns %cd%
-  - rm -r openturns\R-2.12.0 openturns\gs8.64 openturns\examples
+  - move %cd%\install\Lib\site-packages\openturns-%VERSION%.dist-info %cd%
   - dir /p %cd%\openturns
-  - mkdir openturns-%VERSION%.dist-info
-  - copy METADATA openturns-%VERSION%.dist-info
-  - python write_WHEEL.py %VERSION% %TAG%
   - python write_RECORD.py %VERSION%
   - dir /p %cd%\openturns-%VERSION%.dist-info
   - 7z a -tzip openturns-%VERSION%-%TAG%.whl openturns openturns-%VERSION%.dist-info

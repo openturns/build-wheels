@@ -24,6 +24,7 @@ git checkout v${VERSION}
 mkdir build && cd build
 cmake -DCMAKE_INSTALL_PREFIX=$PWD/install -DUSE_SPHINX=OFF \
       -DPYTHON_INCLUDE_DIR=/opt/python/cp${PYVER}-${ABI}/include/python${PYVERD} \
+      -DPYTHON_LIBRARY=/usr/lib64/libpython2.4.so \
       -DPYTHON_EXECUTABLE=/opt/python/cp${PYVER}-${ABI}/bin/python \
       -DUSE_COTIRE=ON -DCOTIRE_MAXIMUM_NUMBER_OF_UNITY_INCLUDES="-j8" \
       -DSWIG_COMPILE_FLAGS="-O1" \
@@ -31,7 +32,7 @@ cmake -DCMAKE_INSTALL_PREFIX=$PWD/install -DUSE_SPHINX=OFF \
 make install
 
 # run a few tests
-ctest -R "NLopt|Study|SymbolicFunction|SquareMatrix" -E cppcheck ${MAKEFLAGS}
+ctest -R "NLopt|Study|SymbolicFunction|SquareMatrix|CMinpack|Ceres" -E cppcheck ${MAKEFLAGS}
 
 cd install/lib/python*/site-packages/
 rm -rf openturns/__pycache__ openturns/*.pyc
@@ -41,9 +42,6 @@ mkdir -p openturns/.libs
 cp ../../../etc/openturns/openturns.conf openturns/.libs
 
 # write metadata
-mkdir openturns-${VERSION}.dist-info
-cp ${SCRIPTPATH}/METADATA openturns-${VERSION}.dist-info
-/opt/python/cp${PYVER}-${ABI}/bin/python ${SCRIPTPATH}/write_WHEEL.py ${VERSION} ${TAG}
 /opt/python/cp${PYVER}-${ABI}/bin/python ${SCRIPTPATH}/write_RECORD.py ${VERSION}
 
 # create archive
