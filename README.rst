@@ -27,4 +27,4 @@ TODO:
 
 Note:
 
-The version string must be updated in .travis.yml, appveyor.yml and METADATA files.
+The version string must be updated in .travis.yml and appveyor.yml
