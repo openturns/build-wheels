@@ -6,7 +6,7 @@ services:
 
 env:
   global:
-    - VERSION=1.13rc1
+    - VERSION=1.13
     - DOCKER_IMAGE=openturns/manylinux1_x86_64
 
 matrix:

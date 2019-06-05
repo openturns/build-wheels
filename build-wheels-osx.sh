@@ -15,8 +15,7 @@ wget --no-check-certificate https://repo.continuum.io/miniconda/Miniconda3-lates
 bash /tmp/Miniconda3-latest-MacOSX-x86_64.sh -b -p ${HOME}/miniconda
 export PATH="${HOME}/miniconda/bin:${PATH}"
 conda config --add channels conda-forge
-conda install -y python=${PYVERD} delocate
-conda install -y openturns=${VERSION}
+conda install -y python=${PYVERD} openturns=${VERSION} delocate
 
 cd ${HOME}/miniconda/lib/python${PYVERD}/site-packages/
 

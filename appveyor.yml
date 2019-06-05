@@ -1,5 +1,5 @@
 environment:
-  VERSION: 1.13rc1
+  VERSION: 1.13
   matrix:
     - PYBASEVER: 2.7
       TAG: cp27-cp27m-win_amd64
