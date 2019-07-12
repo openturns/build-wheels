@@ -21,10 +21,6 @@ Relevant links:
 - https://pypi.python.org/pypi/openturns
 - https://github.com/matthew-brett/multibuild
 
-TODO:
-
-- hmat dependency
-
 Note:
 
 The version string must be updated in .travis.yml and appveyor.yml
