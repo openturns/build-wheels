@@ -8,7 +8,7 @@ ABI="$3"
 
 TAG="cp${PYVER}-${ABI}-manylinux1_x86_64"
 PYVERD=${PYVER:0:1}.${PYVER:1:1}
-if test "${PYVER:0:1}" = "3"
+if test "${ABI: -1}" = "m"
 then
   PYVERD=${PYVERD}m
 fi

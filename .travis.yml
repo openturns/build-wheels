@@ -6,7 +6,7 @@ services:
 
 env:
   global:
-    - VERSION=1.13
+    - VERSION=1.14rc1
     - DOCKER_IMAGE=openturns/manylinux1_x86_64
 
 matrix:
@@ -17,6 +17,8 @@ matrix:
       env: ABI=cp36m PLATFORM=manylinux1_x86_64
     - os: linux
       env: ABI=cp37m PLATFORM=manylinux1_x86_64
+    - os: linux
+      env: ABI=cp38 PLATFORM=manylinux1_x86_64
     - os: osx
       env: ABI=cp27m PLATFORM=macosx_10_10_x86_64
     - os: osx
