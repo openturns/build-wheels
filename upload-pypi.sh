@@ -11,10 +11,10 @@
 # password = moo
 
 
-VERSION=1.13
+VERSION=1.14rc1
 
 set -e -x
-for ABI in cp27mu cp36m cp37m
+for ABI in cp27mu cp36m cp37m cp38
 do
   PYVER=`echo ${ABI}| cut -c3-4`
   wget -c https://github.com/openturns/build-wheel/releases/download/v${VERSION}/openturns-${VERSION}-cp${PYVER}-${ABI}-manylinux1_x86_64.whl -P /tmp
