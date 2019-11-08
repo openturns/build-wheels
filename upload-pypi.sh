@@ -11,7 +11,7 @@
 # password = moo
 
 
-VERSION=1.14rc1
+VERSION=1.14
 
 set -e -x
 for ABI in cp27mu cp36m cp37m cp38
@@ -21,7 +21,7 @@ do
   twine upload -r test /tmp/openturns-${VERSION}-cp${PYVER}-${ABI}-manylinux1_x86_64.whl
 done
 
-for ABI in cp27m cp36m cp37m
+for ABI in cp27m cp36m cp37m cp38
 do
   PYVER=`echo ${ABI}| cut -c3-4`
   wget -c https://github.com/openturns/build-wheel/releases/download/v${VERSION}/openturns-${VERSION}-cp${PYVER}-${ABI}-win_amd64.whl -P /tmp

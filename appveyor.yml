@@ -1,5 +1,5 @@
 environment:
-  VERSION: 1.14rc1
+  VERSION: 1.14
   matrix:
     - PYBASEVER: 2.7
       TAG: cp27-cp27m-win_amd64
@@ -7,6 +7,8 @@ environment:
       TAG: cp36-cp36m-win_amd64
     - PYBASEVER: 3.7
       TAG: cp37-cp37m-win_amd64
+    - PYBASEVER: 3.8
+      TAG: cp38-cp38-win_amd64
 
 build_script:
   - set PATH=C:\msys64\usr\bin;%PATH%
