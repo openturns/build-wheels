@@ -18,7 +18,6 @@ conda config --add channels conda-forge
 conda install -y python=${PYVERD} openturns=${VERSION} delocate
 
 cd ${HOME}/miniconda/lib/python${PYVERD}/site-packages/
-ls -l
 
 # write metadata
 python ${SCRIPTPATH}/write_RECORD.py ${VERSION}
