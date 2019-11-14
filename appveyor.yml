@@ -21,7 +21,8 @@ build_script:
   - dir /p %cd%\openturns-%VERSION%.dist-info
   - 7z a -tzip openturns-%VERSION%-%TAG%.whl openturns openturns-%VERSION%.dist-info
   - set PATH=C:\Miniconda36-x64;C:\Miniconda36-x64\Scripts;%PATH%
-  - conda install -y python=%PYBASEVER% pip
+  - conda create -y -n py%PYBASEVER% python=%PYBASEVER% pip
+  - activate py%PYBASEVER%
   - python -c "import wheel.pep425tags as w; print(['-'.join(x) for x in w.get_supported()])"
   - pip install openturns-%VERSION%-%TAG%.whl
   - python -c "import openturns as ot; print(ot.Normal(3).getRealization())"
