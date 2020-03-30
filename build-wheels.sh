@@ -5,8 +5,9 @@ set -e -x
 VERSION="$1"
 PYVER="$2"
 ABI="$3"
+PLATFORM="$4"
 
-TAG="cp${PYVER}-${ABI}-manylinux1_x86_64"
+TAG="cp${PYVER}-${ABI}-${PLATFORM}"
 PYVERD=${PYVER:0:1}.${PYVER:1:1}
 if test "${ABI: -1}" = "m"
 then
@@ -16,10 +17,8 @@ fi
 SCRIPT=`readlink -f "$0"`
 SCRIPTPATH=`dirname "$SCRIPT"`
 
-rm -rf /tmp/openturns
-git clone https://github.com/openturns/openturns.git /tmp/openturns
-cd /tmp/openturns
-git checkout v${VERSION}
+cd /tmp
+curl -fSsL https://github.com/openturns/openturns/archive/v${VERSION}.tar.gz | tar xz && cd openturns-${VERSION}
 
 mkdir build && cd build
 cmake -DCMAKE_INSTALL_PREFIX=$PWD/install -DUSE_SPHINX=OFF \
@@ -32,25 +31,25 @@ cmake -DCMAKE_INSTALL_PREFIX=$PWD/install -DUSE_SPHINX=OFF \
 make install
 
 # run a few tests
-ctest -R "NLopt|Study|SymbolicFunction|SquareMatrix|CMinpack|Ceres" -E cppcheck ${MAKEFLAGS}
+ctest -R "Ipopt|Dlib|NLopt|Study|SymbolicFunction|SquareMatrix|CMinpack|Ceres" -E cppcheck ${MAKEFLAGS}
 
 cd install/lib/python*/site-packages/
 rm -rf openturns/__pycache__ openturns/*.pyc
 
 # move conf file next to lib so it can be found using dladr when relocated
-mkdir -p openturns/.libs
-cp ../../../etc/openturns/openturns.conf openturns/.libs
+mkdir -p openturns.libs
+cp ../../../etc/openturns/openturns.conf openturns.libs
 
 # write metadata
 /opt/python/cp${PYVER}-${ABI}/bin/python ${SCRIPTPATH}/write_RECORD.py ${VERSION}
 
 # create archive
-zip -r openturns-${VERSION}-${TAG}.whl openturns openturns-${VERSION}.dist-info
+zip -r openturns-${VERSION}-${TAG}.whl openturns openturns.libs openturns-${VERSION}.dist-info
 
 auditwheel show openturns-${VERSION}-${TAG}.whl
 auditwheel repair openturns-${VERSION}-${TAG}.whl -w /io/wheelhouse/
 
 /opt/python/cp${PYVER}-${ABI}/bin/pip install openturns --no-index -f /io/wheelhouse
-/opt/python/cp${PYVER}-${ABI}/bin/python -c "import openturns as ot; print(ot.Normal(3).getRealization())"
+/opt/python/cp${PYVER}-${ABI}/bin/python -c "import openturns as ot; print(ot.Normal(3).getSample(10))"
 
 

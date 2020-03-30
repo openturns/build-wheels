@@ -7,18 +7,17 @@ services:
 env:
   global:
     - VERSION=1.14
-    - DOCKER_IMAGE=openturns/manylinux1_x86_64
 
 matrix:
   include:
     - os: linux
-      env: ABI=cp27mu PLATFORM=manylinux1_x86_64
+      env: ABI=cp27mu PLATFORM=manylinux2010_x86_64
     - os: linux
-      env: ABI=cp36m PLATFORM=manylinux1_x86_64
+      env: ABI=cp36m PLATFORM=manylinux2010_x86_64
     - os: linux
-      env: ABI=cp37m PLATFORM=manylinux1_x86_64
+      env: ABI=cp37m PLATFORM=manylinux2010_x86_64
     - os: linux
-      env: ABI=cp38 PLATFORM=manylinux1_x86_64
+      env: ABI=cp38 PLATFORM=manylinux2010_x86_64
     - os: osx
       env: ABI=cp27m PLATFORM=macosx_10_10_x86_64
     - os: osx
@@ -28,12 +27,9 @@ matrix:
     #- os: osx
     #  env: ABI=cp38m PLATFORM=macosx_10_10_x86_64
 
-install:
-  - if test "$TRAVIS_OS_NAME" = "linux"; then docker pull ${DOCKER_IMAGE}; fi
-
 script:
   - PYVER=${ABI:2:2}
-  - if test "$TRAVIS_OS_NAME" = "linux"; then docker run --rm -v `pwd`:/io ${DOCKER_IMAGE} /io/build-wheels.sh ${VERSION} ${PYVER} ${ABI}; fi
+  - if test "$TRAVIS_OS_NAME" = "linux"; then docker pull openturns/${PLATFORM}; docker run --rm -v `pwd`:/io openturns/${PLATFORM} /io/build-wheels.sh ${VERSION} ${PYVER} ${ABI} ${PLATFORM}; fi
   - if test "$TRAVIS_OS_NAME" = "osx"; then ./build-wheels-osx.sh ${VERSION} ${PYVER} ${ABI} ${PLATFORM}; fi
 
 deploy:
