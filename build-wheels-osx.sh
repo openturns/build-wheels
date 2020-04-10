@@ -35,7 +35,7 @@ cp ../../../etc/openturns/openturns.conf openturns/.dylibs
 zip -u ${TRAVIS_BUILD_DIR}/wheelhouse/openturns-${VERSION}-${TAG}.whl openturns/.dylibs/openturns.conf
 
 # missing libs
-for libname in libquadmath.0 libgcc_s.1 libc++abi.1 libgfortran.4
+for libname in libquadmath.0 libgcc_s.1 libc++abi.1 libgfortran.4 liblapack.3
 do
   cp ${HOME}/miniconda/lib/${libname}.dylib openturns/.dylibs
   zip -u ${TRAVIS_BUILD_DIR}/wheelhouse/openturns-${VERSION}-${TAG}.whl openturns/.dylibs/${libname}.dylib

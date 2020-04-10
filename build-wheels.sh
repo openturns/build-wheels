@@ -25,7 +25,7 @@ cmake -DCMAKE_INSTALL_PREFIX=$PWD/install -DUSE_SPHINX=OFF \
       -DPYTHON_INCLUDE_DIR=/opt/python/cp${PYVER}-${ABI}/include/python${PYVERD} \
       -DPYTHON_LIBRARY=/usr/lib64/libpython2.4.so \
       -DPYTHON_EXECUTABLE=/opt/python/cp${PYVER}-${ABI}/bin/python \
-      -DUSE_COTIRE=ON -DCOTIRE_MAXIMUM_NUMBER_OF_UNITY_INCLUDES="-j8" \
+      -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 \
       -DSWIG_COMPILE_FLAGS="-O1" \
       ..
 make install
@@ -34,7 +34,7 @@ make install
 ctest -R "Ipopt|Dlib|NLopt|Study|SymbolicFunction|SquareMatrix|CMinpack|Ceres" -E cppcheck ${MAKEFLAGS}
 
 cd install/lib/python*/site-packages/
-rm -rf openturns/__pycache__ openturns/*.pyc
+rm -rf openturns/__pycache__
 
 # move conf file next to lib so it can be found using dladr when relocated
 mkdir -p openturns.libs

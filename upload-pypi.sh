@@ -11,26 +11,26 @@
 # password = moo
 
 
-VERSION=1.14
+VERSION=1.15rc1
 
 set -e -x
-for ABI in cp27mu cp36m cp37m cp38
+for ABI in cp36m cp37m cp38
 do
   PYVER=`echo ${ABI}| cut -c3-4`
   wget -c https://github.com/openturns/build-wheel/releases/download/v${VERSION}/openturns-${VERSION}-cp${PYVER}-${ABI}-manylinux1_x86_64.whl -P /tmp
-  twine upload -r test /tmp/openturns-${VERSION}-cp${PYVER}-${ABI}-manylinux1_x86_64.whl
+  twine upload -r test /tmp/openturns-${VERSION}-cp${PYVER}-${ABI}-manylinux2010_x86_64.whl
 done
 
-for ABI in cp27m cp36m cp37m cp38
+for ABI in cp36m cp37m cp38
 do
   PYVER=`echo ${ABI}| cut -c3-4`
   wget -c https://github.com/openturns/build-wheel/releases/download/v${VERSION}/openturns-${VERSION}-cp${PYVER}-${ABI}-win_amd64.whl -P /tmp
   twine upload -r test /tmp/openturns-${VERSION}-cp${PYVER}-${ABI}-win_amd64.whl
 done
 
-for ABI in cp27m cp36m cp37m
+for ABI in cp36m cp37m cp38
 do
   PYVER=`echo ${ABI}| cut -c3-4`
-  wget -c https://github.com/openturns/build-wheel/releases/download/v${VERSION}/openturns-${VERSION}-cp${PYVER}-${ABI}-macosx_10_10_x86_64.whl -P /tmp
-  twine upload -r test /tmp/openturns-${VERSION}-cp${PYVER}-${ABI}-macosx_10_10_x86_64.whl
+  wget -c https://github.com/openturns/build-wheel/releases/download/v${VERSION}/openturns-${VERSION}-cp${PYVER}-${ABI}-macosx_10_9_x86_64.whl -P /tmp
+  twine upload -r test /tmp/openturns-${VERSION}-cp${PYVER}-${ABI}-macosx_10_9_x86_64.whl
 done

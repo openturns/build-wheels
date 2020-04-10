@@ -1,8 +1,6 @@
 environment:
-  VERSION: 1.14
+  VERSION: 1.15rc1
   matrix:
-    - PYBASEVER: 2.7
-      TAG: cp27-cp27m-win_amd64
     - PYBASEVER: 3.6
       TAG: cp36-cp36m-win_amd64
     - PYBASEVER: 3.7
