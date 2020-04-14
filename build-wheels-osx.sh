@@ -44,7 +44,15 @@ done
 cd ${TRAVIS_BUILD_DIR}
 rm -r ${HOME}/miniconda
 bash /tmp/Miniconda3-latest-MacOSX-x86_64.sh -b -p ${HOME}/miniconda
-conda install -y python=${PYVERD} pip
+conda install -y python=${PYVERD} pip twine
 
+# test
 pip install openturns --no-index -f ${TRAVIS_BUILD_DIR}/wheelhouse
 python -c "import openturns as ot; print(ot.Normal(3).getRealization())"
+
+# upload
+twine --version
+if test -n "${TRAVIS_TAG}"
+then
+  twine upload ${TRAVIS_BUILD_DIR}/wheelhouse/openturns-${VERSION}-${TAG}.whl
+fi

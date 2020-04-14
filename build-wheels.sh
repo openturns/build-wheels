@@ -31,7 +31,7 @@ cmake -DCMAKE_INSTALL_PREFIX=$PWD/install -DUSE_SPHINX=OFF \
 make install
 
 # run a few tests
-ctest -R "Ipopt|Dlib|NLopt|Study|SymbolicFunction|SquareMatrix|CMinpack|Ceres" -E cppcheck ${MAKEFLAGS}
+ctest -R "Ipopt|Dlib|NLopt|Study|SymbolicFunction|SquareMatrix|CMinpack|Ceres" -E cppcheck --output-on-failure ${MAKEFLAGS}
 
 cd install/lib/python*/site-packages/
 rm -rf openturns/__pycache__
@@ -41,7 +41,8 @@ mkdir -p openturns.libs
 cp ../../../etc/openturns/openturns.conf openturns.libs
 
 # write metadata
-/opt/python/cp${PYVER}-${ABI}/bin/python ${SCRIPTPATH}/write_RECORD.py ${VERSION}
+export PATH=/opt/python/cp${PYVER}-${ABI}/bin/:$PATH
+python ${SCRIPTPATH}/write_RECORD.py ${VERSION}
 
 # create archive
 zip -r openturns-${VERSION}-${TAG}.whl openturns openturns.libs openturns-${VERSION}.dist-info
@@ -49,7 +50,14 @@ zip -r openturns-${VERSION}-${TAG}.whl openturns openturns.libs openturns-${VERS
 auditwheel show openturns-${VERSION}-${TAG}.whl
 auditwheel repair openturns-${VERSION}-${TAG}.whl -w /io/wheelhouse/
 
-/opt/python/cp${PYVER}-${ABI}/bin/pip install openturns --no-index -f /io/wheelhouse
-/opt/python/cp${PYVER}-${ABI}/bin/python -c "import openturns as ot; print(ot.Normal(3).getSample(10))"
+# test
+pip install openturns --no-index -f /io/wheelhouse
+python -c "import openturns as ot; print(ot.Normal(3).getSample(10))"
 
-
+# upload
+pip install twine
+twine --version
+if test -n "${TRAVIS_TAG}"
+then
+  twine upload /io/wheelhouse/openturns-${VERSION}-${TAG}.whl || echo "done"
+fi
