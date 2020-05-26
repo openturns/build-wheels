@@ -54,5 +54,5 @@ python -c "import openturns as ot; print(ot.Normal(3).getRealization())"
 twine --version
 if test -n "${TRAVIS_TAG}"
 then
-  twine upload ${TRAVIS_BUILD_DIR}/wheelhouse/openturns-${VERSION}-${TAG}.whl
+  twine upload ${TRAVIS_BUILD_DIR}/wheelhouse/openturns-${VERSION}-${TAG}.whl || echo "done"
 fi

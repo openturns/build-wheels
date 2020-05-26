@@ -14,7 +14,7 @@
 # password: moo
 
 
-VERSION=1.15rc1
+VERSION=1.15
 
 set -e
 for ABI in cp36m cp37m cp38
