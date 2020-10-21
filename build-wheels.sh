@@ -31,7 +31,7 @@ cmake -DCMAKE_INSTALL_PREFIX=$PWD/install -DUSE_SPHINX=OFF \
 make install
 
 # run a few tests
-ctest -R "Ipopt|Bonmin|Dlib|NLopt|Study|SymbolicFunction|SquareMatrix|CMinpack|Ceres" -E cppcheck --output-on-failure ${MAKEFLAGS}
+ctest -R "Ipopt|Bonmin|Dlib_std|NLopt|Study|SymbolicFunction|SquareMatrix|CMinpack|Ceres" -E cppcheck --output-on-failure ${MAKEFLAGS}
 
 cd install/lib/python*/site-packages/
 rm -rf openturns/__pycache__

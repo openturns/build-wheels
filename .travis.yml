@@ -6,22 +6,26 @@ services:
 
 env:
   global:
-    - VERSION=1.15
+    - VERSION=1.16rc1
 
 matrix:
   include:
     - os: linux
-      env: ABI=cp36m PLATFORM=manylinux2010_x86_64
+      env: ABI=cp36m PLATFORM=manylinux1_x86_64
     - os: linux
-      env: ABI=cp37m PLATFORM=manylinux2010_x86_64
+      env: ABI=cp37m PLATFORM=manylinux1_x86_64
     - os: linux
-      env: ABI=cp38 PLATFORM=manylinux2010_x86_64
+      env: ABI=cp38 PLATFORM=manylinux1_x86_64
+    - os: linux
+      env: ABI=cp39 PLATFORM=manylinux1_x86_64
     - os: osx
       env: ABI=cp36m PLATFORM=macosx_10_9_x86_64
     - os: osx
       env: ABI=cp37m PLATFORM=macosx_10_9_x86_64
     - os: osx
       env: ABI=cp38 PLATFORM=macosx_10_9_x86_64
+    - os: osx
+      env: ABI=cp39 PLATFORM=macosx_10_9_x86_64
 
 script:
   - PYVER=${ABI:2:2}

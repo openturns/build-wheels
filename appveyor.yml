@@ -1,5 +1,5 @@
 environment:
-  VERSION: 1.15
+  VERSION: 1.16rc1
   matrix:
     - PYBASEVER: 3.6
       TAG: cp36-cp36m-win_amd64
@@ -7,6 +7,8 @@ environment:
       TAG: cp37-cp37m-win_amd64
     - PYBASEVER: 3.8
       TAG: cp38-cp38-win_amd64
+    - PYBASEVER: 3.9
+      TAG: cp39-cp39-win_amd64
 
 build_script:
   - set PATH=C:\msys64\usr\bin;%PATH%
@@ -19,6 +21,8 @@ build_script:
   - dir /p %cd%\openturns-%VERSION%.dist-info
   - 7z a -tzip openturns-%VERSION%-%TAG%.whl openturns openturns-%VERSION%.dist-info
   - set PATH=C:\Miniconda36-x64;C:\Miniconda36-x64\Scripts;%PATH%
+  - conda config --add channels conda-forge
+  - conda update -y conda
   - conda create -y -n py%PYBASEVER% python=%PYBASEVER% pip twine
   - activate py%PYBASEVER%
   - pip install openturns-%VERSION%-%TAG%.whl
