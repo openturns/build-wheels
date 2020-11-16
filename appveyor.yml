@@ -1,5 +1,5 @@
 environment:
-  VERSION: 1.16rc1
+  VERSION: 1.16
   matrix:
     - PYBASEVER: 3.6
       TAG: cp36-cp36m-win_amd64
