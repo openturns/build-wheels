@@ -34,6 +34,13 @@ mkdir openturns/.dylibs
 cp ../../../etc/openturns/openturns.conf openturns/.dylibs
 zip -u ${TRAVIS_BUILD_DIR}/wheelhouse/openturns-${VERSION}-${TAG}.whl openturns/.dylibs/openturns.conf
 
+# missing libs due to some build-prefix rpath
+for libname in libmumps_common_seq-5.2.1 libpord_seq-5.2.1 libesmumps-6 libmetis libscotch-6 libscotcherr-6 liblapack.3 libblas.3 libgfortran.5 libz.1
+do
+  cp ${HOME}/miniconda/lib/${libname}.dylib openturns/.dylibs
+  zip -u ${TRAVIS_BUILD_DIR}/wheelhouse/openturns-${VERSION}-${TAG}.whl openturns/.dylibs/${libname}.dylib
+done
+
 # test in a fresh conda env
 cd ${TRAVIS_BUILD_DIR}
 rm -r ${HOME}/miniconda
