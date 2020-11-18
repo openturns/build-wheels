@@ -16,6 +16,7 @@ wget --no-check-certificate https://repo.continuum.io/miniconda/Miniconda3-lates
 bash /tmp/Miniconda3-latest-MacOSX-x86_64.sh -b -p ${HOME}/miniconda
 export PATH="${HOME}/miniconda/bin:${PATH}"
 conda config --add channels conda-forge
+conda update -y conda
 conda install -y python=${PYVERD} openturns=${VERSION} delocate
 
 # create wheel archive
@@ -37,6 +38,7 @@ zip -u ${TRAVIS_BUILD_DIR}/wheelhouse/openturns-${VERSION}-${TAG}.whl openturns/
 cd ${TRAVIS_BUILD_DIR}
 rm -r ${HOME}/miniconda
 bash /tmp/Miniconda3-latest-MacOSX-x86_64.sh -b -p ${HOME}/miniconda
+conda update -y conda
 conda install -y python=${PYVERD} pip twine
 pip install openturns --no-index -f ${TRAVIS_BUILD_DIR}/wheelhouse
 python -c "import openturns as ot; print(ot.Normal(3).getRealization())"
