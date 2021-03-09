@@ -21,7 +21,7 @@ conda install -y python=${PYVERD} openturns=${VERSION} delocate
 
 # create wheel archive
 cd ${HOME}/miniconda/lib/python${PYVERD}/site-packages/
-python ${SCRIPTPATH}/write_RECORD.py ${VERSION}
+python ${SCRIPTPATH}/write_RECORD.py openturns ${VERSION}
 zip -r openturns-${VERSION}-${TAG}.whl openturns openturns-${VERSION}.dist-info
 
 # gather dependencies
@@ -29,9 +29,9 @@ delocate-listdeps openturns-${VERSION}-${TAG}.whl
 delocate-wheel -w ${TRAVIS_BUILD_DIR}/wheelhouse -v openturns-${VERSION}-${TAG}.whl
 delocate-listdeps --all ${TRAVIS_BUILD_DIR}/wheelhouse/openturns-${VERSION}-${TAG}.whl
 
-# move conf file next to lib so it can be found using dladr when relocated
-mkdir openturns/.dylibs
-cp ../../../etc/openturns/openturns.conf openturns/.dylibs
+# move conf file next to lib so it can be found using dladdr when relocated
+mkdir -p openturns/.dylibs
+cp -v ../../../etc/openturns/openturns.conf openturns/.dylibs
 zip -u ${TRAVIS_BUILD_DIR}/wheelhouse/openturns-${VERSION}-${TAG}.whl openturns/.dylibs/openturns.conf
 
 # missing libs due to some build-prefix rpath

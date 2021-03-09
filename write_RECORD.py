@@ -5,14 +5,15 @@ import hashlib
 import base64
 
 import sys
-if len(sys.argv) != 2:
-    raise ValueError('no version')
-version = sys.argv[1]
+if len(sys.argv) != 3:
+    raise ValueError('no name/version')
+name = sys.argv[1]
+version = sys.argv[2]
 
-path = os.path.join('openturns-' + version + '.dist-info', 'RECORD')
+path = os.path.join(name + '-' + version + '.dist-info', 'RECORD')
 
 with open(path, 'w') as record:
-    for subdir in ['openturns', 'openturns-' + version + '.dist-info']:
+    for subdir in [name, name + '-' + version + '.dist-info']:
         for f in os.listdir(subdir):
             fpath = os.path.join(subdir, f)
             size = os.path.getsize(fpath)

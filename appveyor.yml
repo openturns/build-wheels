@@ -17,7 +17,7 @@ build_script:
   - move %cd%\install\Lib\site-packages\openturns %cd%
   - move %cd%\install\Lib\site-packages\openturns-%VERSION%.dist-info %cd%
   - dir /p %cd%\openturns
-  - python write_RECORD.py %VERSION%
+  - python write_RECORD.py openturns %VERSION%
   - dir /p %cd%\openturns-%VERSION%.dist-info
   - 7z a -tzip openturns-%VERSION%-%TAG%.whl openturns openturns-%VERSION%.dist-info
   - set PATH=C:\Miniconda36-x64;C:\Miniconda36-x64\Scripts;%PATH%
