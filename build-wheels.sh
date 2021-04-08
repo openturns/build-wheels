@@ -86,18 +86,12 @@ do
   auditwheel show ${pkgname}-${pkgver}-${TAG}.whl
   auditwheel repair ${pkgname}-${pkgver}-${TAG}.whl -w /tmp
 
-  # strip libs common to OT wheel for size
+  # use libs from OT wheel
   cd /tmp
   unzip ${pkgname}-${pkgver}-${TAG}.whl
   patchelf --remove-rpath ${pkgname}/_${pkgname}.so
   patchelf --force-rpath --set-rpath "\$ORIGIN/../${pkgname}.libs:\$ORIGIN/../openturns.libs" ${pkgname}/_${pkgname}.so
-  for wfile in `ls ${pkgname}.libs`
-  do
-    if grep -Eqv "lib${pkgname}|libfftw3" <<< "${wfile}"
-    then
-      rm ${pkgname}.libs/${wfile}
-    fi
-  done
+  for wfile in `ls ${pkgname}.libs`; do grep -Eq "lib${pkgname}|libfftw3" <<< "${wfile}" || rm ${pkgname}.libs/${wfile}; done
   zip -r /io/wheelhouse/${pkgname}-${pkgver}-${TAG}.whl ${pkgname} ${pkgname}.libs ${pkgname}-${pkgver}.dist-info
   cd -
 
