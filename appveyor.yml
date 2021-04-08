@@ -20,13 +20,22 @@ build_script:
   - python write_RECORD.py openturns %VERSION%
   - dir /p %cd%\openturns-%VERSION%.dist-info
   - 7z a -tzip openturns-%VERSION%-%TAG%.whl openturns openturns-%VERSION%.dist-info
+  - call build-wheels-win32.bat otmixmod 0.11 %PYBASEVER% %TAG%
+  - call build-wheels-win32.bat otmorris 0.9 %PYBASEVER% %TAG%
+  - call build-wheels-win32.bat otpmml 1.10 %PYBASEVER% %TAG%
+  - call build-wheels-win32.bat otrobopt 0.8 %PYBASEVER% %TAG%
+  - call build-wheels-win32.bat otsubsetinverse 1.7 %PYBASEVER% %TAG%
+  - call build-wheels-win32.bat otsvm 0.9 %PYBASEVER% %TAG%
+  - dir /p %cd%
   - set PATH=C:\Miniconda36-x64;C:\Miniconda36-x64\Scripts;%PATH%
   - conda config --add channels conda-forge
   - conda update -y conda
   - conda create -y -n py%PYBASEVER% python=%PYBASEVER% pip twine
   - activate py%PYBASEVER%
-  - pip install openturns-%VERSION%-%TAG%.whl
+  - pip install openturns --no-index --find-links=%CD%
   - python -c "import openturns as ot; print(ot.Normal(3).getRealization())"
+  - pip install otmorris --no-index --find-links=%CD%
+  - python -c "import otmorris; print(otmorris.__version__)"
 
 after_build:
   - twine --version
