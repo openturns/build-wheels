@@ -25,12 +25,10 @@ curl -fSsL https://github.com/openturns/openturns/archive/v${VERSION}.tar.gz | t
 
 mkdir build && cd build
 cmake -DCMAKE_INSTALL_PREFIX=$PWD/install -DUSE_SPHINX=OFF \
-      -DPYTHON_INCLUDE_DIR=/opt/python/cp${PYVER}-${ABI}/include/python${PYVERD} \
-      -DPYTHON_LIBRARY=/usr/lib64/libpython2.4.so \
+      -DPYTHON_INCLUDE_DIR=/opt/python/cp${PYVER}-${ABI}/include/python${PYVERD} -DPYTHON_LIBRARY=dummy \
       -DPYTHON_EXECUTABLE=/opt/python/cp${PYVER}-${ABI}/bin/python \
       -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 \
       -DSWIG_COMPILE_FLAGS="-O1" \
-      -DCMINPACK_LIBRARIES="cminpack::cminpack" \
       ..
 make install
 
@@ -54,11 +52,18 @@ auditwheel show openturns-${VERSION}-${TAG}.whl
 auditwheel repair openturns-${VERSION}-${TAG}.whl -w /io/wheelhouse/
 
 # test
-pip install openturns --no-index -f /io/wheelhouse
+cd /tmp
+pip install openturns --pre --no-index -f /io/wheelhouse
 python -c "import openturns as ot; print(ot.__version__)"
 
+# lookup new OT lib name
+unzip /io/wheelhouse/openturns-${VERSION}-${TAG}.whl
+readelf -d openturns.libs/libOT-*.so*
+NEW_LIBOT=`basename openturns.libs/libOT-*.so*`
+cd -
+
 # otagrum-0.3
-for pkgnamever in otfftw-0.10 otmixmod-0.11 otmorris-0.9 otpmml-1.10 otrobopt-0.8 otsubsetinverse-1.7 otsvm-0.9
+for pkgnamever in otfftw-0.11 otmixmod-0.12 otmorris-0.10 otpmml-1.11 otrobopt-0.9 otsubsetinverse-1.8 otsvm-0.10
 do
   pkgname=`echo ${pkgnamever} | cut -d "-" -f1`
   pkgver=`echo ${pkgnamever} | cut -d "-" -f2`
@@ -66,8 +71,7 @@ do
   curl -fSsL https://github.com/openturns/${pkgname}/archive/v${pkgver}.tar.gz | tar xz && cd ${pkgname}-${pkgver}
   mkdir build && cd build
   cmake -DCMAKE_INSTALL_PREFIX=$PWD/install -DUSE_SPHINX=OFF -DBUILD_DOC=OFF \
-        -DPYTHON_INCLUDE_DIR=/opt/python/cp${PYVER}-${ABI}/include/python${PYVERD} \
-        -DPYTHON_LIBRARY=/usr/lib64/libpython2.4.so \
+        -DPYTHON_INCLUDE_DIR=/opt/python/cp${PYVER}-${ABI}/include/python${PYVERD} -DPYTHON_LIBRARY=dummy \
         -DPYTHON_EXECUTABLE=/opt/python/cp${PYVER}-${ABI}/bin/python \
         -DOpenTURNS_DIR=/tmp/openturns-${VERSION}/build/install/lib/cmake/openturns \
         ..
@@ -80,23 +84,23 @@ do
   # write metadata
   python ${SCRIPTPATH}/write_RECORD.py ${pkgname} ${pkgver}
 
+  # copy libs
+  mkdir ${pkgname}.libs
+  cp -v ../../lib${pkgname}.so.0 ${pkgname}.libs
+  if test "${pkgname}" = "otfftw"; then cp -v /usr/local/lib/libfftw3.so.3 otfftw.libs; fi
+
+  # relink
+  patchelf --remove-rpath ${pkgname}.libs/lib${pkgname}.so.0 ${pkgname}/_${pkgname}.so
+  patchelf --force-rpath --set-rpath "\$ORIGIN/../${pkgname}.libs:\$ORIGIN/../openturns.libs" ${pkgname}.libs/lib${pkgname}.so.0 ${pkgname}/_${pkgname}.so
+  patchelf --print-rpath ${pkgname}.libs/lib${pkgname}.so.0 ${pkgname}/_${pkgname}.so
+  patchelf --replace-needed libOT.so.0 ${NEW_LIBOT} ${pkgname}.libs/lib${pkgname}.so.0 ${pkgname}/_${pkgname}.so
+
   # create archive
-  zip -r ${pkgname}-${pkgver}-${TAG}.whl ${pkgname} ${pkgname}-${pkgver}.dist-info
-
-  auditwheel show ${pkgname}-${pkgver}-${TAG}.whl
-  auditwheel repair ${pkgname}-${pkgver}-${TAG}.whl -w /tmp
-
-  # use libs from OT wheel
-  cd /tmp
-  unzip ${pkgname}-${pkgver}-${TAG}.whl
-  patchelf --remove-rpath ${pkgname}/_${pkgname}.so
-  patchelf --force-rpath --set-rpath "\$ORIGIN/../${pkgname}.libs:\$ORIGIN/../openturns.libs" ${pkgname}/_${pkgname}.so
-  for wfile in `ls ${pkgname}.libs`; do grep -Eq "lib${pkgname}|libfftw3" <<< "${wfile}" || rm ${pkgname}.libs/${wfile}; done
   zip -r /io/wheelhouse/${pkgname}-${pkgver}-${TAG}.whl ${pkgname} ${pkgname}.libs ${pkgname}-${pkgver}.dist-info
-  cd -
 
   # test
-  pip install ${pkgname} --no-index -f /io/wheelhouse
+  cd /tmp
+  pip install ${pkgname} --pre --no-index -f /io/wheelhouse
   python -c "import ${pkgname}; print(${pkgname}.__version__)"
 done
 
@@ -106,5 +110,6 @@ pip install "cryptography<3.4" twine
 twine --version
 if test -n "${TRAVIS_TAG}"
 then
-  twine upload /io/wheelhouse/openturns-${VERSION}-${TAG}.whl || echo "done"
+  twine upload --verbose /io/wheelhouse/openturns-${VERSION}-${TAG}.whl || echo "done"
+  twine upload --verbose /io/wheelhouse/ot*.whl || echo "done"
 fi
