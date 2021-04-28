@@ -10,26 +10,26 @@ env:
 matrix:
   include:
     - os: linux
-      env: ABI=cp36m PLATFORM=manylinux1_x86_64
+      env: ABI=cp36m
     - os: linux
-      env: ABI=cp37m PLATFORM=manylinux1_x86_64
+      env: ABI=cp37m
     - os: linux
-      env: ABI=cp38 PLATFORM=manylinux1_x86_64
+      env: ABI=cp38
     - os: linux
-      env: ABI=cp39 PLATFORM=manylinux1_x86_64
+      env: ABI=cp39
     - os: osx
-      env: ABI=cp36m PLATFORM=macosx_10_9_x86_64
+      env: ABI=cp36m
     - os: osx
-      env: ABI=cp37m PLATFORM=macosx_10_9_x86_64
+      env: ABI=cp37m
     - os: osx
-      env: ABI=cp38 PLATFORM=macosx_10_9_x86_64
+      env: ABI=cp38
     - os: osx
-      env: ABI=cp39 PLATFORM=macosx_10_9_x86_64
+      env: ABI=cp39
 
 script:
   - PYVER=${ABI:2:2}
-  - if test "$TRAVIS_OS_NAME" = "linux"; then docker pull openturns/${PLATFORM}; env | grep "TWINE\|TRAVIS" > env.list; docker run --rm -v `pwd`:/io --env-file env.list openturns/${PLATFORM} /io/build-wheels.sh ${VERSION} ${PYVER} ${ABI} ${PLATFORM}; fi
-  - if test "$TRAVIS_OS_NAME" = "osx"; then ./build-wheels-osx.sh ${VERSION} ${PYVER} ${ABI} ${PLATFORM}; fi
+  - if test "$TRAVIS_OS_NAME" = "linux"; then docker pull openturns/manylinux1_x86_64; env | grep "TWINE\|TRAVIS" > env.list; docker run --rm -v `pwd`:/io --env-file env.list openturns/manylinux1_x86_64 /io/build-wheels.sh ${VERSION} ${PYVER} ${ABI} manylinux1_x86_64; fi
+  - if test "$TRAVIS_OS_NAME" = "osx"; then ./build-wheels-osx.sh ${VERSION} ${PYVER} ${ABI} macosx_10_9_x86_64; fi
 
 deploy:
   provider: releases
