@@ -33,6 +33,7 @@ cp -v ../../../etc/openturns/openturns.conf openturns/.dylibs
 zip -u ${TRAVIS_BUILD_DIR}/wheelhouse/openturns-${VERSION}-${TAG}.whl openturns/.dylibs/openturns.conf
 
 # add missing libs
+ls -l ${HOME}/miniforge/lib/
 for libname in libicuuc.68 libicudata.68 libiconv.2 libcurl.4 libnghttp2.14 libssh2.1 libgssapi_krb5.2.2 libkrb5.3.3 libk5crypto.3.1 libcom_err.3.0 libkrb5support.1.1 libamd.2 libcamd.2 libcolamd.2 libcholmod.3 libccolamd.2 libsuitesparseconfig.5 libblas.3 liblapack.3 libgfortran.5 libquadmath.0 libCgl.1 libOsiClp.1 libOsi.1 libClp.1 libCoinUtils.3 libmumps_common_seq-5.2.1 libpord_seq-5.2.1 libesmumps-6 libscotch-6 libscotcherr-6 libgflags.2.2
 do
   cp ${HOME}/miniforge/lib/${libname}.dylib openturns/.dylibs

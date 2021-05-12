@@ -17,14 +17,14 @@ matrix:
       env: ABI=cp38
     - os: linux
       env: ABI=cp39
-    - os: osx
-      env: ABI=cp36m
-    - os: osx
-      env: ABI=cp37m
-    - os: osx
-      env: ABI=cp38
-    - os: osx
-      env: ABI=cp39
+      #- os: osx
+      #env: ABI=cp36m
+      #- os: osx
+      #env: ABI=cp37m
+      #- os: osx
+      #env: ABI=cp38
+      #- os: osx
+      #env: ABI=cp39
 
 script:
   - PYVER=${ABI:2:2}
