@@ -1,5 +1,5 @@
 environment:
-  VERSION: 1.17rc1
+  VERSION: 1.17
   matrix:
     - PYBASEVER: 3.6
       TAG: cp36-cp36m-win_amd64
@@ -42,8 +42,14 @@ build_script:
 
 after_build:
   - twine --version
-  - IF DEFINED APPVEYOR_REPO_TAG_NAME twine upload --verbose openturns-%VERSION%-%TAG%.whl || echo "done"
-  - IF DEFINED APPVEYOR_REPO_TAG_NAME twine upload --verbose ot*-%TAG%.whl || echo "done"
+  - IF DEFINED APPVEYOR_REPO_TAG_NAME twine upload --verbose openturns-%VERSION%-%TAG%.whl
+  - IF DEFINED APPVEYOR_REPO_TAG_NAME twine upload --verbose otfftw-0.11-%TAG%.whl
+  - IF DEFINED APPVEYOR_REPO_TAG_NAME twine upload --verbose otmixmod-0.12-%TAG%.whl
+  - IF DEFINED APPVEYOR_REPO_TAG_NAME twine upload --verbose otmorris-0.10-%TAG%.whl
+  - IF DEFINED APPVEYOR_REPO_TAG_NAME twine upload --verbose otpmml-1.11-%TAG%.whl
+  - IF DEFINED APPVEYOR_REPO_TAG_NAME twine upload --verbose otrobopt-0.9-%TAG%.whl
+  - IF DEFINED APPVEYOR_REPO_TAG_NAME twine upload --verbose otsubsetinverse-1.8-%TAG%.whl
+  - IF DEFINED APPVEYOR_REPO_TAG_NAME twine upload --verbose otsvm-0.10-%TAG%.whl
 
 artifacts:
   - path: '**\*.whl'
