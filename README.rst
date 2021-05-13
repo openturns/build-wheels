@@ -8,9 +8,7 @@
 OpenTURNS wheels
 ================
 
-Script to build Python wheel packages for installation with pip::
-
-    pip install openturns --user
+Script to build Python wheel packages (pip binary format)
 
 Relevant links:
 
