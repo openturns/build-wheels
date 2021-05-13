@@ -8,7 +8,7 @@
 OpenTURNS wheels
 ================
 
-Script to build Python wheel packages (pip binary format)
+Script to build Python wheel packages (pip binary format).
 
 Relevant links:
 
