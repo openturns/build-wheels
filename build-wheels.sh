@@ -21,8 +21,16 @@ SCRIPTPATH=`dirname "$SCRIPT"`
 export PATH=/opt/python/cp${PYVER}-${ABI}/bin/:$PATH
 
 cd /tmp
-curl -fSsL https://github.com/openturns/openturns/archive/v${VERSION}.tar.gz | tar xz && cd openturns-${VERSION}
+if test "${VERSION}" = "git"
+then
+  curl -fSsLO https://raw.githubusercontent.com/openturns/openturns/master/VERSION
+  VERSION=`cat VERSION`
+  git clone --depth 1 https://github.com/openturns/openturns.git openturns-${VERSION}
+else
+  curl -fSsL https://github.com/openturns/openturns/archive/v${VERSION}.tar.gz | tar xz
+fi
 
+cd openturns-${VERSION}
 mkdir build && cd build
 cmake -DCMAKE_INSTALL_PREFIX=$PWD/install -DUSE_SPHINX=OFF \
       -DPYTHON_INCLUDE_DIR=/opt/python/cp${PYVER}-${ABI}/include/python${PYVERD} -DPYTHON_LIBRARY=dummy \
@@ -53,8 +61,11 @@ auditwheel repair openturns-${VERSION}-${TAG}.whl -w /io/wheelhouse/
 
 # test
 cd /tmp
+pip install dill psutil
 pip install openturns --pre --no-index -f /io/wheelhouse
 python -c "import openturns as ot; print(ot.__version__)"
+
+grep -q dev <<< "${VERSION}" && exit 0
 
 # lookup new OT lib name
 unzip /io/wheelhouse/openturns-${VERSION}-${TAG}.whl
