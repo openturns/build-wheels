@@ -16,4 +16,4 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - run: |
-        PYVER=${ABI:2:2} ./build-wheels-osx.sh ${VERSION} ${PYVER} ${ABI} macosx_10_9_x86_64
+        ./build-wheels-osx.sh ${VERSION} ${ABI} macosx_10_9_x86_64
