@@ -1,5 +1,5 @@
-.. image:: https://travis-ci.org/openturns/build-wheels.svg?branch=master
-    :target: https://travis-ci.org/openturns/build-wheels
+.. image:: https://travis-ci.com/openturns/build-wheels.svg?branch=master
+    :target: https://travis-ci.com/openturns/build-wheels
 
 .. image:: https://ci.appveyor.com/api/projects/status/uut71pqklp8eksl1?svg=true
     :target: https://ci.appveyor.com/project/openturns/build-wheels
