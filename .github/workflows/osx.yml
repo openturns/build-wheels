@@ -1,0 +1,19 @@
+name: macos build
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+       include:
+         #- abi: cp36m
+         #- abi: cp37m
+         - abi: cp38
+         #- abi: cp39
+    env:
+      ABI: ${{ matrix.abi }}
+      VERSION: 1.17
+    steps:
+    - uses: actions/checkout@v2
+    - run: |
+        PYVER=${ABI:2:2} ./build-wheels-osx.sh ${VERSION} ${PYVER} ${ABI} macosx_10_9_x86_64
