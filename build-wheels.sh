@@ -2,13 +2,13 @@
 
 set -e -x
 
-test $# = 4 || exit 1
+test $# = 3 || exit 1
 
 VERSION="$1"
-PYVER="$2"
-ABI="$3"
-PLATFORM="$4"
+ABI="$2"
+PLATFORM="$3"
 
+PYVER="${ABI:2:2}"
 TAG="cp${PYVER}-${ABI}-${PLATFORM}"
 PYVERD=${PYVER:0:1}.${PYVER:1:1}
 if test "${ABI: -1}" = "m"

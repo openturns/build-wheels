@@ -3,7 +3,7 @@ on:
   schedule:
     - cron:  '0 0 * * 5'
 jobs:
-  build:
+  linux:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -15,9 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build wheel
-        env:
-          ABI: ${{ matrix.abi }}
-        run: PYVER=${ABI:2:2} && docker pull openturns/manylinux1_x86_64 && docker run --rm -e MAKEFLAGS='-j2' -v `pwd`:/io openturns/manylinux1_x86_64 /io/build-wheels.sh git ${PYVER} ${ABI} manylinux1_x86_64
+        run: docker pull openturns/manylinux1_x86_64 && docker run --rm -e MAKEFLAGS='-j2' -v `pwd`:/io openturns/manylinux1_x86_64 /io/build-wheels.sh git ${{ matrix.abi }} manylinux1_x86_64
       - id: getfilename
         run: echo "::set-output name=file::$(ls wheelhouse/*.whl)"
       - name: Archive wheel
@@ -32,6 +30,28 @@ jobs:
       - name: Upload wheel
         shell: bash -l {0}
         run: |
-          ls -l wheelhouse
+          conda install -y anaconda-client
+          anaconda -t ${{ secrets.ANACONDA_TOKEN }} upload --force -u openturns-wheels-nightly wheelhouse/*.whl
+
+  mingw:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+       include:
+         - abi: cp36m
+         - abi: cp37m
+         - abi: cp38
+         - abi: cp39
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build wheel
+        run: docker pull openturns/archlinux-mingw && docker run --rm -e MAKEFLAGS='-j2' -v `pwd`:/io openturns/archlinux-mingw /io/build-wheels-mingw.sh git ${{ matrix.abi }}
+      - uses: conda-incubator/setup-miniconda@v2
+        with:
+          auto-activate-base: true
+          activate-environment: ""
+      - name: Upload wheel
+        shell: bash -l {0}
+        run: |
           conda install -y anaconda-client
           anaconda -t ${{ secrets.ANACONDA_TOKEN }} upload --force -u openturns-wheels-nightly wheelhouse/*.whl
