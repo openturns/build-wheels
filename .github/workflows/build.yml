@@ -1,0 +1,67 @@
+name: Build
+on: [push, pull_request]
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+       include:
+         - abi: cp38
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build wheel
+        run: docker pull openturns/manylinux1_x86_64 && docker run --rm -e MAKEFLAGS='-j2' -v `pwd`:/io openturns/manylinux1_x86_64 /io/build-wheels.sh 1.17 ${{ matrix.abi }} manylinux1_x86_64
+      - uses: conda-incubator/setup-miniconda@v2
+        with:
+          auto-activate-base: true
+          activate-environment: ""
+      - name: Upload wheel
+        shell: bash -l {0}
+        run: |
+          conda install -y twine
+
+  mingw:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+       include:
+         - abi: cp38
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build wheel
+        run: docker pull openturns/archlinux-mingw && docker run --rm -e MAKEFLAGS='-j2' -v `pwd`:/io openturns/archlinux-mingw /io/build-wheels-mingw.sh 1.17 ${{ matrix.abi }}
+      - uses: conda-incubator/setup-miniconda@v2
+        with:
+          auto-activate-base: true
+          activate-environment: ""
+      - name: Upload wheel
+        shell: bash -l {0}
+        run: |
+          conda install -y twine
+
+  macos:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+       include:
+         - abi: cp38
+         - abi: cp39
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build wheel
+        run: ./build-wheels-osx.sh 1.17 ${{ matrix.abi }}  macosx_10_9_x86_64
+      - id: getfilename
+        run: echo "::set-output name=file::$(ls wheelhouse/*.whl)"
+      - name: Archive wheel
+        uses: actions/upload-artifact@v2
+        with:
+          name: wheel
+          path: ${{ steps.getfilename.outputs.file }}
+      - uses: conda-incubator/setup-miniconda@v2
+        with:
+          auto-activate-base: true
+          activate-environment: ""
+      - name: Upload wheel
+        shell: bash -l {0}
+        run: |
+          conda install -y twine
