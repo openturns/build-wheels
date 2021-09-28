@@ -11,7 +11,7 @@ ARCH=x86_64
 MINGW_PREFIX=/usr/${ARCH}-w64-mingw32
 PLATFORM=win_amd64
 
-PYVER="${ABI:2:2}"
+PYVER="${ABI:2}"
 TAG="cp${PYVER}-${ABI}-${PLATFORM}"
 
 cd /tmp

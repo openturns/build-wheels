@@ -7,11 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-       include:
-         - abi: cp36m
-         - abi: cp37m
-         - abi: cp38
-         - abi: cp39
+        abi: [cp36m, cp37m, cp38, cp39]
     steps:
       - uses: actions/checkout@v2
       - name: Build wheel
@@ -37,11 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-       include:
-         - abi: cp36m
-         - abi: cp37m
-         - abi: cp38
-         - abi: cp39
+        abi: [cp36m, cp37m, cp38, cp39]
     steps:
       - uses: actions/checkout@v2
       - name: Build wheel

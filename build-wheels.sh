@@ -8,9 +8,9 @@ VERSION="$1"
 ABI="$2"
 PLATFORM="$3"
 
-PYVER="${ABI:2:2}"
+PYVER="${ABI:2}"
 TAG="cp${PYVER}-${ABI}-${PLATFORM}"
-PYVERD=${PYVER:0:1}.${PYVER:1:1}
+PYVERD=${PYVER:0:1}.${PYVER:1}
 if test "${ABI: -1}" = "m"
 then
   PYVERD=${PYVERD}m
