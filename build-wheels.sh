@@ -35,6 +35,7 @@ cmake -DCMAKE_INSTALL_PREFIX=$PWD/install -DUSE_SPHINX=OFF \
       -DSWIG_COMPILE_FLAGS="-O1" \
       ..
 make install
+OLD_LIBOT=`basename install/lib/libOT.so.0.*`
 
 # run a few tests
 ctest -R "Ipopt|Bonmin|Dlib_std|NLopt|Study|SymbolicFunction|SquareMatrix|CMinpack|Ceres|Sample_csv" -E cppcheck --output-on-failure ${MAKEFLAGS}
@@ -64,7 +65,7 @@ python -c "import openturns as ot; print(ot.__version__)"
 grep -q dev <<< "${VERSION}" && exit 0
 
 # lookup new OT lib name
-unzip /io/wheelhouse/openturns-${VERSION}-${TAG}.whl
+unzip /io/wheelhouse/openturns-${VERSION}-${TAG}.manylinux_2_5_x86_64.whl
 readelf -d openturns.libs/libOT-*.so*
 NEW_LIBOT=`basename openturns.libs/libOT-*.so*`
 cd -
@@ -100,7 +101,7 @@ do
   patchelf --remove-rpath ${pkgname}.libs/lib${pkgname}.so.0 ${pkgname}/_${pkgname}.so
   patchelf --force-rpath --set-rpath "\$ORIGIN/../${pkgname}.libs:\$ORIGIN/../openturns.libs" ${pkgname}.libs/lib${pkgname}.so.0 ${pkgname}/_${pkgname}.so
   patchelf --print-rpath ${pkgname}.libs/lib${pkgname}.so.0 ${pkgname}/_${pkgname}.so
-  patchelf --replace-needed libOT.so.0 ${NEW_LIBOT} ${pkgname}.libs/lib${pkgname}.so.0 ${pkgname}/_${pkgname}.so
+  patchelf --replace-needed ${OLD_LIBOT} ${NEW_LIBOT} ${pkgname}.libs/lib${pkgname}.so.0 ${pkgname}/_${pkgname}.so
 
   # create archive
   zip -r /io/wheelhouse/${pkgname}-${pkgver}-${TAG}.whl ${pkgname} ${pkgname}.libs ${pkgname}-${pkgver}.dist-info
