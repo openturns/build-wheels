@@ -6,9 +6,9 @@ VERSION="$1"
 ABI="$2"
 PLATFORM="$3"
 
-PYVER="${ABI:2}"
-TAG="cp${PYVER}-${ABI}-${PLATFORM}"
-PYVERD=${PYVER:0:1}.${PYVER:1}
+PYTAG=${ABI/m/}
+TAG=${PYTAG}-${ABI}-${PLATFORM}
+PYVERD=${PYTAG:2:1}.${PYTAG:3}
 SCRIPTPATH=${PWD}
 
 # setup a new conda env to retrieve openturns and its dependencies

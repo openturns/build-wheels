@@ -11,8 +11,9 @@ ARCH=x86_64
 MINGW_PREFIX=/usr/${ARCH}-w64-mingw32
 PLATFORM=win_amd64
 
-PYVER="${ABI:2}"
-TAG="cp${PYVER}-${ABI}-${PLATFORM}"
+PYTAG=${ABI/m/}
+PYVER=${PYTAG:2}
+TAG=${PYTAG}-${ABI}-${PLATFORM}
 
 cd /tmp
 if test "${VERSION}" = "git"

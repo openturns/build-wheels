@@ -8,17 +8,13 @@ VERSION="$1"
 ABI="$2"
 PLATFORM="$3"
 
-PYVER="${ABI:2}"
-TAG="cp${PYVER}-${ABI}-${PLATFORM}"
-PYVERD=${PYVER:0:1}.${PYVER:1}
-if test "${ABI: -1}" = "m"
-then
-  PYVERD=${PYVERD}m
-fi
+PYTAG=${ABI/m/}
+TAG=${PYTAG}-${ABI}-${PLATFORM}
+PYVERD=${ABI:2:1}.${ABI:3}
 
 SCRIPT=`readlink -f "$0"`
 SCRIPTPATH=`dirname "$SCRIPT"`
-export PATH=/opt/python/cp${PYVER}-${ABI}/bin/:$PATH
+export PATH=/opt/python/${PYTAG}-${ABI}/bin/:$PATH
 
 cd /tmp
 if test "${VERSION}" = "git"
@@ -33,8 +29,8 @@ fi
 cd openturns-${VERSION}
 mkdir build && cd build
 cmake -DCMAKE_INSTALL_PREFIX=$PWD/install -DUSE_SPHINX=OFF \
-      -DPYTHON_INCLUDE_DIR=/opt/python/cp${PYVER}-${ABI}/include/python${PYVERD} -DPYTHON_LIBRARY=dummy \
-      -DPYTHON_EXECUTABLE=/opt/python/cp${PYVER}-${ABI}/bin/python \
+      -DPYTHON_INCLUDE_DIR=/opt/python/${PYTAG}-${ABI}/include/python${PYVERD} -DPYTHON_LIBRARY=dummy \
+      -DPYTHON_EXECUTABLE=/opt/python/${PYTAG}-${ABI}/bin/python \
       -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 \
       -DSWIG_COMPILE_FLAGS="-O1" \
       ..
@@ -82,8 +78,8 @@ do
   curl -fSsL https://github.com/openturns/${pkgname}/archive/v${pkgver}.tar.gz | tar xz && cd ${pkgname}-${pkgver}
   mkdir build && cd build
   cmake -DCMAKE_INSTALL_PREFIX=$PWD/install -DUSE_SPHINX=OFF -DBUILD_DOC=OFF \
-        -DPYTHON_INCLUDE_DIR=/opt/python/cp${PYVER}-${ABI}/include/python${PYVERD} -DPYTHON_LIBRARY=dummy \
-        -DPYTHON_EXECUTABLE=/opt/python/cp${PYVER}-${ABI}/bin/python \
+        -DPYTHON_INCLUDE_DIR=/opt/python/${PYTAG}-${ABI}/include/python${PYVERD} -DPYTHON_LIBRARY=dummy \
+        -DPYTHON_EXECUTABLE=/opt/python/${PYTAG}-${ABI}/bin/python \
         -DOpenTURNS_DIR=/tmp/openturns-${VERSION}/build/install/lib/cmake/openturns \
         ..
   make install
