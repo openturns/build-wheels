@@ -67,7 +67,7 @@ done
 cd ${SCRIPTPATH}
 rm -r ${HOME}/miniforge
 bash /tmp/Miniforge3-MacOSX-x86_64.sh -b -p ${HOME}/miniforge
-conda install -y python=${PYVERD} pip twine
+conda install -y python=${PYVERD} pip twine dill psutil
 pip install openturns --no-index -f ${SCRIPTPATH}/wheelhouse
-python -c "import openturns as ot; print(ot.Normal(3).getRealization())"
+python -c "import openturns as ot; print(ot.__version__)"
 
