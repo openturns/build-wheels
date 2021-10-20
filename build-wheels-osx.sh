@@ -40,6 +40,7 @@ do
   zip -u ${SCRIPTPATH}/wheelhouse/openturns-${VERSION}-${TAG}.whl openturns/.dylibs/${libname}.dylib
 done
 
+# modules
 # for pkgnamever in otfftw-0.11 otmixmod-0.12 otmorris-0.10 otpmml-1.11 otrobopt-0.9 otsubsetinverse-1.8 otsvm-0.10
 # do
 #   pkgname=`echo ${pkgnamever} | cut -d "-" -f1`
@@ -70,10 +71,3 @@ conda install -y python=${PYVERD} pip twine
 pip install openturns --no-index -f ${SCRIPTPATH}/wheelhouse
 python -c "import openturns as ot; print(ot.Normal(3).getRealization())"
 
-# upload
-#twine --version
-#if test -n "${TRAVIS_TAG}"
-#then
-#  twine upload --verbose ${SCRIPTPATH}/wheelhouse/openturns-${VERSION}-${TAG}.whl || echo "done"
-#   twine upload --verbose ${SCRIPTPATH}/wheelhouse/ot*.whl || echo "done"
-#fi

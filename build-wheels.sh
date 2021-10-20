@@ -70,8 +70,8 @@ readelf -d openturns.libs/libOT-*.so*
 NEW_LIBOT=`basename openturns.libs/libOT-*.so*`
 cd -
 
-# otagrum-0.3
-for pkgnamever in otfftw-0.11 otmixmod-0.12 otmorris-0.10 otpmml-1.11 otrobopt-0.9 otsubsetinverse-1.8 otsvm-0.10
+# modules
+for pkgnamever in otfftw-0.11 otmixmod-0.12 otmorris-0.11 otpmml-1.11 otrobopt-0.9 otsubsetinverse-1.8 otsvm-0.10
 do
   pkgname=`echo ${pkgnamever} | cut -d "-" -f1`
   pkgver=`echo ${pkgnamever} | cut -d "-" -f2`
@@ -111,13 +111,3 @@ do
   pip install ${pkgname} --pre --no-index -f /io/wheelhouse
   python -c "import ${pkgname}; print(${pkgname}.__version__)"
 done
-
-
-# upload
-pip install "cryptography<3.4" twine
-twine --version
-if test -n "${TRAVIS_TAG}"
-then
-  twine upload --verbose /io/wheelhouse/openturns-${VERSION}-${TAG}.whl || echo "done"
-  twine upload --verbose /io/wheelhouse/ot*.whl || echo "done"
-fi
