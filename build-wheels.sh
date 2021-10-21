@@ -26,11 +26,11 @@ else
   curl -fSsL https://github.com/openturns/openturns/archive/v${VERSION}.tar.gz | tar xz
 fi
 
-mv openturns-${VERSION} openturns-${VERSION}.post1
-VERSION=${VERSION}.post1
+mv openturns-${VERSION} openturns-${VERSION}.post2
+VERSION=${VERSION}.post2
 cd openturns-${VERSION}
 ./utils/setVersionNumber.sh ${VERSION}
-sed -i "s/set (CPACK_PACKAGE_VERSION_PATCH /set (CPACK_PACKAGE_VERSION_PATCH post1/g" CMakeLists.txt
+sed -i "s/set (CPACK_PACKAGE_VERSION_PATCH /set (CPACK_PACKAGE_VERSION_PATCH post2/g" CMakeLists.txt
 mkdir build && cd build
 cmake -DCMAKE_INSTALL_PREFIX=$PWD/install -DUSE_SPHINX=OFF \
       -DPYTHON_INCLUDE_DIR=/opt/python/${PYTAG}-${ABI}/include/python${PYVERD} -DPYTHON_LIBRARY=dummy \
@@ -72,6 +72,7 @@ grep -q dev <<< "${VERSION}" && exit 0
 unzip /io/wheelhouse/openturns-${VERSION}-${TAG}.manylinux_2_5_x86_64.whl
 readelf -d openturns.libs/libOT-*.so*
 NEW_LIBOT=`basename openturns.libs/libOT-*.so*`
+NEW_LIBTBB=`basename openturns.libs/libtbb-*.so*`
 cd -
 
 # modules
@@ -81,7 +82,7 @@ do
   pkgver=`echo ${pkgnamever} | cut -d "-" -f2`
   cd /tmp
   curl -fSsL https://github.com/openturns/${pkgname}/archive/v${pkgver}.tar.gz | tar xz && cd ${pkgname}-${pkgver}
-  pkgver=${pkgver}.post1
+  pkgver=${pkgver}.3
   ./setVersionNumber.sh ${pkgver}
   mkdir build && cd build
   cmake -DCMAKE_INSTALL_PREFIX=$PWD/install -DUSE_SPHINX=OFF -DBUILD_DOC=OFF \
@@ -108,6 +109,7 @@ do
   patchelf --force-rpath --set-rpath "\$ORIGIN/../${pkgname}.libs:\$ORIGIN/../openturns.libs" ${pkgname}.libs/lib${pkgname}.so.0 ${pkgname}/_${pkgname}.so
   patchelf --print-rpath ${pkgname}.libs/lib${pkgname}.so.0 ${pkgname}/_${pkgname}.so
   patchelf --replace-needed ${OLD_LIBOT} ${NEW_LIBOT} ${pkgname}.libs/lib${pkgname}.so.0 ${pkgname}/_${pkgname}.so
+  patchelf --replace-needed libtbb.so.12 ${NEW_LIBTBB} ${pkgname}.libs/lib${pkgname}.so.0 ${pkgname}/_${pkgname}.so
 
   # create archive
   zip -r /io/wheelhouse/${pkgname}-${pkgver}-${TAG}.whl ${pkgname} ${pkgname}.libs ${pkgname}-${pkgver}.dist-info
