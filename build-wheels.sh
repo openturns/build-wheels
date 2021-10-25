@@ -26,11 +26,11 @@ else
   curl -fSsL https://github.com/openturns/openturns/archive/v${VERSION}.tar.gz | tar xz
 fi
 
-mv openturns-${VERSION} openturns-${VERSION}.post2
-VERSION=${VERSION}.post2
+#mv openturns-${VERSION} openturns-${VERSION}.post2
+#VERSION=${VERSION}.post2
 cd openturns-${VERSION}
-./utils/setVersionNumber.sh ${VERSION}
-sed -i "s/set (CPACK_PACKAGE_VERSION_PATCH /set (CPACK_PACKAGE_VERSION_PATCH post2/g" CMakeLists.txt
+#./utils/setVersionNumber.sh ${VERSION}
+#sed -i "s/set (CPACK_PACKAGE_VERSION_PATCH /set (CPACK_PACKAGE_VERSION_PATCH post2/g" CMakeLists.txt
 mkdir build && cd build
 cmake -DCMAKE_INSTALL_PREFIX=$PWD/install -DUSE_SPHINX=OFF \
       -DPYTHON_INCLUDE_DIR=/opt/python/${PYTAG}-${ABI}/include/python${PYVERD} -DPYTHON_LIBRARY=dummy \
@@ -82,8 +82,8 @@ do
   pkgver=`echo ${pkgnamever} | cut -d "-" -f2`
   cd /tmp
   curl -fSsL https://github.com/openturns/${pkgname}/archive/v${pkgver}.tar.gz | tar xz && cd ${pkgname}-${pkgver}
-  pkgver=${pkgver}.3
-  ./setVersionNumber.sh ${pkgver}
+  #pkgver=${pkgver}.3
+  #./setVersionNumber.sh ${pkgver}
   mkdir build && cd build
   cmake -DCMAKE_INSTALL_PREFIX=$PWD/install -DUSE_SPHINX=OFF -DBUILD_DOC=OFF \
         -DPYTHON_INCLUDE_DIR=/opt/python/${PYTAG}-${ABI}/include/python${PYVERD} -DPYTHON_LIBRARY=dummy \
