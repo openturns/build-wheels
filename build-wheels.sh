@@ -76,14 +76,14 @@ NEW_LIBTBB=`basename openturns.libs/libtbb-*.so*`
 cd -
 
 # modules
-for pkgnamever in otfftw-0.11 otmixmod-0.12 otmorris-0.11 otpmml-1.11 otrobopt-0.9 otsubsetinverse-1.8 otsvm-0.10
+for pkgnamever in otfftw-0.11 otmixmod-0.12 otmorris-0.12 otpmml-1.11 otrobopt-0.10 otsubsetinverse-1.8 otsvm-0.10
 do
   pkgname=`echo ${pkgnamever} | cut -d "-" -f1`
   pkgver=`echo ${pkgnamever} | cut -d "-" -f2`
   cd /tmp
   curl -fSsL https://github.com/openturns/${pkgname}/archive/v${pkgver}.tar.gz | tar xz && cd ${pkgname}-${pkgver}
-  #pkgver=${pkgver}.3
-  #./setVersionNumber.sh ${pkgver}
+  pkgver=${pkgver}.4
+  ./setVersionNumber.sh ${pkgver}
   mkdir build && cd build
   cmake -DCMAKE_INSTALL_PREFIX=$PWD/install -DUSE_SPHINX=OFF -DBUILD_DOC=OFF \
         -DPYTHON_INCLUDE_DIR=/opt/python/${PYTAG}-${ABI}/include/python${PYVERD} -DPYTHON_LIBRARY=dummy \

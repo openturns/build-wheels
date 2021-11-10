@@ -41,7 +41,7 @@ do
 done
 
 # modules
-# for pkgnamever in otfftw-0.11 otmixmod-0.12 otmorris-0.10 otpmml-1.11 otrobopt-0.9 otsubsetinverse-1.8 otsvm-0.10
+# for pkgnamever in otfftw-0.11 otmixmod-0.12 otmorris-0.12 otpmml-1.11 otrobopt-0.10 otsubsetinverse-1.8 otsvm-0.10
 # do
 #   pkgname=`echo ${pkgnamever} | cut -d "-" -f1`
 #   pkgver=`echo ${pkgnamever} | cut -d "-" -f2`
