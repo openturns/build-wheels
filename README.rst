@@ -8,7 +8,7 @@
 OpenTURNS wheels
 ================
 
-Script to build Python wheel packages for installation with pip::
+Scripts to automate build of Python wheel packages for installation with pip::
 
     pip3 install openturns --user
 
