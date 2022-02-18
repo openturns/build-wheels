@@ -29,6 +29,3 @@ Relevant links:
 - https://pypi.python.org/pypi/openturns
 - https://anaconda.org/openturns-wheels-nightly/openturns
 
-Note:
-
-The version string must be updated in .travis.yml and appveyor.yml
