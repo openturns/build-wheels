@@ -42,7 +42,7 @@ make install
 OLD_LIBOT=`basename install/lib/libOT.so.0.*`
 
 # run a few tests
-ctest -R "Ipopt|Bonmin|Dlib_std|NLopt|Study|SymbolicFunction|SquareMatrix|CMinpack|Ceres|Sample_csv" -E cppcheck --output-on-failure ${MAKEFLAGS}
+ctest -R "Ipopt|Bonmin|Dlib_std|NLopt|Study|SymbolicFunction|SquareMatrix|CMinpack|Ceres|Sample_csv|Pagmo" -E cppcheck --output-on-failure ${MAKEFLAGS}
 
 cd install/lib/python*/site-packages/
 rm -rf openturns/__pycache__
@@ -76,13 +76,13 @@ NEW_LIBTBB=`basename openturns.libs/libtbb-*.so*`
 cd -
 
 # modules
-for pkgnamever in otfftw-0.11 otmixmod-0.12 otmorris-0.12 otpmml-1.11 otrobopt-0.10 otsubsetinverse-1.8 otsvm-0.10
+for pkgnamever in otfftw-0.12 otmixmod-0.13 otmorris-0.13 otpmml-1.12 otrobopt-0.11 otsubsetinverse-1.9 otsvm-0.11
 do
   pkgname=`echo ${pkgnamever} | cut -d "-" -f1`
   pkgver=`echo ${pkgnamever} | cut -d "-" -f2`
   cd /tmp
   curl -fSsL https://github.com/openturns/${pkgname}/archive/v${pkgver}.tar.gz | tar xz && cd ${pkgname}-${pkgver}
-  pkgver=${pkgver}.4
+  #pkgver=${pkgver}.4
   ./setVersionNumber.sh ${pkgver}
   mkdir build && cd build
   cmake -DCMAKE_INSTALL_PREFIX=$PWD/install -DUSE_SPHINX=OFF -DBUILD_DOC=OFF \
