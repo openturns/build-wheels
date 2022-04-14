@@ -19,6 +19,7 @@ conda install -y python=${PYVERD} openturns=${VERSION} delocate
 
 # create archive
 cd ${HOME}/miniforge/lib/python${PYVERD}/site-packages/
+find openturns -name '*.so' -exec install_name_tool -add_rpath ${HOME}/miniforge/lib/ '{}' ';'
 python ${SCRIPTPATH}/write_RECORD.py openturns ${VERSION}
 zip -r openturns-${VERSION}-${TAG}.whl openturns openturns-${VERSION}.dist-info
 
