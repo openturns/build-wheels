@@ -1,7 +1,10 @@
 name: Nightly build
+
 on:
+  push:
   schedule:
     - cron:  '0 0 * * 5'
+
 jobs:
   linux:
     runs-on: ubuntu-latest
@@ -11,7 +14,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build wheel
-        run: docker pull openturns/manylinux1_x86_64 && docker run --rm -e MAKEFLAGS='-j2' -v `pwd`:/io openturns/manylinux1_x86_64 /io/build-wheels.sh git ${{ matrix.abi }} manylinux1_x86_64
+        run: |
+          docker pull openturns/manylinux1_x86_64
+          docker run --rm -e MAKEFLAGS='-j2' -v `pwd`:/io openturns/manylinux1_x86_64 /io/build-wheels.sh git ${{ matrix.abi }} manylinux1_x86_64
       - id: getfilename
         run: echo "::set-output name=file::$(ls wheelhouse/*.whl)"
       - name: Archive wheel
@@ -37,7 +42,37 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build wheel
-        run: docker pull openturns/archlinux-mingw && docker run --rm -e MAKEFLAGS='-j2' -v `pwd`:/io openturns/archlinux-mingw /io/build-wheels-mingw.sh git ${{ matrix.abi }}
+        run: |
+          docker pull openturns/archlinux-mingw
+          docker run --rm -e MAKEFLAGS='-j2' -v `pwd`:/io openturns/archlinux-mingw /io/build-wheels-mingw.sh git ${{ matrix.abi }}
+      - uses: conda-incubator/setup-miniconda@v2
+        with:
+          auto-activate-base: true
+          activate-environment: ""
+      - name: Upload wheel
+        shell: bash -l {0}
+        run: |
+          conda install -y anaconda-client
+          anaconda -t ${{ secrets.ANACONDA_TOKEN }} upload --force -u openturns-wheels-nightly wheelhouse/*.whl
+
+  macos:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        abi: [cp38, cp39, cp310]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build wheel
+        env:
+          MAKEFLAGS: -j3
+        run: ./build-wheels-osx-brew.sh master ${{ matrix.abi }} macosx_10_9_x86_64
+      - id: getfilename
+        run: echo "::set-output name=file::$(ls wheelhouse/*.whl)"
+      - name: Archive wheel
+        uses: actions/upload-artifact@v2
+        with:
+          name: wheel
+          path: ${{ steps.getfilename.outputs.file }}
       - uses: conda-incubator/setup-miniconda@v2
         with:
           auto-activate-base: true
