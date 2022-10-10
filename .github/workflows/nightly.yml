@@ -15,8 +15,8 @@ jobs:
       - uses: actions/checkout@v2
       - name: Build wheel
         run: |
-          docker pull openturns/manylinux1_x86_64
-          docker run --rm -e MAKEFLAGS='-j2' -v `pwd`:/io openturns/manylinux1_x86_64 /io/build-wheels.sh git ${{ matrix.abi }} manylinux1_x86_64
+          docker pull openturns/manylinux2014_x86_64
+          docker run --rm -e MAKEFLAGS='-j2' -v `pwd`:/io openturns/manylinux2014_x86_64 /io/build-wheels-linux.sh master ${{ matrix.abi }}
       - id: getfilename
         run: echo "::set-output name=file::$(ls wheelhouse/*.whl)"
       - name: Archive wheel
@@ -44,7 +44,7 @@ jobs:
       - name: Build wheel
         run: |
           docker pull openturns/archlinux-mingw
-          docker run --rm -e MAKEFLAGS='-j2' -v `pwd`:/io openturns/archlinux-mingw /io/build-wheels-mingw.sh git ${{ matrix.abi }}
+          docker run --rm -e MAKEFLAGS='-j2' -v `pwd`:/io openturns/archlinux-mingw /io/build-wheels-mingw.sh master ${{ matrix.abi }}
       - uses: conda-incubator/setup-miniconda@v2
         with:
           auto-activate-base: true
@@ -65,7 +65,7 @@ jobs:
       - name: Build wheel
         env:
           MAKEFLAGS: -j3
-        run: ./build-wheels-osx-brew.sh master ${{ matrix.abi }} macosx_10_9_x86_64
+        run: ./build-wheels-macos-brew.sh master ${{ matrix.abi }}
       - id: getfilename
         run: echo "::set-output name=file::$(ls wheelhouse/*.whl)"
       - name: Archive wheel

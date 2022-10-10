@@ -2,12 +2,12 @@
 
 set -e -x
 
-test $# = 3 || exit 1
+test $# = 2 || exit 1
 
-VERSION="$1"
+GIT_VERSION="$1"
 ABI="$2"
-PLATFORM="$3"
 
+PLATFORM=macosx_10_9_x86_64
 PYTAG=${ABI/m/}
 TAG=${PYTAG}-${ABI}-${PLATFORM}
 PYVER=${PYTAG:2:1}.${PYTAG:3}
@@ -21,7 +21,7 @@ SCRIPT=`greadlink -f "$0"`
 SCRIPTPATH=`dirname "$SCRIPT"`
 
 cd /tmp
-git clone --depth 1 -b ${VERSION} https://github.com/openturns/openturns.git
+git clone --depth 1 -b ${GIT_VERSION} https://github.com/openturns/openturns.git
 cd openturns
 VERSION=`cat VERSION`
 

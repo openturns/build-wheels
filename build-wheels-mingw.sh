@@ -4,7 +4,7 @@ set -e -x
 
 test $# = 2 || exit 1
 
-VERSION="$1"
+GIT_VERSION="$1"
 ABI="$2"
 
 ARCH=x86_64
@@ -16,16 +16,10 @@ PYVER=${PYTAG:2}
 TAG=${PYTAG}-${ABI}-${PLATFORM}
 
 cd /tmp
-if test "${VERSION}" = "git"
-then
-  curl -fSsLO https://raw.githubusercontent.com/openturns/openturns/master/VERSION
-  VERSION=`cat VERSION`
-  git clone --depth 1 https://github.com/openturns/openturns.git openturns-${VERSION}
-else
-  curl -fSsL https://github.com/openturns/openturns/archive/v${VERSION}.tar.gz | tar xz
-fi
+git clone --depth 1 -b ${GIT_VERSION} https://github.com/openturns/openturns.git
+cd openturns
+VERSION=`cat VERSION`
 
-cd openturns-${VERSION}
 PREFIX=$PWD/install
 ${ARCH}-w64-mingw32-cmake \
   -DCMAKE_INSTALL_PREFIX=${PREFIX} \
@@ -75,7 +69,7 @@ do
     -DPYTHON_LIBRARY=${MINGW_PREFIX}/lib/libpython${PYVER}.dll.a \
     -DPYTHON_EXECUTABLE=/usr/bin/${ARCH}-w64-mingw32-python${PYVER}-bin \
     -DUSE_SPHINX=OFF -DBUILD_DOC=OFF \
-    -DOpenTURNS_DIR=/tmp/openturns-${VERSION}/install/lib/cmake/openturns \
+    -DOpenTURNS_DIR=/tmp/openturns/install/lib/cmake/openturns \
     .
   make install
   ${ARCH}-w64-mingw32-strip --strip-unneeded ${PREFIX}/bin/*.dll ${PREFIX}/Lib/site-packages/${pkgname}/*.pyd

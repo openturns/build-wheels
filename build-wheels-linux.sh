@@ -2,12 +2,12 @@
 
 set -e -x
 
-test $# = 3 || exit 1
+test $# = 2 || exit 1
 
-VERSION="$1"
+GIT_VERSION="$1"
 ABI="$2"
-PLATFORM="$3"
 
+PLATFORM=manylinux2014_x86_64
 PYTAG=${ABI/m/}
 TAG=${PYTAG}-${ABI}-${PLATFORM}
 PYVERD=${ABI:2:1}.${ABI:3}
@@ -17,18 +17,12 @@ SCRIPTPATH=`dirname "$SCRIPT"`
 export PATH=/opt/python/${PYTAG}-${ABI}/bin/:$PATH
 
 cd /tmp
-if test "${VERSION}" = "git"
-then
-  curl -fSsLO https://raw.githubusercontent.com/openturns/openturns/master/VERSION
-  VERSION=`cat VERSION`
-  git clone --depth 1 https://github.com/openturns/openturns.git openturns-${VERSION}
-else
-  curl -fSsL https://github.com/openturns/openturns/archive/v${VERSION}.tar.gz | tar xz
-fi
+git clone --depth 1 -b ${GIT_VERSION} https://github.com/openturns/openturns.git
+cd openturns
+VERSION=`cat VERSION`
 
 #mv openturns-${VERSION} openturns-${VERSION}.post2
 #VERSION=${VERSION}.post2
-cd openturns-${VERSION}
 #./utils/setVersionNumber.sh ${VERSION}
 #sed -i "s/set (CPACK_PACKAGE_VERSION_PATCH /set (CPACK_PACKAGE_VERSION_PATCH post2/g" CMakeLists.txt
 mkdir build && cd build
@@ -69,10 +63,9 @@ python -c "import openturns as ot; print(ot.__version__)"
 grep -q dev <<< "${VERSION}" && exit 0
 
 # lookup new OT lib name
-unzip /io/wheelhouse/openturns-${VERSION}-${TAG}.manylinux_2_5_x86_64.whl
+unzip /io/wheelhouse/openturns-${VERSION}-${TAG}.manylinux_2_17_x86_64.whl
 readelf -d openturns.libs/libOT-*.so*
 NEW_LIBOT=`basename openturns.libs/libOT-*.so*`
-NEW_LIBTBB=`basename openturns.libs/libtbb-*.so*`
 cd -
 
 # modules
@@ -88,7 +81,7 @@ do
   cmake -DCMAKE_INSTALL_PREFIX=$PWD/install -DUSE_SPHINX=OFF -DBUILD_DOC=OFF \
         -DPYTHON_INCLUDE_DIR=/opt/python/${PYTAG}-${ABI}/include/python${PYVERD} -DPYTHON_LIBRARY=dummy \
         -DPYTHON_EXECUTABLE=/opt/python/${PYTAG}-${ABI}/bin/python \
-        -DOpenTURNS_DIR=/tmp/openturns-${VERSION}/build/install/lib/cmake/openturns \
+        -DOpenTURNS_DIR=/tmp/openturns/build/install/lib/cmake/openturns \
         ..
   make install
   ctest -E cppcheck --output-on-failure ${MAKEFLAGS}
@@ -109,7 +102,6 @@ do
   patchelf --force-rpath --set-rpath "\$ORIGIN/../${pkgname}.libs:\$ORIGIN/../openturns.libs" ${pkgname}.libs/lib${pkgname}.so.0 ${pkgname}/_${pkgname}.so
   patchelf --print-rpath ${pkgname}.libs/lib${pkgname}.so.0 ${pkgname}/_${pkgname}.so
   patchelf --replace-needed ${OLD_LIBOT} ${NEW_LIBOT} ${pkgname}.libs/lib${pkgname}.so.0 ${pkgname}/_${pkgname}.so
-  patchelf --replace-needed libtbb.so.12 ${NEW_LIBTBB} ${pkgname}.libs/lib${pkgname}.so.0 ${pkgname}/_${pkgname}.so
 
   # create archive
   zip -r /io/wheelhouse/${pkgname}-${pkgver}-${TAG}.whl ${pkgname} ${pkgname}.libs ${pkgname}-${pkgver}.dist-info

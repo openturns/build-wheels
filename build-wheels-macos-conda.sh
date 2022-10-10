@@ -4,8 +4,8 @@ set -e -x
 
 VERSION="$1"
 ABI="$2"
-PLATFORM="$3"
 
+PLATFORM=macosx_10_9_x86_64
 PYTAG=${ABI/m/}
 TAG=${PYTAG}-${ABI}-${PLATFORM}
 PYVERD=${PYTAG:2:1}.${PYTAG:3}

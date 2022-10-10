@@ -1,5 +1,5 @@
-.. image:: https://github.com/openturns/build-wheels/actions/workflows/build.yml/badge.svg?branch=master
-    :target: https://github.com/openturns/build-wheels/actions/workflows/build.yml
+.. image:: https://github.com/openturns/build-wheels/actions/workflows/stable.yml/badge.svg?branch=master
+    :target: https://github.com/openturns/build-wheels/actions/workflows/stable.yml
 
 .. image:: https://github.com/openturns/build-wheels/actions/workflows/nightly.yml/badge.svg?branch=master
     :target: https://github.com/openturns/build-wheels/actions/workflows/nightly.yml
