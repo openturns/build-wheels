@@ -20,11 +20,8 @@ cd /tmp
 git clone --depth 1 -b ${GIT_VERSION} https://github.com/openturns/openturns.git
 cd openturns
 VERSION=`cat VERSION`
-
-#mv openturns-${VERSION} openturns-${VERSION}.post2
-#VERSION=${VERSION}.post2
-#./utils/setVersionNumber.sh ${VERSION}
-#sed -i "s/set (CPACK_PACKAGE_VERSION_PATCH /set (CPACK_PACKAGE_VERSION_PATCH post2/g" CMakeLists.txt
+VERSION=${VERSION}.post1
+./utils/setVersionNumber.sh ${VERSION}
 mkdir build && cd build
 cmake -DCMAKE_INSTALL_PREFIX=$PWD/install -DUSE_SPHINX=OFF \
       -DPYTHON_INCLUDE_DIR=/opt/python/${PYTAG}-${ABI}/include/python${PYVERD} -DPYTHON_LIBRARY=dummy \
@@ -75,7 +72,7 @@ do
   pkgver=`echo ${pkgnamever} | cut -d "-" -f2`
   cd /tmp
   git clone --depth 1 -b v${pkgver} https://github.com/openturns/${pkgname}.git && cd ${pkgname}
-  pkgver=${pkgver}.post3
+  pkgver=${pkgver}.post4
   ./setVersionNumber.sh ${pkgver}
   mkdir build && cd build
   cmake -DCMAKE_INSTALL_PREFIX=$PWD/install -DUSE_SPHINX=OFF -DBUILD_DOC=OFF \
