@@ -14,7 +14,7 @@ PYVER=${PYTAG:2:1}.${PYTAG:3}
 
 # setup brew dependencies
 brew upgrade
-brew install coreutils openblas swig boost python@${PYVER} tbb nlopt cminpack ceres-solver bison flex hdf5 ipopt primesieve spectra pagmo libxml2
+brew install --overwrite coreutils openblas swig boost python@${PYVER} tbb nlopt cminpack ceres-solver bison flex hdf5 ipopt primesieve spectra pagmo libxml2
 python${PYVER} -m pip install delocate
 
 SCRIPT=`greadlink -f "$0"`
