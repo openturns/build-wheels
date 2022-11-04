@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        abi: [cp37m, cp38, cp39, cp310]
+        abi: [cp38, cp39, cp310, cp311]
     steps:
       - uses: actions/checkout@v2
       - name: Build wheel
@@ -38,7 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        abi: [cp37m, cp38, cp39, cp310]
+        abi: [cp38, cp39, cp310, cp311]
     steps:
       - uses: actions/checkout@v2
       - name: Build wheel
@@ -59,7 +59,7 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        abi: [cp38, cp39, cp310]
+        abi: [cp38, cp39, cp310, cp311]
     steps:
       - uses: actions/checkout@v2
       - name: Build wheel
