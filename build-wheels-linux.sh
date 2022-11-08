@@ -75,7 +75,7 @@ do
   pkgver=`echo ${pkgnamever} | cut -d "-" -f2`
   cd /tmp
   git clone --depth 1 -b v${pkgver} https://github.com/openturns/${pkgname}.git && cd ${pkgname}
-  pkgver=${pkgver}.post3
+  pkgver=${pkgver}.post4
   ./setVersionNumber.sh ${pkgver}
   mkdir build && cd build
   cmake -DCMAKE_INSTALL_PREFIX=$PWD/install -DUSE_SPHINX=OFF -DBUILD_DOC=OFF \
