@@ -20,6 +20,10 @@ git clone --depth 1 -b ${GIT_VERSION} https://github.com/openturns/openturns.git
 cd openturns
 VERSION=`cat VERSION`
 
+VERSION=${VERSION}.post3
+./utils/setVersionNumber.sh ${VERSION}
+git diff
+
 PREFIX=$PWD/install
 ${ARCH}-w64-mingw32-cmake \
   -DCMAKE_INSTALL_PREFIX=${PREFIX} \
@@ -62,8 +66,11 @@ do
   pkgver=`echo ${pkgnamever} | cut -d "-" -f2`
   cd /tmp
   git clone --depth 1 -b v${pkgver} https://github.com/openturns/${pkgname}.git && cd ${pkgname}
-  pkgver=${pkgver}.post4
+
+  pkgver=${pkgver}.post7
   ./setVersionNumber.sh ${pkgver}
+  git diff
+
   PREFIX=$PWD/install
   ${ARCH}-w64-mingw32-cmake \
     -DCMAKE_INSTALL_PREFIX=${PREFIX} \

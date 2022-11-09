@@ -25,8 +25,9 @@ git clone --depth 1 -b ${GIT_VERSION} https://github.com/openturns/openturns.git
 cd openturns
 VERSION=`cat VERSION`
 
-#VERSION=${VERSION}.post2
-#./utils/setVersionNumber.sh ${VERSION}
+VERSION=${VERSION}.post3
+./utils/setVersionNumber.sh ${VERSION}
+git diff
 #sed -i "s/set (CPACK_PACKAGE_VERSION_PATCH /set (CPACK_PACKAGE_VERSION_PATCH post2/g" CMakeLists.txt
 
 BREWPREFIX=`brew --prefix`

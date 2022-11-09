@@ -21,9 +21,9 @@ git clone --depth 1 -b ${GIT_VERSION} https://github.com/openturns/openturns.git
 cd openturns
 VERSION=`cat VERSION`
 
-#mv openturns-${VERSION} openturns-${VERSION}.post2
-#VERSION=${VERSION}.post2
-#./utils/setVersionNumber.sh ${VERSION}
+VERSION=${VERSION}.post3
+./utils/setVersionNumber.sh ${VERSION}
+git diff
 
 mkdir build && cd build
 cmake -DCMAKE_INSTALL_PREFIX=$PWD/install -DUSE_SPHINX=OFF \
@@ -75,8 +75,11 @@ do
   pkgver=`echo ${pkgnamever} | cut -d "-" -f2`
   cd /tmp
   git clone --depth 1 -b v${pkgver} https://github.com/openturns/${pkgname}.git && cd ${pkgname}
-  pkgver=${pkgver}.post4
+
+  pkgver=${pkgver}.post7
   ./setVersionNumber.sh ${pkgver}
+  git diff
+
   mkdir build && cd build
   cmake -DCMAKE_INSTALL_PREFIX=$PWD/install -DUSE_SPHINX=OFF -DBUILD_DOC=OFF \
         -DPYTHON_INCLUDE_DIR=/opt/python/${PYTAG}-${ABI}/include/python${PYVERD} -DPYTHON_LIBRARY=dummy \
