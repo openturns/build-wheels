@@ -59,6 +59,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build
+        env:
+          MAKEFLAGS: -j3
         run: ./build-wheels-macos-brew.sh v1.20 ${{ matrix.abi }}
       - id: getfilename
         run: echo "::set-output name=file::$(ls wheelhouse/*.whl)"

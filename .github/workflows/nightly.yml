@@ -13,13 +13,13 @@ jobs:
         abi: [cp38, cp39, cp310, cp311]
     steps:
       - uses: actions/checkout@v2
-      - name: Build wheel
+      - name: Build
         run: |
           docker pull openturns/manylinux2014_x86_64
           docker run --rm -e MAKEFLAGS='-j2' -v `pwd`:/io openturns/manylinux2014_x86_64 /io/build-wheels-linux.sh master ${{ matrix.abi }}
       - id: getfilename
         run: echo "::set-output name=file::$(ls wheelhouse/*.whl)"
-      - name: Archive wheel
+      - name: Archive
         uses: actions/upload-artifact@v2
         with:
           name: wheel
@@ -28,7 +28,7 @@ jobs:
         with:
           auto-activate-base: true
           activate-environment: ""
-      - name: Upload wheel
+      - name: Upload
         shell: bash -l {0}
         run: |
           conda install -y anaconda-client
@@ -41,7 +41,7 @@ jobs:
         abi: [cp38, cp39, cp310, cp311]
     steps:
       - uses: actions/checkout@v2
-      - name: Build wheel
+      - name: Build
         run: |
           docker pull openturns/archlinux-mingw
           docker run --rm -e MAKEFLAGS='-j2' -v `pwd`:/io openturns/archlinux-mingw /io/build-wheels-mingw.sh master ${{ matrix.abi }}
@@ -49,7 +49,7 @@ jobs:
         with:
           auto-activate-base: true
           activate-environment: ""
-      - name: Upload wheel
+      - name: Upload
         shell: bash -l {0}
         run: |
           conda install -y anaconda-client
@@ -62,13 +62,13 @@ jobs:
         abi: [cp38, cp39, cp310, cp311]
     steps:
       - uses: actions/checkout@v2
-      - name: Build wheel
+      - name: Build
         env:
           MAKEFLAGS: -j3
         run: ./build-wheels-macos-brew.sh master ${{ matrix.abi }}
       - id: getfilename
         run: echo "::set-output name=file::$(ls wheelhouse/*.whl)"
-      - name: Archive wheel
+      - name: Archive
         uses: actions/upload-artifact@v2
         with:
           name: wheel
@@ -77,7 +77,7 @@ jobs:
         with:
           auto-activate-base: true
           activate-environment: ""
-      - name: Upload wheel
+      - name: Upload
         shell: bash -l {0}
         run: |
           conda install -y anaconda-client
