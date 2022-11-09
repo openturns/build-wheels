@@ -31,9 +31,6 @@ VERSION=`cat VERSION`
 
 BREWPREFIX=`brew --prefix`
 PYPREFIX=`brew --cellar python@${PYVER}`
-find ${BREWPREFIX} -name python3
-find ${BREWPREFIX} -name libpython${PYVER}.dylib
-find ${BREWPREFIX} -name Python.h
 PYLIB=`find ${PYPREFIX} -name libpython${PYVER}.dylib | grep -v config`
 PYINC=`find ${PYPREFIX} -name Python.h | xargs dirname`
 

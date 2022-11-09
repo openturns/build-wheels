@@ -10,8 +10,8 @@ cirrus_wheels_macos_arm64_task:
         ABI: cp38
     - env:
         ABI: cp39
-    #- env:
-        #ABI: cp310
+    - env:
+        ABI: cp310
   build_script:
     ./build-wheels-macos-brew.sh v1.20 ${ABI}
   upload_script:
