@@ -1,0 +1,17 @@
+cirrus_wheels_macos_arm64_task:
+  macos_instance:
+    image: ghcr.io/cirruslabs/macos-monterey-xcode:13.3.1
+  env:
+    MAKEFLAGS: -j4
+    TWINE_USERNAME: ENCRYPTED[8901b72304eb175e1779adc2acf486b728ca0c13aa006bd60001139f912121cdb9fad5dcd9164f76f0a6b55a03142951]
+    TWINE_PASSWORD: ENCRYPTED[1d92f1a21225454f5f9946233cd8982fb625d3ab7771e2e25197667dd8e26a2bc4f989d9a98dcc75297a059464f04f9c]
+  matrix:
+    - env:
+        ABI: cp39
+    #- env:
+        #ABI: cp310
+  build_script:
+    ./build-wheels-macos-brew.sh master ${ABI}
+  upload_script:
+    - ls -l wheelhouse/*.whl
+    - if test -n "${CIRRUS_TAG}"; then pip3 install twine && twine upload wheelhouse/*.whl; fi
