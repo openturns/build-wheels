@@ -30,14 +30,13 @@ VERSION=`cat VERSION`
 #sed -i "s/set (CPACK_PACKAGE_VERSION_PATCH /set (CPACK_PACKAGE_VERSION_PATCH post2/g" CMakeLists.txt
 
 BREWPREFIX=`brew --prefix`
-find ${BREWPREFIX} -name python${PYVER}
 PYPREFIX=`brew --cellar python@${PYVER}`
 PYLIB=`find ${PYPREFIX} -name libpython${PYVER}.dylib | grep -v config`
 PYINC=`find ${PYPREFIX} -name Python.h | xargs dirname`
 
 mkdir build && cd build
 cmake -LAH -DCMAKE_INSTALL_PREFIX=$PWD/install \
-      -DPYTHON_EXECUTABLE=${BREWPREFIX}/bin/python${PYVER} \
+      -DPYTHON_EXECUTABLE=${PYPREFIX}/bin/python3 \
       -DPYTHON_LIBRARY=${PYLIB} \
       -DPYTHON_INCLUDE_DIR=${PYINC} \
       -DFLEX_EXECUTABLE=${BREWPREFIX}/opt/flex/bin/flex \

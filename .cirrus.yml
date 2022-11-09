@@ -1,6 +1,6 @@
 cirrus_wheels_macos_arm64_task:
   macos_instance:
-    image: ghcr.io/cirruslabs/macos-monterey-xcode:13.3.1
+    image: ghcr.io/cirruslabs/macos-monterey-base:latest
   env:
     MAKEFLAGS: -j4
     TWINE_USERNAME: ENCRYPTED[738d6df7ec92a5286c24060f1c48f1ab92c0efeb7883c814efff0cda1dcf62c8c1360f26cf5d96efeb124d0efeab4ec1]
@@ -8,8 +8,8 @@ cirrus_wheels_macos_arm64_task:
   matrix:
     - env:
         ABI: cp38
-    #- env:
-        #ABI: cp39
+    - env:
+        ABI: cp39
     #- env:
         #ABI: cp310
   build_script:

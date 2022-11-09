@@ -24,7 +24,7 @@ VERSION=`cat VERSION`
 #mv openturns-${VERSION} openturns-${VERSION}.post2
 #VERSION=${VERSION}.post2
 #./utils/setVersionNumber.sh ${VERSION}
-#sed -i "s/set (CPACK_PACKAGE_VERSION_PATCH /set (CPACK_PACKAGE_VERSION_PATCH post2/g" CMakeLists.txt
+
 mkdir build && cd build
 cmake -DCMAKE_INSTALL_PREFIX=$PWD/install -DUSE_SPHINX=OFF \
       -DPYTHON_INCLUDE_DIR=/opt/python/${PYTAG}-${ABI}/include/python${PYVERD} -DPYTHON_LIBRARY=dummy \
