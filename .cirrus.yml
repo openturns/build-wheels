@@ -7,11 +7,13 @@ cirrus_wheels_macos_arm64_task:
     TWINE_PASSWORD: ENCRYPTED[e07ebded562c29c9fbbb9472e1e81944bcb1d4f27d82535d4ce398142becad5b058b2ebf139501e646db742cc22ed098]
   matrix:
     - env:
+        ABI: cp38
+    - env:
         ABI: cp39
     - env:
         ABI: cp310
   build_script:
-    ./build-wheels-macos-brew.sh master ${ABI}
+    ./build-wheels-macos-brew.sh v1.20 ${ABI}
   upload_script:
     - ls -l wheelhouse/*.whl
     - if test -n "${CIRRUS_TAG}"; then pip3 install twine && twine upload wheelhouse/*.whl; fi
