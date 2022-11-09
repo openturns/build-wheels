@@ -7,9 +7,9 @@ cirrus_wheels_macos_arm64_task:
     TWINE_PASSWORD: ENCRYPTED[1d92f1a21225454f5f9946233cd8982fb625d3ab7771e2e25197667dd8e26a2bc4f989d9a98dcc75297a059464f04f9c]
   matrix:
     - env:
-        ABI: cp310
+        ABI: cp39
     - env:
-        ABI: cp311
+        ABI: cp310
   build_script:
     ./build-wheels-macos-brew.sh master ${ABI}
   upload_script:
