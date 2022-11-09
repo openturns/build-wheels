@@ -31,12 +31,15 @@ VERSION=`cat VERSION`
 
 BREWPREFIX=`brew --prefix`
 PYPREFIX=`brew --cellar python@${PYVER}`
+find ${BREWPREFIX} -name python3
+find ${BREWPREFIX} -name libpython${PYVER}.dylib
+find ${BREWPREFIX} -name Python.h
 PYLIB=`find ${PYPREFIX} -name libpython${PYVER}.dylib | grep -v config`
 PYINC=`find ${PYPREFIX} -name Python.h | xargs dirname`
 
 mkdir build && cd build
 cmake -LAH -DCMAKE_INSTALL_PREFIX=$PWD/install \
-      -DPYTHON_EXECUTABLE=${PYPREFIX}/bin/python3 \
+      -DPYTHON_EXECUTABLE=${BREWPREFIX}/bin/python${PYVER} \
       -DPYTHON_LIBRARY=${PYLIB} \
       -DPYTHON_INCLUDE_DIR=${PYINC} \
       -DFLEX_EXECUTABLE=${BREWPREFIX}/opt/flex/bin/flex \
