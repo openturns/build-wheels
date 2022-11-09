@@ -27,8 +27,8 @@ VERSION=`cat VERSION`
 
 VERSION=${VERSION}.post3
 ./utils/setVersionNumber.sh ${VERSION}
+sed "s/set (CPACK_PACKAGE_VERSION_PATCH /set (CPACK_PACKAGE_VERSION_PATCH post3/g" CMakeLists.txt > tmp && mv tmp CMakeLists.txt
 git diff
-#sed -i "s/set (CPACK_PACKAGE_VERSION_PATCH /set (CPACK_PACKAGE_VERSION_PATCH post2/g" CMakeLists.txt
 
 BREWPREFIX=`brew --prefix`
 PYPREFIX=`brew --cellar python@${PYVER}`
