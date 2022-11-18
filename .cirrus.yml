@@ -6,12 +6,14 @@ cirrus_wheels_macos_arm64_task:
     TWINE_USERNAME: ENCRYPTED[738d6df7ec92a5286c24060f1c48f1ab92c0efeb7883c814efff0cda1dcf62c8c1360f26cf5d96efeb124d0efeab4ec1]
     TWINE_PASSWORD: ENCRYPTED[e07ebded562c29c9fbbb9472e1e81944bcb1d4f27d82535d4ce398142becad5b058b2ebf139501e646db742cc22ed098]
   matrix:
+          #- env:
+          #ABI: cp38
+          #- env:
+          #ABI: cp39
+          #- env:
+          #ABI: cp310
     - env:
-        ABI: cp38
-    - env:
-        ABI: cp39
-    - env:
-        ABI: cp310
+        ABI: cp311
   build_script:
     ./build-wheels-macos-brew.sh v1.20 ${ABI}
   upload_script:
