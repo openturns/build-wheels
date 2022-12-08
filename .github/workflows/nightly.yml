@@ -20,7 +20,7 @@ jobs:
       - id: getfilename
         run: echo "::set-output name=file::$(ls wheelhouse/*.whl)"
       - name: Archive
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: wheel
           path: ${{ steps.getfilename.outputs.file }}
@@ -40,7 +40,7 @@ jobs:
       matrix:
         abi: [cp38, cp39, cp310, cp311]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Build
         run: |
           docker pull openturns/archlinux-mingw
@@ -61,7 +61,7 @@ jobs:
       matrix:
         abi: [cp38, cp39, cp310, cp311]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Build
         env:
           MAKEFLAGS: -j3
