@@ -27,8 +27,7 @@ VERSION=`cat VERSION`
 
 mkdir build && cd build
 cmake -DCMAKE_INSTALL_PREFIX=$PWD/install -DUSE_SPHINX=OFF \
-      -DPYTHON_INCLUDE_DIR=/opt/python/${PYTAG}-${ABI}/include/python${PYVERD} -DPYTHON_LIBRARY=dummy \
-      -DPYTHON_EXECUTABLE=/opt/python/${PYTAG}-${ABI}/bin/python \
+      -DPython_EXECUTABLE=/opt/python/${PYTAG}-${ABI}/bin/python \
       -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 \
       -DSWIG_COMPILE_FLAGS="-O1" \
       ..

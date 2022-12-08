@@ -36,9 +36,9 @@ PYINC=`find ${PYPREFIX} -name Python.h | xargs dirname`
 
 mkdir build && cd build
 cmake -LAH -DCMAKE_INSTALL_PREFIX=$PWD/install \
-      -DPYTHON_EXECUTABLE=${BREWPREFIX}/bin/python${PYVER} \
-      -DPYTHON_LIBRARY=${PYLIB} \
-      -DPYTHON_INCLUDE_DIR=${PYINC} \
+      -DPython_EXECUTABLE=${BREWPREFIX}/bin/python${PYVER} \
+      -DPython_LIBRARY=${PYLIB} \
+      -DPython_INCLUDE_DIR=${PYINC} \
       -DFLEX_EXECUTABLE=${BREWPREFIX}/opt/flex/bin/flex \
       -DBISON_EXECUTABLE=${BREWPREFIX}/opt/bison/bin/bison \
       -DLIBXML2_LIBRARY=${BREWPREFIX}/opt/libxml2/lib/libxml2.dylib \
