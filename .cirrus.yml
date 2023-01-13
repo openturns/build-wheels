@@ -15,6 +15,9 @@ cirrus_wheels_macos_arm64_task:
     - env:
         PYVER: 3.10
         ABI: cp310
+    - env:
+        PYVER: 3.11
+        ABI: cp311
   build_script:
     ./build-wheels-macos-brew.sh v1.20 ${ABI}
   upload_script:
