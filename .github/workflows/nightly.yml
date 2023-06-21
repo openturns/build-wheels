@@ -1,7 +1,6 @@
 name: Nightly
 
 on:
-  push:
   schedule:
     - cron:  '0 0 * * 5'
 
@@ -65,7 +64,7 @@ jobs:
       - name: Build
         env:
           MAKEFLAGS: -j3
-        run: ./build-wheels-macos-brew.sh master ${{ matrix.abi }}
+        run: ./build-wheels-macos.sh master ${{ matrix.abi }}
       - id: getfilename
         run: echo "::set-output name=file::$(ls wheelhouse/*.whl)"
       - name: Archive

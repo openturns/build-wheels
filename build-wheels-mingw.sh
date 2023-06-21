@@ -56,20 +56,20 @@ grep -q dev <<< "${VERSION}" && exit 0
 sudo pacman -Sy --noconfirm mingw-w64-fftw mingw-w64-agrum  # for otfftw, otagrum
 
 # modules
-for pkgnamever in otfftw-0.12 otmixmod-0.13 otmorris-0.13 otpmml-1.12 otrobopt-0.11 otsubsetinverse-1.9 otsvm-0.11
+for pkgnamever in otfftw-0.13 otmixmod-0.14 otmorris-0.14 otrobopt-0.12 otsubsetinverse-1.10 otsvm-0.12
 do
   pkgname=`echo ${pkgnamever} | cut -d "-" -f1`
   pkgver=`echo ${pkgnamever} | cut -d "-" -f2`
   cd /tmp
   git clone --depth 1 -b v${pkgver} https://github.com/openturns/${pkgname}.git && cd ${pkgname}
-  pkgver=${pkgver}.post4
-  ./setVersionNumber.sh ${pkgver}
+#   pkgver=${pkgver}.post4
+#   ./setVersionNumber.sh ${pkgver}
   PREFIX=$PWD/install
   ${ARCH}-w64-mingw32-cmake \
     -DCMAKE_INSTALL_PREFIX=${PREFIX} \
-    -DPYTHON_INCLUDE_DIR=${MINGW_PREFIX}/include/python${PYVER} \
-    -DPYTHON_LIBRARY=${MINGW_PREFIX}/lib/libpython${PYVER}.dll.a \
-    -DPYTHON_EXECUTABLE=/usr/bin/${ARCH}-w64-mingw32-python${PYVER}-bin \
+    -DPython_INCLUDE_DIR=${MINGW_PREFIX}/include/python${PYVER} \
+    -DPython_LIBRARY=${MINGW_PREFIX}/lib/libpython${PYVER}.dll.a \
+    -DPython_EXECUTABLE=/usr/bin/${ARCH}-w64-mingw32-python${PYVER}-bin \
     -DUSE_SPHINX=OFF -DBUILD_DOC=OFF \
     -DOpenTURNS_DIR=/tmp/openturns/install/lib/cmake/openturns \
     .

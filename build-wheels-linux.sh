@@ -32,7 +32,7 @@ cmake -DCMAKE_INSTALL_PREFIX=$PWD/install -DUSE_SPHINX=OFF \
       -DSWIG_COMPILE_FLAGS="-O1" \
       ..
 make install
-OLD_LIBOT=`basename install/lib/libOT.so.0.*`
+OLD_LIBOT=`basename install/lib64/libOT.so.0.*`
 
 # run a few tests
 ctest -R "Ipopt|Bonmin|Dlib_std|NLopt|Study|SymbolicFunction|SquareMatrix|CMinpack|Ceres|Sample_csv|Pagmo" -E cppcheck --output-on-failure ${MAKEFLAGS}
@@ -68,19 +68,18 @@ NEW_LIBOT=`basename openturns.libs/libOT-*.so*`
 cd -
 
 # modules
-for pkgnamever in otfftw-0.12 otmixmod-0.13 otmorris-0.13 otpmml-1.12 otrobopt-0.11 otsubsetinverse-1.9 otsvm-0.11
+for pkgnamever in otfftw-0.13 otmixmod-0.14 otmorris-0.14 otrobopt-0.12 otsubsetinverse-1.10 otsvm-0.12
 do
   pkgname=`echo ${pkgnamever} | cut -d "-" -f1`
   pkgver=`echo ${pkgnamever} | cut -d "-" -f2`
   cd /tmp
   git clone --depth 1 -b v${pkgver} https://github.com/openturns/${pkgname}.git && cd ${pkgname}
-  pkgver=${pkgver}.post4
-  ./setVersionNumber.sh ${pkgver}
+#   pkgver=${pkgver}.post4
+#   ./setVersionNumber.sh ${pkgver}
   mkdir build && cd build
   cmake -DCMAKE_INSTALL_PREFIX=$PWD/install -DUSE_SPHINX=OFF -DBUILD_DOC=OFF \
-        -DPYTHON_INCLUDE_DIR=/opt/python/${PYTAG}-${ABI}/include/python${PYVERD} -DPYTHON_LIBRARY=dummy \
-        -DPYTHON_EXECUTABLE=/opt/python/${PYTAG}-${ABI}/bin/python \
-        -DOpenTURNS_DIR=/tmp/openturns/build/install/lib/cmake/openturns \
+        -DPython_EXECUTABLE=/opt/python/${PYTAG}-${ABI}/bin/python \
+        -DOpenTURNS_DIR=/tmp/openturns/build/install/lib64/cmake/openturns \
         ..
   make install
   ctest -E cppcheck --output-on-failure ${MAKEFLAGS}
