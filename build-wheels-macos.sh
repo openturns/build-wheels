@@ -73,6 +73,6 @@ delocate-listdeps --all ${SCRIPTPATH}/wheelhouse/openturns-${VERSION}-${TAG}.whl
 
 # test
 cd /tmp
-python${PYVER} -m pip install dill psutil
-python${PYVER} -m pip install openturns --pre --no-index -f ${SCRIPTPATH}/wheelhouse -vvv
+python${PYVER} -m pip install dill psutil --break-system-packages
+python${PYVER} -m pip install openturns --pre --no-index -f ${SCRIPTPATH}/wheelhouse -vvv --break-system-packages
 python${PYVER} -c "import openturns as ot; print(ot.__version__)"
