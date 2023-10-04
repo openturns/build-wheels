@@ -15,7 +15,7 @@ PYVER=${PYTAG:2:1}.${PYTAG:3}
 # setup brew dependencies
 brew update
 brew install --overwrite coreutils openblas swig boost python@${PYVER} tbb nlopt cminpack ceres-solver bison flex hdf5 ipopt primesieve spectra pagmo libxml2
-python${PYVER} -m pip install delocate
+python${PYVER} -m pip install delocate --break-system-packages
 python${PYVER} -m pip debug --verbose
 
 SCRIPT=`greadlink -f "$0"`
