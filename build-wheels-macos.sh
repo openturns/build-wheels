@@ -7,7 +7,8 @@ test $# = 2 || exit 1
 GIT_VERSION="$1"
 ABI="$2"
 
-PLATFORM="macosx_11_0_`uname -m`"
+# brew supports the last 3 versions, this should reflect the oldest one:
+PLATFORM="macosx_12_0_`uname -m`"
 PYTAG=${ABI/m/}
 TAG=${PYTAG}-${ABI}-${PLATFORM}
 PYVER=${PYTAG:2:1}.${PYTAG:3}
