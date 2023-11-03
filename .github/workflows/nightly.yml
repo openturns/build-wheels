@@ -18,7 +18,7 @@ jobs:
           docker pull openturns/manylinux2014_x86_64
           docker run --rm -e MAKEFLAGS='-j2' -v `pwd`:/io openturns/manylinux2014_x86_64 /io/build-wheels-linux.sh master ${{ matrix.abi }}
       - id: getfilename
-        run: echo "::set-output name=file::$(ls wheelhouse/*.whl)"
+        run: echo "file=$(ls wheelhouse/*.whl)" >> $GITHUB_OUTPUT
       - name: Archive
         uses: actions/upload-artifact@v3
         with:
@@ -67,7 +67,7 @@ jobs:
           MAKEFLAGS: -j3
         run: ./build-wheels-macos.sh master ${{ matrix.abi }}
       - id: getfilename
-        run: echo "::set-output name=file::$(ls wheelhouse/*.whl)"
+        run: echo "file=$(ls wheelhouse/*.whl)" >> $GITHUB_OUTPUT
       - name: Archive
         uses: actions/upload-artifact@v2
         with:
