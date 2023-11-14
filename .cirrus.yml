@@ -18,8 +18,11 @@ cirrus_wheels_macos_arm64_task:
     - env:
         PYVER: 3.11
         ABI: cp311
+    - env:
+        PYVER: 3.12
+        ABI: cp312
   build_script:
-    ./build-wheels-macos.sh v1.21 ${ABI}
+    ./build-wheels-macos.sh v1.22rc1 ${ABI}
   upload_script:
     - ls -l wheelhouse/*.whl
     - if test -n "${CIRRUS_TAG}"; then python${PYVER} -m pip install twine && python${PYVER} -m twine upload wheelhouse/*.whl; fi

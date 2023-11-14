@@ -68,7 +68,7 @@ NEW_LIBOT=`basename openturns.libs/libOT-*.so*`
 cd -
 
 # modules
-for pkgnamever in otfftw-0.13 otmixmod-0.14 otmorris-0.14 otrobopt-0.12 otsubsetinverse-1.10 otsvm-0.12
+for pkgnamever in otfftw-0.14 otmixmod-0.15 otmorris-0.15 otrobopt-0.13 otsvm-0.13
 do
   pkgname=`echo ${pkgnamever} | cut -d "-" -f1`
   pkgver=`echo ${pkgnamever} | cut -d "-" -f2`
@@ -77,7 +77,8 @@ do
 #   pkgver=${pkgver}.post4
 #   ./setVersionNumber.sh ${pkgver}
   mkdir build && cd build
-  cmake -DCMAKE_INSTALL_PREFIX=$PWD/install -DUSE_SPHINX=OFF -DBUILD_DOC=OFF \
+  cmake -DCMAKE_INSTALL_PREFIX=$PWD/install -DCMAKE_INSTALL_LIBDIR=lib \
+        -DUSE_SPHINX=OFF -DBUILD_DOC=OFF \
         -DPython_EXECUTABLE=/opt/python/${PYTAG}-${ABI}/bin/python \
         -DOpenTURNS_DIR=/tmp/openturns/build/install/lib64/cmake/openturns \
         ..

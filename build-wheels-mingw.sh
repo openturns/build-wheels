@@ -56,7 +56,7 @@ grep -q dev <<< "${VERSION}" && exit 0
 sudo pacman -Sy --noconfirm mingw-w64-fftw mingw-w64-agrum  # for otfftw, otagrum
 
 # modules
-for pkgnamever in otfftw-0.13 otmixmod-0.14 otmorris-0.14 otrobopt-0.12 otsubsetinverse-1.10 otsvm-0.12
+for pkgnamever in otfftw-0.14 otmixmod-0.15 otmorris-0.15 otrobopt-0.13 otsvm-0.13
 do
   pkgname=`echo ${pkgnamever} | cut -d "-" -f1`
   pkgver=`echo ${pkgnamever} | cut -d "-" -f2`
