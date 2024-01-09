@@ -68,14 +68,14 @@ NEW_LIBOT=`basename openturns.libs/libOT-*.so*`
 cd -
 
 # modules
-for pkgnamever in otfftw-0.14 otmixmod-0.15 otmorris-0.15 otrobopt-0.13 otsvm-0.13
+for pkgnamever in otfftw-0.14 otmixmod-0.16 otmorris-0.15 otrobopt-0.13 otsvm-0.13
 do
   pkgname=`echo ${pkgnamever} | cut -d "-" -f1`
   pkgver=`echo ${pkgnamever} | cut -d "-" -f2`
   cd /tmp
   git clone --depth 1 -b v${pkgver} https://github.com/openturns/${pkgname}.git && cd ${pkgname}
-#   pkgver=${pkgver}.post4
-#   ./setVersionNumber.sh ${pkgver}
+  pkgver=${pkgver}.post1
+  ./setVersionNumber.sh ${pkgver}
   mkdir build && cd build
   cmake -DCMAKE_INSTALL_PREFIX=$PWD/install -DCMAKE_INSTALL_LIBDIR=lib \
         -DUSE_SPHINX=OFF -DBUILD_DOC=OFF \
@@ -95,6 +95,7 @@ do
   mkdir ${pkgname}.libs
   cp -v ../../lib${pkgname}.so.0 ${pkgname}.libs
   if test "${pkgname}" = "otfftw"; then cp -v /usr/local/lib/libfftw3.so.3 otfftw.libs; fi
+  if test "${pkgname}" = "otmixmod"; then cp -v /usr/local/lib/libmixmod.so.3.* otmixmod.libs; fi
 
   # relink
   patchelf --remove-rpath ${pkgname}.libs/lib${pkgname}.so.0 ${pkgname}/_${pkgname}.so

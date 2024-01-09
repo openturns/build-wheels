@@ -53,17 +53,17 @@ sudo cp -v openturns-${VERSION}-${TAG}.whl /io/wheelhouse/
 
 grep -q dev <<< "${VERSION}" && exit 0
 
-sudo pacman -Sy --noconfirm mingw-w64-fftw mingw-w64-agrum  # for otfftw, otagrum
+aurman -S mingw-w64-fftw mingw-w64-agrum mingw-w64-libmixmod --noconfirm --noedit --pgp_fetch
 
 # modules
-for pkgnamever in otfftw-0.14 otmixmod-0.15 otmorris-0.15 otrobopt-0.13 otsvm-0.13
+for pkgnamever in otfftw-0.14 otmixmod-0.16 otmorris-0.15 otrobopt-0.13 otsvm-0.13
 do
   pkgname=`echo ${pkgnamever} | cut -d "-" -f1`
   pkgver=`echo ${pkgnamever} | cut -d "-" -f2`
   cd /tmp
   git clone --depth 1 -b v${pkgver} https://github.com/openturns/${pkgname}.git && cd ${pkgname}
-#   pkgver=${pkgver}.post4
-#   ./setVersionNumber.sh ${pkgver}
+  pkgver=${pkgver}.post1
+  ./setVersionNumber.sh ${pkgver}
   PREFIX=$PWD/install
   ${ARCH}-w64-mingw32-cmake \
     -DCMAKE_INSTALL_PREFIX=${PREFIX} \
@@ -78,6 +78,7 @@ do
   cp -v ${PREFIX}/bin/*.dll ${PREFIX}/Lib/site-packages/${pkgname}
   if test "${pkgname}" = "otfftw"; then cp -v ${MINGW_PREFIX}/bin/libfftw*.dll ${PREFIX}/Lib/site-packages/${pkgname}; fi
   if test "${pkgname}" = "otagrum"; then cp -v ${MINGW_PREFIX}/bin/libagrum.dll ${PREFIX}/Lib/site-packages/${pkgname}; fi
+  if test "${pkgname}" = "otmixmod"; then cp -v ${MINGW_PREFIX}/bin/libmixmod.dll ${PREFIX}/Lib/site-packages/${pkgname}; fi
   cd ${PREFIX}/Lib/site-packages
   python /io/write_RECORD.py ${pkgname} ${pkgver}
   zip -r ${pkgname}-${pkgver}-${TAG}.whl ${pkgname} ${pkgname}-${pkgver}.dist-info
