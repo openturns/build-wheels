@@ -3,8 +3,8 @@ cirrus_wheels_macos_arm64_task:
     image: ghcr.io/cirruslabs/macos-monterey-base:latest
   env:
     MAKEFLAGS: -j4
-    TWINE_USERNAME: ENCRYPTED[738d6df7ec92a5286c24060f1c48f1ab92c0efeb7883c814efff0cda1dcf62c8c1360f26cf5d96efeb124d0efeab4ec1]
-    TWINE_PASSWORD: ENCRYPTED[e07ebded562c29c9fbbb9472e1e81944bcb1d4f27d82535d4ce398142becad5b058b2ebf139501e646db742cc22ed098]
+    TWINE_USERNAME: ENCRYPTED[5cef4d5798a06ef1d2681e25b0e79f83dd63a64375c6ee9c66845cdd067c31d22d93e9656a9eec0def2c5da2e755466b]
+    TWINE_PASSWORD: ENCRYPTED[9c02f4e5d0ee6ca807e6a00a5bafcc0611be9505975115b1ff39ca84f65cce5c48260a01cb43874c690b900b4699546e]
   matrix:
     - env:
         PYVER: 3.8
