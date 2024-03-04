@@ -64,6 +64,8 @@ cp -v ../../../etc/openturns/openturns.conf openturns.libs
 
 # write metadata
 python${PYVER} ${SCRIPTPATH}/write_RECORD.py openturns ${VERSION}
+sed -i "" "/Tag:/d" openturns-${VERSION}.dist-info/WHEEL
+echo "Tag: ${TAG}" >> openturns-${VERSION}.dist-info/WHEEL
 
 # create archive
 zip -r openturns-${VERSION}-${TAG}.whl openturns openturns.libs openturns-${VERSION}.dist-info
