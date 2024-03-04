@@ -43,6 +43,8 @@ cd ${PREFIX}/Lib/site-packages/
 
 # write metadata
 python /io/write_RECORD.py openturns ${VERSION}
+sed -i "/Tag:/d" openturns-${VERSION}.dist-info/WHEEL
+echo "Tag: ${TAG}" >> openturns-${VERSION}.dist-info/WHEEL
 
 # create archive
 zip -r openturns-${VERSION}-${TAG}.whl openturns openturns-${VERSION}.dist-info
@@ -80,7 +82,12 @@ do
   if test "${pkgname}" = "otagrum"; then cp -v ${MINGW_PREFIX}/bin/libagrum.dll ${PREFIX}/Lib/site-packages/${pkgname}; fi
   if test "${pkgname}" = "otmixmod"; then cp -v ${MINGW_PREFIX}/bin/libmixmod.dll ${PREFIX}/Lib/site-packages/${pkgname}; fi
   cd ${PREFIX}/Lib/site-packages
+
+  # write metadata
   python /io/write_RECORD.py ${pkgname} ${pkgver}
+  sed -i "/Tag:/d" ${pkgname}-${pkgver}.dist-info/WHEEL
+  echo "Tag: ${TAG}" >> ${pkgname}-${pkgver}.dist-info/WHEEL
+
   zip -r ${pkgname}-${pkgver}-${TAG}.whl ${pkgname} ${pkgname}-${pkgver}.dist-info
   sudo cp -v ${pkgname}-${pkgver}-${TAG}.whl /io/wheelhouse/
 done
