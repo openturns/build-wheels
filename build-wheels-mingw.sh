@@ -18,6 +18,7 @@ TAG=${PYTAG}-${ABI}-${PLATFORM}
 cd /tmp
 git clone --depth 1 -b ${GIT_VERSION} https://github.com/openturns/openturns.git
 cd openturns
+sed -i "s|Metadata-Version: 2.0|Metadata-Version: 1.2|g" python/src/METADATA.in
 VERSION=`cat VERSION`
 
 PREFIX=$PWD/install
@@ -56,17 +57,19 @@ grep -q dev <<< "${VERSION}" && exit 0
 aurman -S mingw-w64-fftw mingw-w64-agrum mingw-w64-libmixmod --noconfirm --noedit --pgp_fetch
 
 # modules
-for pkgnamever in otfftw-0.14 otmixmod-0.16 otmorris-0.15 otrobopt-0.13 otsvm-0.13
+for pkgnamever in otfftw-0.15 otmixmod-0.17 otmorris-0.16 otrobopt-0.14 otsvm-0.14
 do
   pkgname=`echo ${pkgnamever} | cut -d "-" -f1`
   pkgver=`echo ${pkgnamever} | cut -d "-" -f2`
   cd /tmp
   git clone --depth 1 -b v${pkgver} https://github.com/openturns/${pkgname}.git && cd ${pkgname}
-  pkgver=${pkgver}.post1
-  ./setVersionNumber.sh ${pkgver}
+  sed -i "s|Metadata-Version: 2.0|Metadata-Version: 1.2|g" python/src/METADATA.in
+  #pkgver=${pkgver}.post1
+  #./utils/setVersionNumber.sh ${pkgver}
   PREFIX=$PWD/install
   ${ARCH}-w64-mingw32-cmake \
     -DCMAKE_INSTALL_PREFIX=${PREFIX} \
+    -DCMAKE_UNITY_BUILD=ON \
     -DPython_INCLUDE_DIR=${MINGW_PREFIX}/include/python${PYVER} \
     -DPython_LIBRARY=${MINGW_PREFIX}/lib/libpython${PYVER}.dll.a \
     -DPython_EXECUTABLE=/usr/bin/${ARCH}-w64-mingw32-python${PYVER}-bin \
@@ -82,9 +85,7 @@ do
   cd ${PREFIX}/Lib/site-packages
 
   # write metadata
-  python /io/write_RECORD.py ${pkgname} ${pkgver}
-  sed -i "/Tag:/d" ${pkgname}-${pkgver}.dist-info/WHEEL
-  echo "Tag: ${TAG}" >> ${pkgname}-${pkgver}.dist-info/WHEEL
+  python /io/write_distinfo.py ${pkgname} ${pkgver} ${TAG}
 
   zip -r ${pkgname}-${pkgver}-${TAG}.whl ${pkgname} ${pkgname}-${pkgver}.dist-info
   sudo cp -v ${pkgname}-${pkgver}-${TAG}.whl /io/wheelhouse/

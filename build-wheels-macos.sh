@@ -1,21 +1,24 @@
 #!/bin/sh
 
-set -x
+set -e -x
 
 test $# = 2 || exit 1
 
 GIT_VERSION="$1"
 ABI="$2"
 
-# brew supports the last 3 versions, this should reflect the oldest one:
-PLATFORM="macosx_12_0_`uname -m`"
+env
+uname -a
+sw_vers -productVersion
+
+# this should reflect the CI image being used
+PLATFORM="macosx_13_0_`uname -m`"
 PYTAG=${ABI/m/}
 TAG=${PYTAG}-${ABI}-${PLATFORM}
 PYVER=${PYTAG:2:1}.${PYTAG:3}
 
 # setup brew dependencies
-brew update
-brew install --overwrite coreutils openblas swig boost python@${PYVER} tbb nlopt cminpack ceres-solver bison flex hdf5 ipopt primesieve spectra pagmo libxml2
+brew install --overwrite coreutils openblas swig boost python@${PYVER} tbb nlopt cminpack ceres-solver bison flex hdf5 ipopt primesieve spectra pagmo libxml2 nanoflann cuba
 export PATH=/Library/Frameworks/Python.framework/Versions/${PYVER}/bin:$PATH
 python${PYVER} -m pip install delocate --break-system-packages
 python${PYVER} -m pip debug --verbose
@@ -26,6 +29,8 @@ SCRIPTPATH=`dirname "$SCRIPT"`
 cd /tmp
 git clone --depth 1 -b ${GIT_VERSION} https://github.com/openturns/openturns.git
 cd openturns
+sed -i'.bak' "s|Metadata-Version: 2.0|Metadata-Version: 1.2|g" python/src/METADATA.in
+git diff
 VERSION=`cat VERSION`
 
 #VERSION=${VERSION}.post2
@@ -49,6 +54,8 @@ cmake -LAH -DCMAKE_INSTALL_PREFIX=$PWD/install \
       -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 \
       -DSWIG_COMPILE_FLAGS="-O1" \
       -DUSE_SPHINX=OFF \
+      -DOPENTURNS_HAVE_USELOCALE=0 \
+      -DCMAKE_OSX_DEPLOYMENT_TARGET=13.0 \
       ..
 make install
 

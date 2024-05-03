@@ -19,6 +19,7 @@ export PATH=/opt/python/${PYTAG}-${ABI}/bin/:$PATH
 cd /tmp
 git clone --depth 1 -b ${GIT_VERSION} https://github.com/openturns/openturns.git
 cd openturns
+sed -i "s|Metadata-Version: 2.0|Metadata-Version: 1.2|g" python/src/METADATA.in
 VERSION=`cat VERSION`
 
 #mv openturns-${VERSION} openturns-${VERSION}.post2
@@ -68,16 +69,18 @@ NEW_LIBOT=`basename openturns.libs/libOT-*.so*`
 cd -
 
 # modules
-for pkgnamever in otfftw-0.14 otmixmod-0.16 otmorris-0.15 otrobopt-0.13 otsvm-0.13
+for pkgnamever in otfftw-0.15 otmixmod-0.17 otmorris-0.16 otrobopt-0.14 otsvm-0.14
 do
   pkgname=`echo ${pkgnamever} | cut -d "-" -f1`
   pkgver=`echo ${pkgnamever} | cut -d "-" -f2`
   cd /tmp
   git clone --depth 1 -b v${pkgver} https://github.com/openturns/${pkgname}.git && cd ${pkgname}
-  pkgver=${pkgver}.post1
-  ./setVersionNumber.sh ${pkgver}
+  sed -i "s|Metadata-Version: 2.0|Metadata-Version: 1.2|g" python/src/METADATA.in
+  #pkgver=${pkgver}.post1
+  #./utils/setVersionNumber.sh ${pkgver}
   mkdir build && cd build
   cmake -DCMAKE_INSTALL_PREFIX=$PWD/install -DCMAKE_INSTALL_LIBDIR=lib \
+        -DCMAKE_UNITY_BUILD=ON \
         -DUSE_SPHINX=OFF -DBUILD_DOC=OFF \
         -DPython_EXECUTABLE=/opt/python/${PYTAG}-${ABI}/bin/python \
         -DOpenTURNS_DIR=/tmp/openturns/build/install/lib64/cmake/openturns \

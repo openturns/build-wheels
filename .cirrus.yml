@@ -1,6 +1,6 @@
 cirrus_wheels_macos_arm64_task:
   macos_instance:
-    image: ghcr.io/cirruslabs/macos-monterey-base:latest
+    image: ghcr.io/cirruslabs/macos-ventura-base:latest
   env:
     MAKEFLAGS: -j4
     TWINE_USERNAME: ENCRYPTED[5cef4d5798a06ef1d2681e25b0e79f83dd63a64375c6ee9c66845cdd067c31d22d93e9656a9eec0def2c5da2e755466b]
@@ -22,7 +22,7 @@ cirrus_wheels_macos_arm64_task:
         PYVER: 3.12
         ABI: cp312
   build_script:
-    ./build-wheels-macos.sh v1.22 ${ABI}
+    ./build-wheels-macos.sh v1.23rc1 ${ABI}
   upload_script:
     - ls -l wheelhouse/*.whl
     - if test -n "${CIRRUS_TAG}"; then python${PYVER} -m pip install twine --break-system-packages && python${PYVER} -m twine upload wheelhouse/*.whl; fi
