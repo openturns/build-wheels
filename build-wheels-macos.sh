@@ -29,7 +29,6 @@ SCRIPTPATH=`dirname "$SCRIPT"`
 cd /tmp
 git clone --depth 1 -b ${GIT_VERSION} https://github.com/openturns/openturns.git
 cd openturns
-sed -i'.bak' "s|Metadata-Version: 2.0|Metadata-Version: 1.2|g" python/src/METADATA.in
 git diff
 VERSION=`cat VERSION`
 

@@ -19,7 +19,6 @@ export PATH=/opt/python/${PYTAG}-${ABI}/bin/:$PATH
 cd /tmp
 git clone --depth 1 -b ${GIT_VERSION} https://github.com/openturns/openturns.git
 cd openturns
-sed -i "s|Metadata-Version: 2.0|Metadata-Version: 1.2|g" python/src/METADATA.in
 VERSION=`cat VERSION`
 
 #mv openturns-${VERSION} openturns-${VERSION}.post2
@@ -76,8 +75,8 @@ do
   cd /tmp
   git clone --depth 1 -b v${pkgver} https://github.com/openturns/${pkgname}.git && cd ${pkgname}
   sed -i "s|Metadata-Version: 2.0|Metadata-Version: 1.2|g" python/src/METADATA.in
-  #pkgver=${pkgver}.post1
-  #./utils/setVersionNumber.sh ${pkgver}
+  pkgver=${pkgver}.post1
+  ./utils/setVersionNumber.sh ${pkgver}
   mkdir build && cd build
   cmake -DCMAKE_INSTALL_PREFIX=$PWD/install -DCMAKE_INSTALL_LIBDIR=lib \
         -DCMAKE_UNITY_BUILD=ON \

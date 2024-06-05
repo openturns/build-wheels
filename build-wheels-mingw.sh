@@ -18,7 +18,6 @@ TAG=${PYTAG}-${ABI}-${PLATFORM}
 cd /tmp
 git clone --depth 1 -b ${GIT_VERSION} https://github.com/openturns/openturns.git
 cd openturns
-sed -i "s|Metadata-Version: 2.0|Metadata-Version: 1.2|g" python/src/METADATA.in
 VERSION=`cat VERSION`
 
 PREFIX=$PWD/install
@@ -64,8 +63,8 @@ do
   cd /tmp
   git clone --depth 1 -b v${pkgver} https://github.com/openturns/${pkgname}.git && cd ${pkgname}
   sed -i "s|Metadata-Version: 2.0|Metadata-Version: 1.2|g" python/src/METADATA.in
-  #pkgver=${pkgver}.post1
-  #./utils/setVersionNumber.sh ${pkgver}
+  pkgver=${pkgver}.post1
+  ./utils/setVersionNumber.sh ${pkgver}
   PREFIX=$PWD/install
   ${ARCH}-w64-mingw32-cmake \
     -DCMAKE_INSTALL_PREFIX=${PREFIX} \
