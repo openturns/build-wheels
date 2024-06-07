@@ -12,17 +12,18 @@ name, version, tag = sys.argv[1:]
 path = os.path.join(f"{name}-{version}.dist-info", "RECORD")
 with open(path, "w") as record:
     for subdir in [name, f"{name}-{version}.dist-info"]:
-        for fn in os.listdir(subdir):
-            fpath = os.path.join(subdir, fn)
-            if os.path.isfile(fpath):
-                if fn == "RECORD":
-                    record.write(f"{fpath},,\n")
-                else:
-                    data = open(fpath, "rb").read()
-                    digest = hashlib.sha256(data).digest()
-                    checksum = base64.urlsafe_b64encode(digest).decode()
-                    size = len(data)
-                    record.write(f"{fpath},sha256={checksum},{size}\n")
+        for root, dirs, files in os.walk(subdir):
+            for fn in files:
+                fpath = os.path.join(root, fn)
+                if os.path.isfile(fpath):
+                    if fn == "RECORD":
+                        record.write(f"{fpath},,\n")
+                    else:
+                        data = open(fpath, "rb").read()
+                        digest = hashlib.sha256(data).digest()
+                        checksum = base64.urlsafe_b64encode(digest).decode()
+                        size = len(data)
+                        record.write(f"{fpath},sha256={checksum},{size}\n")
 
 path = os.path.join(f"{name}-{version}.dist-info", "WHEEL")
 with open(path, "w") as wheel:

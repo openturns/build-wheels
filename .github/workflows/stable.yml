@@ -60,13 +60,6 @@ jobs:
         env:
           MAKEFLAGS: -j3
         run: ./build-wheels-macos.sh v1.23 ${{ matrix.abi }}
-      - id: getfilename
-        run: echo "file=$(ls wheelhouse/*.whl)" >> $GITHUB_OUTPUT
-      - name: Archive wheel
-        uses: actions/upload-artifact@v2
-        with:
-          name: wheel
-          path: ${{ steps.getfilename.outputs.file }}
       - uses: conda-incubator/setup-miniconda@v3
         with:
           miniforge-version: latest
