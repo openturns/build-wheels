@@ -9,6 +9,14 @@ if len(sys.argv) != 4:
     raise ValueError("no name/version/tag")
 name, version, tag = sys.argv[1:]
 
+
+path = os.path.join(f"{name}-{version}.dist-info", "WHEEL")
+with open(path, "w") as wheel:
+    wheel.write("Wheel-Version: 1.0\n")
+    wheel.write("Generator: custom\n")
+    wheel.write("Root-Is-Purelib: false\n")
+    wheel.write(f"Tag: {tag}\n")
+
 path = os.path.join(f"{name}-{version}.dist-info", "RECORD")
 with open(path, "w") as record:
     for subdir in [name, f"{name}-{version}.dist-info"]:
@@ -25,9 +33,3 @@ with open(path, "w") as record:
                         size = len(data)
                         record.write(f"{fpath},sha256={checksum},{size}\n")
 
-path = os.path.join(f"{name}-{version}.dist-info", "WHEEL")
-with open(path, "w") as wheel:
-    wheel.write("Wheel-Version: 1.0\n")
-    wheel.write("Generator: custom\n")
-    wheel.write("Root-Is-Purelib: false\n")
-    wheel.write(f"Tag: {tag}\n")
