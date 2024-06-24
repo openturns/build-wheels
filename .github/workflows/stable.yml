@@ -16,7 +16,7 @@ jobs:
         with:
           miniforge-version: latest
       - name: Upload
-        if: startsWith(github.ref, 'refs/tags/')
+        if: startsWith(github.ref, 'refs/tags/v')
         shell: bash -l {0}
         env:
           TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
@@ -40,7 +40,7 @@ jobs:
         with:
           miniforge-version: latest
       - name: Upload
-        if: startsWith(github.ref, 'refs/tags/')
+        if: startsWith(github.ref, 'refs/tags/v')
         shell: bash -l {0}
         env:
           TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
@@ -64,7 +64,7 @@ jobs:
         with:
           miniforge-version: latest
       - name: Upload
-        if: startsWith(github.ref, 'refs/tags/')
+        if: startsWith(github.ref, 'refs/tags/v')
         shell: bash -l {0}
         env:
           TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}

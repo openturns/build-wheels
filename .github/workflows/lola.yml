@@ -1,0 +1,41 @@
+name: LOLA
+
+on:
+  push:
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: ['1.24dev']
+        abi: [cp310]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        run: |
+          docker pull openturns/manylinux2014_x86_64
+          docker run --rm -e MAKEFLAGS='-j4' -v `pwd`:/io openturns/manylinux2014_x86_64 /io/build-wheels-linux.sh jschueller lola ${{ matrix.abi }}
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/LOLA')
+        with:
+          files: wheelhouse/openturns-${{ matrix.version }}-${{ matrix.abi }}-${{ matrix.abi }}-manylinux2014_x86_64.manylinux_2_17_x86_64.whl
+
+  mingw:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: ['1.24dev']
+        abi: [cp310]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        run: |
+          docker pull openturns/archlinux-mingw
+          docker run --rm -e MAKEFLAGS='-j4' -v `pwd`:/io openturns/archlinux-mingw /io/build-wheels-mingw.sh jschueller lola ${{ matrix.abi }}
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/LOLA')
+        with:
+          files: wheelhouse/openturns-${{ matrix.version }}-${{ matrix.abi }}-${{ matrix.abi }}-win_amd64.whl
