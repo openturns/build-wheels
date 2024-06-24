@@ -2,10 +2,11 @@
 
 set -e -x
 
-test $# = 2 || exit 1
+test $# = 3 || exit 1
 
-GIT_VERSION="$1"
-ABI="$2"
+REPO="$1"
+GIT_VERSION="$2"
+ABI="$3"
 
 env
 uname -a
@@ -27,7 +28,7 @@ SCRIPT=`greadlink -f "$0"`
 SCRIPTPATH=`dirname "$SCRIPT"`
 
 cd /tmp
-git clone --depth 1 -b ${GIT_VERSION} https://github.com/openturns/openturns.git
+git clone --depth 1 -b ${GIT_VERSION} https://github.com/${REPO}/openturns.git
 cd openturns
 git diff
 VERSION=`cat VERSION`

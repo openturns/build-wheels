@@ -2,10 +2,11 @@
 
 set -e -x
 
-test $# = 2 || exit 1
+test $# = 3 || exit 1
 
-GIT_VERSION="$1"
-ABI="$2"
+REPO="$1"
+GIT_VERSION="$2"
+ABI="$3"
 
 ARCH=x86_64
 MINGW_PREFIX=/usr/${ARCH}-w64-mingw32
@@ -16,7 +17,7 @@ PYVER=${PYTAG:2}
 TAG=${PYTAG}-${ABI}-${PLATFORM}
 
 cd /tmp
-git clone --depth 1 -b ${GIT_VERSION} https://github.com/openturns/openturns.git
+git clone --depth 1 -b ${GIT_VERSION} https://github.com/${REPO}/openturns.git
 cd openturns
 VERSION=`cat VERSION`
 

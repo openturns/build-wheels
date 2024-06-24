@@ -2,10 +2,11 @@
 
 set -e -x
 
-test $# = 2 || exit 1
+test $# = 3 || exit 1
 
-GIT_VERSION="$1"
-ABI="$2"
+REPO="$1"
+GIT_VERSION="$2"
+ABI="$3"
 
 PLATFORM=manylinux2014_x86_64
 PYTAG=${ABI/m/}
@@ -17,7 +18,7 @@ SCRIPTPATH=`dirname "$SCRIPT"`
 export PATH=/opt/python/${PYTAG}-${ABI}/bin/:$PATH
 
 cd /tmp
-git clone --depth 1 -b ${GIT_VERSION} https://github.com/openturns/openturns.git
+git clone --depth 1 -b ${GIT_VERSION} https://github.com/${REPO}/openturns.git
 cd openturns
 VERSION=`cat VERSION`
 
