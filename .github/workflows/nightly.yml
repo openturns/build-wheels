@@ -1,7 +1,6 @@
 name: Nightly
 
 on:
-  push:
   schedule:
     - cron:  '0 0 * * 5'
 
