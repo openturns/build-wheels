@@ -68,7 +68,7 @@ rm -rf openturns/__pycache__
 python${PYVER} ${SCRIPTPATH}/write_distinfo.py openturns ${VERSION} ${TAG}
 
 # create archive
-zip -r openturns-${VERSION}-${TAG}.whl openturns openturns.libs openturns-${VERSION}.dist-info
+zip -r openturns-${VERSION}-${TAG}.whl openturns openturns-${VERSION}.dist-info
 
 # gather dependencies
 delocate-listdeps openturns-${VERSION}-${TAG}.whl
