@@ -11,7 +11,7 @@ jobs:
       - name: Build
         run: |
           docker pull openturns/manylinux2014_x86_64
-          docker run --rm -e MAKEFLAGS='-j2' -v `pwd`:/io openturns/manylinux2014_x86_64 /io/build-wheels-linux.sh openturns v1.23 ${{ matrix.abi }}
+          docker run --rm -e MAKEFLAGS='-j4' -v `pwd`:/io openturns/manylinux2014_x86_64 /io/build-wheels-linux.sh openturns v1.23 ${{ matrix.abi }}
       - uses: conda-incubator/setup-miniconda@v3
         with:
           miniforge-version: latest
@@ -35,7 +35,7 @@ jobs:
       - name: Build
         run: |
           docker pull openturns/archlinux-mingw
-          docker run --rm -e MAKEFLAGS='-j2' -v `pwd`:/io openturns/archlinux-mingw /io/build-wheels-mingw.sh openturns v1.23 ${{ matrix.abi }}
+          docker run --rm -e MAKEFLAGS='-j4' -v `pwd`:/io openturns/archlinux-mingw /io/build-wheels-mingw.sh openturns v1.23 ${{ matrix.abi }}
       - uses: conda-incubator/setup-miniconda@v3
         with:
           miniforge-version: latest
