@@ -22,7 +22,7 @@ cd openturns
 VERSION=`cat VERSION`
 
 PREFIX=$PWD/install
-${ARCH}-w64-mingw32-cmake \
+CXXFLAGS="-fuse-ld=lld" ${ARCH}-w64-mingw32-cmake \
   -DCMAKE_INSTALL_PREFIX=${PREFIX} \
   -DPython_INCLUDE_DIR=${MINGW_PREFIX}/include/python${PYVER} \
   -DPython_LIBRARY=${MINGW_PREFIX}/lib/libpython${PYVER}.dll.a \
