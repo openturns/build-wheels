@@ -98,7 +98,7 @@ do
   mkdir ${pkgname}.libs
   cp -v ../../lib${pkgname}.so.0 ${pkgname}.libs
   if test "${pkgname}" = "otfftw"; then cp -v /usr/local/lib/libfftw3.so.3 otfftw.libs; fi
-  if test "${pkgname}" = "otmixmod"; then cp -v /usr/local/lib/libmixmod.so.3.* otmixmod.libs; fi
+  if test "${pkgname}" = "otmixmod"; then cp -v /usr/local/lib*/libmixmod.so.* otmixmod.libs; fi
 
   # relink
   patchelf --remove-rpath ${pkgname}.libs/lib${pkgname}.so.0 ${pkgname}/_${pkgname}.so
