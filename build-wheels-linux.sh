@@ -88,7 +88,7 @@ do
   make install
   ctest -E cppcheck --output-on-failure ${MAKEFLAGS}
 
-  cd install/lib/python*/site-packages/
+  cd install/lib*/python*/site-packages/
   rm -rf ${pkgname}/__pycache__
 
   # write metadata
