@@ -38,7 +38,7 @@ OLD_LIBOT=`basename install/lib64/libOT.so.0.*`
 # run a few tests
 ctest -R "Ipopt|Bonmin|Dlib_std|NLopt|Study|SymbolicFunction|SquareMatrix|CMinpack|Ceres|Sample_csv|Pagmo|Cuba|KDTree" -E cppcheck --output-on-failure ${MAKEFLAGS}
 
-cd install/lib/python*/site-packages/
+cd install/lib*/python*/site-packages/
 rm -rf openturns/__pycache__
 
 # move conf file next to lib so it can be found using dladdr when relocated
