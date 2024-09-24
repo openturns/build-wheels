@@ -9,7 +9,7 @@ jobs:
     strategy:
       matrix:
         version: ['1.24dev']
-        abi: [cp310]
+        abi: [cp38, cp310]
     steps:
       - uses: actions/checkout@v4
       - name: Build
