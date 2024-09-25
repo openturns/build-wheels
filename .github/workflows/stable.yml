@@ -3,15 +3,12 @@ on: [push, pull_request]
 jobs:
   linux:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        abi: [cp38, cp39, cp310, cp311, cp312]
     steps:
       - uses: actions/checkout@v4
       - name: Build
         run: |
           docker pull openturns/manylinux2014_x86_64
-          docker run --rm -e MAKEFLAGS='-j4' -v `pwd`:/io openturns/manylinux2014_x86_64 /io/build-wheels-linux.sh openturns v1.23 ${{ matrix.abi }}
+          docker run --rm -e MAKEFLAGS='-j4' -v `pwd`:/io openturns/manylinux2014_x86_64 /io/build-wheels-linux.sh openturns v1.23 cp38
       - uses: conda-incubator/setup-miniconda@v3
         with:
           miniforge-version: latest
@@ -27,15 +24,12 @@ jobs:
 
   mingw:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        abi: [cp38, cp39, cp310, cp311, cp312]
     steps:
       - uses: actions/checkout@v4
       - name: Build
         run: |
           docker pull openturns/archlinux-mingw
-          docker run --rm -e MAKEFLAGS='-j4' -v `pwd`:/io openturns/archlinux-mingw /io/build-wheels-mingw.sh openturns v1.23 ${{ matrix.abi }}
+          docker run --rm -e MAKEFLAGS='-j4' -v `pwd`:/io openturns/archlinux-mingw /io/build-wheels-mingw.sh openturns v1.23 cp38
       - uses: conda-incubator/setup-miniconda@v3
         with:
           miniforge-version: latest
@@ -51,15 +45,12 @@ jobs:
 
   macos:
     runs-on: macos-13
-    strategy:
-      matrix:
-        abi: [cp38, cp39, cp310, cp311, cp312]
     steps:
       - uses: actions/checkout@v4
       - name: Build
         env:
           MAKEFLAGS: -j3
-        run: ./build-wheels-macos.sh openturns v1.23 ${{ matrix.abi }}
+        run: ./build-wheels-macos.sh openturns v1.23 cp38
       - uses: conda-incubator/setup-miniconda@v3
         with:
           miniforge-version: latest

@@ -10,8 +10,7 @@ ABI="$3"
 
 PLATFORM=manylinux2014_x86_64
 PYTAG=${ABI/m/}
-TAG=${PYTAG}-${ABI}-${PLATFORM}
-PYVERD=${ABI:2:1}.${ABI:3}
+TAG=${PYTAG}-abi3-${PLATFORM}
 
 SCRIPT=`readlink -f "$0"`
 SCRIPTPATH=`dirname "$SCRIPT"`
@@ -26,12 +25,12 @@ VERSION=`cat VERSION`
 #VERSION=${VERSION}.post2
 #./utils/setVersionNumber.sh ${VERSION}
 
-mkdir build && cd build
-cmake -DCMAKE_INSTALL_PREFIX=$PWD/install -DUSE_SPHINX=OFF \
+cmake -DCMAKE_INSTALL_PREFIX=$PWD/build/install -DUSE_SPHINX=OFF \
       -DPython_EXECUTABLE=/opt/python/${PYTAG}-${ABI}/bin/python \
       -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 \
-      -DSWIG_COMPILE_FLAGS="-O1" \
-      ..
+      -DSWIG_COMPILE_FLAGS="-O1 -DPy_LIMITED_API=0x03080000" \
+      -B build .
+cd build
 make install
 OLD_LIBOT=`basename install/lib64/libOT.so.0.*`
 
@@ -78,13 +77,14 @@ do
   sed -i "s|Metadata-Version: 2.0|Metadata-Version: 1.2|g" python/src/METADATA.in
   pkgver=${pkgver}.post1
   ./utils/setVersionNumber.sh ${pkgver}
-  mkdir build && cd build
-  cmake -DCMAKE_INSTALL_PREFIX=$PWD/install -DCMAKE_INSTALL_LIBDIR=lib \
+  cmake -DCMAKE_INSTALL_PREFIX=$PWD/build/install -DCMAKE_INSTALL_LIBDIR=lib \
         -DCMAKE_UNITY_BUILD=ON \
+        -DSWIG_COMPILE_FLAGS="-O1 -DPy_LIMITED_API=0x03080000" \
         -DUSE_SPHINX=OFF -DBUILD_DOC=OFF \
         -DPython_EXECUTABLE=/opt/python/${PYTAG}-${ABI}/bin/python \
         -DOpenTURNS_DIR=/tmp/openturns/build/install/lib64/cmake/openturns \
-        ..
+        -B build .
+  cd build
   make install
   ctest -E cppcheck --output-on-failure ${MAKEFLAGS}
 

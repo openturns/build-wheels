@@ -15,7 +15,7 @@ sw_vers -productVersion
 # this should reflect the CI image being used
 PLATFORM="macosx_13_0_`uname -m`"
 PYTAG=${ABI/m/}
-TAG=${PYTAG}-${ABI}-${PLATFORM}
+TAG=${PYTAG}-abi3-${PLATFORM}
 PYVER=${PYTAG:2:1}.${PYTAG:3}
 
 # setup brew dependencies
@@ -41,8 +41,7 @@ PYPREFIX=`brew --cellar python@${PYVER}`
 PYLIB=`find ${PYPREFIX} -name libpython${PYVER}.dylib | grep -v config`
 PYINC=`find ${PYPREFIX} -name Python.h | xargs dirname`
 
-mkdir build && cd build
-cmake -LAH -DCMAKE_INSTALL_PREFIX=$PWD/install \
+cmake -LAH -DCMAKE_INSTALL_PREFIX=$PWD/build/install \
       -DPython_EXECUTABLE=${BREWPREFIX}/bin/python${PYVER} \
       -DPython_LIBRARY=${PYLIB} \
       -DPython_INCLUDE_DIR=${PYINC} \
@@ -51,11 +50,12 @@ cmake -LAH -DCMAKE_INSTALL_PREFIX=$PWD/install \
       -DLIBXML2_LIBRARY=${BREWPREFIX}/opt/libxml2/lib/libxml2.dylib \
       -DLIBXML2_INCLUDE_DIR=${BREWPREFIX}/opt/libxml2/include \
       -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 \
-      -DSWIG_COMPILE_FLAGS="-O1" \
+      -DSWIG_COMPILE_FLAGS="-O1 -DPy_LIMITED_API=0x03080000" \
       -DUSE_SPHINX=OFF \
       -DOPENTURNS_HAVE_USELOCALE=0 \
       -DCMAKE_OSX_DEPLOYMENT_TARGET=13.0 \
-      ..
+      -B build .
+cd build
 make install
 
 # run a few tests
@@ -98,15 +98,16 @@ do
   sed -i'.bak' "s|Metadata-Version: 2.0|Metadata-Version: 1.2|g" python/src/METADATA.in
 #   pkgver=${pkgver}.post1
 #   ./utils/setVersionNumber.sh ${pkgver}
-  mkdir build && cd build
-  cmake -LAH -DCMAKE_INSTALL_PREFIX=$PWD/install \
+  cmake -LAH -DCMAKE_INSTALL_PREFIX=$PWD/build/install \
         -DCMAKE_UNITY_BUILD=ON \
+        -DSWIG_COMPILE_FLAGS="-O1 -DPy_LIMITED_API=0x03080000" \
         -DUSE_SPHINX=OFF -DBUILD_DOC=OFF \
         -DPython_EXECUTABLE=${BREWPREFIX}/bin/python${PYVER} \
         -DPython_LIBRARY=${PYLIB} \
         -DPython_INCLUDE_DIR=${PYINC} \
         -DOpenTURNS_DIR=/tmp/openturns/build/install/lib/cmake/openturns \
-        ..
+        -B build .
+  cd build
   make install
   ctest -E cppcheck --output-on-failure ${MAKEFLAGS}
 

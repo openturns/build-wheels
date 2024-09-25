@@ -14,22 +14,23 @@ PLATFORM=win_amd64
 
 PYTAG=${ABI/m/}
 PYVER=${PYTAG:2}
-TAG=${PYTAG}-${ABI}-${PLATFORM}
+TAG=${PYTAG}-abi3-${PLATFORM}
 
 cd /tmp
 git clone --depth 1 -b ${GIT_VERSION} https://github.com/${REPO}/openturns.git
 cd openturns
 VERSION=`cat VERSION`
+sed -i "s|Development.Module|Development.Module Development.SABIModule|g" CMakeLists.txt
 
 PREFIX=$PWD/install
 ${ARCH}-w64-mingw32-cmake \
   -DCMAKE_INSTALL_PREFIX=${PREFIX} \
   -DPython_INCLUDE_DIR=${MINGW_PREFIX}/include/python${PYVER} \
-  -DPython_LIBRARY=${MINGW_PREFIX}/lib/libpython${PYVER}.dll.a \
+  -DPython_LIBRARY=${MINGW_PREFIX}/lib/libpython3.dll.a \
   -DPython_EXECUTABLE=/usr/bin/${ARCH}-w64-mingw32-python${PYVER}-bin \
   -DUSE_SPHINX=OFF \
   -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 \
-  -DSWIG_COMPILE_FLAGS="-O1" \
+  -DSWIG_COMPILE_FLAGS="-O1 -DPy_LIMITED_API=0x03080000" \
   .
 
 make install
@@ -66,12 +67,14 @@ do
   sed -i "s|Metadata-Version: 2.0|Metadata-Version: 1.2|g" python/src/METADATA.in
   pkgver=${pkgver}.post1
   ./utils/setVersionNumber.sh ${pkgver}
+  sed -i "s|Development.Module|Development.Module Development.SABIModule|g" CMakeLists.txt
   PREFIX=$PWD/install
   ${ARCH}-w64-mingw32-cmake \
     -DCMAKE_INSTALL_PREFIX=${PREFIX} \
     -DCMAKE_UNITY_BUILD=ON \
+    -DSWIG_COMPILE_FLAGS="-O1 -DPy_LIMITED_API=0x03080000" \
     -DPython_INCLUDE_DIR=${MINGW_PREFIX}/include/python${PYVER} \
-    -DPython_LIBRARY=${MINGW_PREFIX}/lib/libpython${PYVER}.dll.a \
+    -DPython_LIBRARY=${MINGW_PREFIX}/lib/libpython3.dll.a \
     -DPython_EXECUTABLE=/usr/bin/${ARCH}-w64-mingw32-python${PYVER}-bin \
     -DUSE_SPHINX=OFF -DBUILD_DOC=OFF \
     -DOpenTURNS_DIR=/tmp/openturns/install/lib/cmake/openturns \
