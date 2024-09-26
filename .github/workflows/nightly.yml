@@ -18,7 +18,7 @@ jobs:
         with:
           miniforge-version: latest
       - name: Upload
-        if: startsWith(github.ref, 'refs/master')
+        if: ${{ github.ref == 'refs/heads/master' }}
         shell: bash -l {0}
         run: |
           conda install -y anaconda-client
@@ -36,7 +36,7 @@ jobs:
         with:
           miniforge-version: latest
       - name: Upload
-        if: startsWith(github.ref, 'refs/master')
+        if: ${{ github.ref == 'refs/heads/master' }}
         shell: bash -l {0}
         run: |
           conda install -y anaconda-client
@@ -54,7 +54,7 @@ jobs:
         with:
           miniforge-version: latest
       - name: Upload
-        if: startsWith(github.ref, 'refs/master')
+        if: ${{ github.ref == 'refs/heads/master' }}
         shell: bash -l {0}
         run: |
           conda install -y anaconda-client
