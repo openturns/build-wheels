@@ -50,7 +50,7 @@ jobs:
       - name: Build
         env:
           MAKEFLAGS: -j3
-        run: ./build-wheels-macos.sh openturns v1.23 cp38
+        run: ./build-wheels-macos.sh openturns v1.23 cp38 13
       - uses: conda-incubator/setup-miniconda@v3
         with:
           miniforge-version: latest

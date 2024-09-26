@@ -2,18 +2,19 @@
 
 set -e -x
 
-test $# = 3 || exit 1
+test $# = 4 || exit 1
 
 REPO="$1"
 GIT_VERSION="$2"
 ABI="$3"
+SDK_VERSION="$4"
 
 env
 uname -a
 sw_vers -productVersion
 
 # this should reflect the CI image being used
-PLATFORM="macosx_13_0_`uname -m`"
+PLATFORM="macosx_${SDK_VERSION}_0_`uname -m`"
 PYTAG=${ABI/m/}
 TAG=${PYTAG}-abi3-${PLATFORM}
 PYVER=${PYTAG:2:1}.${PYTAG:3}
@@ -53,7 +54,7 @@ cmake -LAH -DCMAKE_INSTALL_PREFIX=$PWD/build/install \
       -DSWIG_COMPILE_FLAGS="-O1 -DPy_LIMITED_API=0x03080000" \
       -DUSE_SPHINX=OFF \
       -DOPENTURNS_HAVE_USELOCALE=0 \
-      -DCMAKE_OSX_DEPLOYMENT_TARGET=13.0 \
+      -DCMAKE_OSX_DEPLOYMENT_TARGET=${SDK_VERSION}.0 \
       -B build .
 cd build
 make install
@@ -106,6 +107,7 @@ do
         -DPython_LIBRARY=${PYLIB} \
         -DPython_INCLUDE_DIR=${PYINC} \
         -DOpenTURNS_DIR=/tmp/openturns/build/install/lib/cmake/openturns \
+        -DCMAKE_OSX_DEPLOYMENT_TARGET=${SDK_VERSION}.0 \
         -B build .
   cd build
   make install
