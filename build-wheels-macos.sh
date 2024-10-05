@@ -51,7 +51,7 @@ cmake -LAH -DCMAKE_INSTALL_PREFIX=$PWD/build/install \
       -DLIBXML2_LIBRARY=${BREWPREFIX}/opt/libxml2/lib/libxml2.dylib \
       -DLIBXML2_INCLUDE_DIR=${BREWPREFIX}/opt/libxml2/include \
       -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 \
-      -DSWIG_COMPILE_FLAGS="-O1 -DPy_LIMITED_API=0x03080000" \
+      -DSWIG_COMPILE_FLAGS="-O1 -DPy_LIMITED_API=0x03090000" \
       -DUSE_SPHINX=OFF \
       -DUSE_HDF5=OFF \
       -DOPENTURNS_HAVE_USELOCALE=0 \
@@ -102,7 +102,7 @@ do
 #   ./utils/setVersionNumber.sh ${pkgver}
   cmake -LAH -DCMAKE_INSTALL_PREFIX=$PWD/build/install \
         -DCMAKE_UNITY_BUILD=ON \
-        -DSWIG_COMPILE_FLAGS="-O1 -DPy_LIMITED_API=0x03080000" \
+        -DSWIG_COMPILE_FLAGS="-O1 -DPy_LIMITED_API=0x03090000" \
         -DUSE_SPHINX=OFF -DBUILD_DOC=OFF \
         -DPython_EXECUTABLE=${BREWPREFIX}/bin/python${PYVER} \
         -DPython_LIBRARY=${PYLIB} \

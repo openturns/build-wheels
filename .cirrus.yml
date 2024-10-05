@@ -6,7 +6,7 @@ cirrus_wheels_macos_arm64_task:
     TWINE_USERNAME: ENCRYPTED[5cef4d5798a06ef1d2681e25b0e79f83dd63a64375c6ee9c66845cdd067c31d22d93e9656a9eec0def2c5da2e755466b]
     TWINE_PASSWORD: ENCRYPTED[9c02f4e5d0ee6ca807e6a00a5bafcc0611be9505975115b1ff39ca84f65cce5c48260a01cb43874c690b900b4699546e]
   build_script:
-    ./build-wheels-macos.sh openturns v1.23 cp38 14
+    ./build-wheels-macos.sh openturns v1.23 cp39 14
   upload_script:
     - ls -l wheelhouse/*.whl
     - if test -n "${CIRRUS_TAG}"; then python3.8 -m pip install twine --break-system-packages && python3.8 -m twine upload wheelhouse/*.whl; fi

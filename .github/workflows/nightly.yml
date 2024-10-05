@@ -49,7 +49,7 @@ jobs:
       - name: Build
         env:
           MAKEFLAGS: -j3
-        run: ./build-wheels-macos.sh openturns master cp38 13
+        run: ./build-wheels-macos.sh openturns master cp39 13
       - uses: conda-incubator/setup-miniconda@v3
         with:
           miniforge-version: latest
