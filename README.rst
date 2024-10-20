@@ -4,9 +4,6 @@
 .. image:: https://github.com/openturns/build-wheels/actions/workflows/nightly.yml/badge.svg?branch=master
     :target: https://github.com/openturns/build-wheels/actions/workflows/nightly.yml
 
-.. image:: https://api.cirrus-ci.com/github/openturns/build-wheels.svg?branch=master
-    :target: https://cirrus-ci.com/github/openturns/build-wheels
-
 ================
 OpenTURNS wheels
 ================
