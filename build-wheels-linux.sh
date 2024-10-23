@@ -2,12 +2,12 @@
 
 set -e -x
 
-test $# = 3 || exit 1
+test $# = 2 || exit 1
 
 REPO="$1"
 GIT_VERSION="$2"
-ABI="$3"
 
+ABI=cp39
 PLATFORM=manylinux2014_x86_64
 PYTAG=${ABI/m/}
 TAG=${PYTAG}-abi3-${PLATFORM}
@@ -25,10 +25,10 @@ VERSION=`cat VERSION`
 #VERSION=${VERSION}.post2
 #./utils/setVersionNumber.sh ${VERSION}
 
-cmake -DCMAKE_INSTALL_PREFIX=$PWD/build/install -DUSE_SPHINX=OFF \
+cmake -DCMAKE_INSTALL_PREFIX=$PWD/build/install \
       -DPython_EXECUTABLE=/opt/python/${PYTAG}-${ABI}/bin/python \
       -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 \
-      -DSWIG_COMPILE_FLAGS="-O1 -DPy_LIMITED_API=0x03080000" \
+      -DSWIG_COMPILE_FLAGS="-O1 -DPy_LIMITED_API=0x03090000" \
       -B build .
 cd build
 make install
@@ -68,19 +68,17 @@ NEW_LIBOT=`basename openturns.libs/libOT-*.so*`
 cd -
 
 # modules
-for pkgnamever in otfftw-0.15 otmixmod-0.17 otmorris-0.16 otrobopt-0.14 otsvm-0.14
+for pkgnamever in otfftw-0.16 otmixmod-0.18 otmorris-0.17 otrobopt-0.15 otsvm-0.15
 do
   pkgname=`echo ${pkgnamever} | cut -d "-" -f1`
   pkgver=`echo ${pkgnamever} | cut -d "-" -f2`
   cd /tmp
   git clone --depth 1 -b v${pkgver} https://github.com/openturns/${pkgname}.git && cd ${pkgname}
-  sed -i "s|Metadata-Version: 2.0|Metadata-Version: 1.2|g" python/src/METADATA.in
-  pkgver=${pkgver}.post1
-  ./utils/setVersionNumber.sh ${pkgver}
+#   pkgver=${pkgver}.post1
+#   ./utils/setVersionNumber.sh ${pkgver}
   cmake -DCMAKE_INSTALL_PREFIX=$PWD/build/install -DCMAKE_INSTALL_LIBDIR=lib \
         -DCMAKE_UNITY_BUILD=ON \
-        -DSWIG_COMPILE_FLAGS="-O1 -DPy_LIMITED_API=0x03080000" \
-        -DUSE_SPHINX=OFF -DBUILD_DOC=OFF \
+        -DSWIG_COMPILE_FLAGS="-O1 -DPy_LIMITED_API=0x03090000" \
         -DPython_EXECUTABLE=/opt/python/${PYTAG}-${ABI}/bin/python \
         -DOpenTURNS_DIR=/tmp/openturns/build/install/lib64/cmake/openturns \
         -B build .
