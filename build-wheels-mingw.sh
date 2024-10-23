@@ -2,16 +2,16 @@
 
 set -e -x
 
-test $# = 3 || exit 1
+test $# = 2 || exit 1
 
 REPO="$1"
 GIT_VERSION="$2"
-ABI="$3"
 
 ARCH=x86_64
 MINGW_PREFIX=/usr/${ARCH}-w64-mingw32
 PLATFORM=win_amd64
 
+ABI=cp39
 PYTAG=${ABI/m/}
 PYVER=${PYTAG:2}
 TAG=${PYTAG}-abi3-${PLATFORM}
@@ -20,7 +20,6 @@ cd /tmp
 git clone --depth 1 -b ${GIT_VERSION} https://github.com/${REPO}/openturns.git
 cd openturns
 VERSION=`cat VERSION`
-sed -i "s|Development.Module|Development.Module Development.SABIModule|g" CMakeLists.txt
 
 PREFIX=$PWD/install
 ${ARCH}-w64-mingw32-cmake \
@@ -28,9 +27,8 @@ ${ARCH}-w64-mingw32-cmake \
   -DPython_INCLUDE_DIR=${MINGW_PREFIX}/include/python${PYVER} \
   -DPython_LIBRARY=${MINGW_PREFIX}/lib/libpython3.dll.a \
   -DPython_EXECUTABLE=/usr/bin/${ARCH}-w64-mingw32-python${PYVER}-bin \
-  -DUSE_SPHINX=OFF \
   -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 \
-  -DSWIG_COMPILE_FLAGS="-O1 -DPy_LIMITED_API=0x03080000" \
+  -DSWIG_COMPILE_FLAGS="-O1 -DPy_LIMITED_API=0x03090000" \
   .
 
 make install
@@ -58,25 +56,22 @@ grep -q dev <<< "${VERSION}" && exit 0
 aurman -S mingw-w64-fftw mingw-w64-agrum mingw-w64-libmixmod --noconfirm --noedit --pgp_fetch
 
 # modules
-for pkgnamever in otfftw-0.15 otmixmod-0.17 otmorris-0.16 otrobopt-0.14 otsvm-0.14
+for pkgnamever in otfftw-0.16 otmixmod-0.18 otmorris-0.17 otrobopt-0.15 otsvm-0.15
 do
   pkgname=`echo ${pkgnamever} | cut -d "-" -f1`
   pkgver=`echo ${pkgnamever} | cut -d "-" -f2`
   cd /tmp
   git clone --depth 1 -b v${pkgver} https://github.com/openturns/${pkgname}.git && cd ${pkgname}
-  sed -i "s|Metadata-Version: 2.0|Metadata-Version: 1.2|g" python/src/METADATA.in
-  pkgver=${pkgver}.post1
-  ./utils/setVersionNumber.sh ${pkgver}
-  sed -i "s|Development.Module|Development.Module Development.SABIModule|g" CMakeLists.txt
+#   pkgver=${pkgver}.post1
+#   ./utils/setVersionNumber.sh ${pkgver}
   PREFIX=$PWD/install
   ${ARCH}-w64-mingw32-cmake \
     -DCMAKE_INSTALL_PREFIX=${PREFIX} \
     -DCMAKE_UNITY_BUILD=ON \
-    -DSWIG_COMPILE_FLAGS="-O1 -DPy_LIMITED_API=0x03080000" \
+    -DSWIG_COMPILE_FLAGS="-O1 -DPy_LIMITED_API=0x03090000" \
     -DPython_INCLUDE_DIR=${MINGW_PREFIX}/include/python${PYVER} \
     -DPython_LIBRARY=${MINGW_PREFIX}/lib/libpython3.dll.a \
     -DPython_EXECUTABLE=/usr/bin/${ARCH}-w64-mingw32-python${PYVER}-bin \
-    -DUSE_SPHINX=OFF -DBUILD_DOC=OFF \
     -DOpenTURNS_DIR=/tmp/openturns/install/lib/cmake/openturns \
     .
   make install

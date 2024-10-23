@@ -2,12 +2,11 @@
 
 set -e -x
 
-test $# = 4 || exit 1
+test $# = 3 || exit 1
 
 REPO="$1"
 GIT_VERSION="$2"
-ABI="$3"
-SDK_VERSION="$4"
+SDK_VERSION="$3"
 
 env
 uname -a
@@ -15,6 +14,7 @@ sw_vers -productVersion
 
 # this should reflect the CI image being used
 PLATFORM="macosx_${SDK_VERSION}_0_`uname -m`"
+ABI=cp39
 PYTAG=${ABI/m/}
 TAG=${PYTAG}-abi3-${PLATFORM}
 PYVER=${PYTAG:2:1}.${PYTAG:3}
@@ -52,8 +52,6 @@ cmake -LAH -DCMAKE_INSTALL_PREFIX=$PWD/build/install \
       -DLIBXML2_INCLUDE_DIR=${BREWPREFIX}/opt/libxml2/include \
       -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 \
       -DSWIG_COMPILE_FLAGS="-O1 -DPy_LIMITED_API=0x03090000" \
-      -DUSE_SPHINX=OFF \
-      -DUSE_HDF5=OFF \
       -DOPENTURNS_HAVE_USELOCALE=0 \
       -DCMAKE_OSX_DEPLOYMENT_TARGET=${SDK_VERSION}.0 \
       -B build .
@@ -91,19 +89,17 @@ python${PYVER} -c "import openturns as ot; print(ot.__version__)"
 grep -q dev <<< "${VERSION}" && exit 0
 
 # modules
-for pkgnamever in otmorris-0.16 otrobopt-0.14 otsvm-0.14
+for pkgnamever in otmorris-0.17 otrobopt-0.15 otsvm-0.15
 do
   pkgname=`echo ${pkgnamever} | cut -d "-" -f1`
   pkgver=`echo ${pkgnamever} | cut -d "-" -f2`
   cd /tmp
   git clone --depth 1 -b v${pkgver} https://github.com/openturns/${pkgname}.git && cd ${pkgname}
-  sed -i'.bak' "s|Metadata-Version: 2.0|Metadata-Version: 1.2|g" python/src/METADATA.in
 #   pkgver=${pkgver}.post1
 #   ./utils/setVersionNumber.sh ${pkgver}
   cmake -LAH -DCMAKE_INSTALL_PREFIX=$PWD/build/install \
         -DCMAKE_UNITY_BUILD=ON \
         -DSWIG_COMPILE_FLAGS="-O1 -DPy_LIMITED_API=0x03090000" \
-        -DUSE_SPHINX=OFF -DBUILD_DOC=OFF \
         -DPython_EXECUTABLE=${BREWPREFIX}/bin/python${PYVER} \
         -DPython_LIBRARY=${PYLIB} \
         -DPython_INCLUDE_DIR=${PYINC} \
@@ -120,11 +116,11 @@ do
   # copy libs
   mkdir ${pkgname}/.dylibs
   cp -v ../../lib${pkgname}.0.dylib ${pkgname}/.dylibs
-  install_name_tool -change @rpath/libOT.0.24.dylib @loader_path/../../openturns/.dylibs/libOT.0.24.0.dylib ${pkgname}/.dylibs/lib${pkgname}.0.dylib
+  install_name_tool -change @rpath/libOT.0.25.dylib @loader_path/../../openturns/.dylibs/libOT.0.25.0.dylib ${pkgname}/.dylibs/lib${pkgname}.0.dylib
   install_name_tool -delete_rpath /tmp/openturns/build/install/lib ${pkgname}/.dylibs/lib${pkgname}.0.dylib
   install_name_tool -delete_rpath /tmp/${pkgname}/build/install/lib ${pkgname}/.dylibs/lib${pkgname}.0.dylib
   otool -l ${pkgname}/.dylibs/lib${pkgname}.0.dylib
-  install_name_tool -change @rpath/libOT.0.24.dylib @loader_path/../openturns/.dylibs/libOT.0.24.0.dylib ${pkgname}/_${pkgname}.so
+  install_name_tool -change @rpath/libOT.0.25.dylib @loader_path/../openturns/.dylibs/libOT.0.25.0.dylib ${pkgname}/_${pkgname}.so
   install_name_tool -change @rpath/lib${pkgname}.0.dylib @loader_path/.dylibs/lib${pkgname}.0.dylib ${pkgname}/_${pkgname}.so
   install_name_tool -delete_rpath /tmp/openturns/build/install/lib ${pkgname}/_${pkgname}.so
   install_name_tool -delete_rpath /tmp/${pkgname}/build/install/lib ${pkgname}/_${pkgname}.so
