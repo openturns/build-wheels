@@ -20,6 +20,7 @@ TAG=${PYTAG}-abi3-${PLATFORM}
 PYVER=${PYTAG:2:1}.${PYTAG:3}
 
 # setup brew dependencies
+brew install pkgconf --overwrite --force
 brew install --overwrite coreutils openblas swig boost python@${PYVER} tbb nlopt cminpack ceres-solver bison flex hdf5 ipopt primesieve spectra pagmo libxml2 nanoflann cuba
 export PATH=/Library/Frameworks/Python.framework/Versions/${PYVER}/bin:$PATH
 python${PYVER} -m pip install delocate --break-system-packages
@@ -95,8 +96,9 @@ do
   pkgver=`echo ${pkgnamever} | cut -d "-" -f2`
   cd /tmp
   git clone --depth 1 -b v${pkgver} https://github.com/openturns/${pkgname}.git && cd ${pkgname}
-#   pkgver=${pkgver}.post1
-#   ./utils/setVersionNumber.sh ${pkgver}
+  pkgver=${pkgver}.post1
+  curl -o utils/setVersionNumber.sh https://raw.githubusercontent.com/openturns/ottemplate/refs/heads/master/utils/setVersionNumber.sh
+  ./utils/setVersionNumber.sh ${pkgver}
   cmake -LAH -DCMAKE_INSTALL_PREFIX=$PWD/build/install \
         -DCMAKE_UNITY_BUILD=ON \
         -DSWIG_COMPILE_FLAGS="-O1 -DPy_LIMITED_API=0x03090000" \

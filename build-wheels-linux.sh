@@ -74,8 +74,8 @@ do
   pkgver=`echo ${pkgnamever} | cut -d "-" -f2`
   cd /tmp
   git clone --depth 1 -b v${pkgver} https://github.com/openturns/${pkgname}.git && cd ${pkgname}
-#   pkgver=${pkgver}.post1
-#   ./utils/setVersionNumber.sh ${pkgver}
+  pkgver=${pkgver}.post1
+  ./utils/setVersionNumber.sh ${pkgver}
   cmake -DCMAKE_INSTALL_PREFIX=$PWD/build/install -DCMAKE_INSTALL_LIBDIR=lib \
         -DCMAKE_UNITY_BUILD=ON \
         -DSWIG_COMPILE_FLAGS="-O1 -DPy_LIMITED_API=0x03090000" \
