@@ -16,19 +16,20 @@ PYTAG=${ABI/m/}
 PYVER=${PYTAG:2}
 TAG=${PYTAG}-abi3-${PLATFORM}
 
-# Could NOT find Python (missing: Development.Module Development.SABIModule) (found suitable version "3.9.13", minimum required is "3.6")
-sudo pacman -U https://archive.archlinux.org/packages/c/cmake/cmake-3.30.5-1-x86_64.pkg.tar.zst --noconfirm
-
 cd /tmp
 git clone --depth 1 -b ${GIT_VERSION} https://github.com/${REPO}/openturns.git
 cd openturns
 VERSION=`cat VERSION`
 
+# TODO: add an option to select Python::SABIModule
+sed -i "s|Python::Module|Python::SABIModule|g" python/src/CMakeLists.txt
+
 PREFIX=$PWD/install
 CXXFLAGS="-fuse-ld=lld" ${ARCH}-w64-mingw32-cmake \
   -DCMAKE_INSTALL_PREFIX=${PREFIX} \
   -DPython_INCLUDE_DIR=${MINGW_PREFIX}/include/python${PYVER} \
-  -DPython_LIBRARY=${MINGW_PREFIX}/lib/libpython3.dll.a \
+  -DPython_LIBRARY=${MINGW_PREFIX}/lib/libpython${PYVER}.dll.a \
+  -DPython_SABI_LIBRARY=${MINGW_PREFIX}/lib/libpython3.dll.a \
   -DPython_EXECUTABLE=/usr/bin/${ARCH}-w64-mingw32-python${PYVER}-bin \
   -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 \
   -DSWIG_COMPILE_FLAGS="-O1 -DPy_LIMITED_API=0x03090000 -DSWIG_HEAPTYPES" \
