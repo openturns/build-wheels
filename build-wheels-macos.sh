@@ -21,7 +21,7 @@ PYVER=${PYTAG:2:1}.${PYTAG:3}
 
 # setup brew dependencies
 brew install pkgconf --overwrite --force
-brew install --overwrite coreutils openblas swig boost python@${PYVER} tbb nlopt cminpack ceres-solver bison flex hdf5 ipopt primesieve spectra pagmo libxml2 nanoflann cuba
+brew install --overwrite coreutils openblas swig boost python@${PYVER} tbb nlopt cminpack ceres-solver hdf5 ipopt primesieve spectra pagmo libxml2 nanoflann cuba
 export PATH=/Library/Frameworks/Python.framework/Versions/${PYVER}/bin:$PATH
 python${PYVER} -m pip install delocate --break-system-packages
 python${PYVER} -m pip debug --verbose
@@ -47,13 +47,10 @@ cmake -LAH -DCMAKE_INSTALL_PREFIX=$PWD/build/install \
       -DPython_EXECUTABLE=${BREWPREFIX}/bin/python${PYVER} \
       -DPython_LIBRARY=${PYLIB} \
       -DPython_INCLUDE_DIR=${PYINC} \
-      -DFLEX_EXECUTABLE=${BREWPREFIX}/opt/flex/bin/flex \
-      -DBISON_EXECUTABLE=${BREWPREFIX}/opt/bison/bin/bison \
       -DLIBXML2_LIBRARY=${BREWPREFIX}/opt/libxml2/lib/libxml2.dylib \
       -DLIBXML2_INCLUDE_DIR=${BREWPREFIX}/opt/libxml2/include \
       -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 \
       -DSWIG_COMPILE_FLAGS="-O1 -DPy_LIMITED_API=0x03090000 -DSWIG_HEAPTYPES" \
-      -DOPENTURNS_HAVE_USELOCALE=0 \
       -DCMAKE_OSX_DEPLOYMENT_TARGET=${SDK_VERSION}.0 \
       -B build .
 cd build
