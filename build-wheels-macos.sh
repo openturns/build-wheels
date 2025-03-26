@@ -2,25 +2,24 @@
 
 set -e -x
 
-test $# = 3 || exit 1
+test $# = 2 || exit 1
 
 REPO="$1"
 GIT_VERSION="$2"
-SDK_VERSION="$3"
 
 env
 uname -a
-sw_vers -productVersion
+ARCH=`uname -m`
+SDK_MAJOR=`sw_vers -productVersion | cut -d '.' -f 1`
 
 # this should reflect the CI image being used
-PLATFORM="macosx_${SDK_VERSION}_0_`uname -m`"
+PLATFORM="macosx_${SDK_MAJOR}_0_${ARCH}"
 ABI=cp39
 PYTAG=${ABI/m/}
 TAG=${PYTAG}-abi3-${PLATFORM}
 PYVER=${PYTAG:2:1}.${PYTAG:3}
 
 # setup brew dependencies
-brew install pkgconf --overwrite --force
 brew install --overwrite coreutils openblas swig boost python@${PYVER} tbb nlopt cminpack ceres-solver hdf5 ipopt primesieve spectra pagmo libxml2 nanoflann cuba
 export PATH=/Library/Frameworks/Python.framework/Versions/${PYVER}/bin:$PATH
 python${PYVER} -m pip install delocate --break-system-packages
@@ -51,7 +50,7 @@ cmake -LAH -DCMAKE_INSTALL_PREFIX=$PWD/build/install \
       -DLIBXML2_INCLUDE_DIR=${BREWPREFIX}/opt/libxml2/include \
       -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 \
       -DSWIG_COMPILE_FLAGS="-O1 -DPy_LIMITED_API=0x03090000 -DSWIG_HEAPTYPES" \
-      -DCMAKE_OSX_DEPLOYMENT_TARGET=${SDK_VERSION}.0 \
+      -DCMAKE_OSX_DEPLOYMENT_TARGET=${SDK_MAJOR}.0 \
       -B build .
 cd build
 make install

@@ -44,33 +44,17 @@ jobs:
           conda install -y anaconda-client
           anaconda -t ${{ secrets.ANACONDA_TOKEN }} upload --force -u openturns-wheels-nightly wheelhouse/*.whl
 
-  macos-x86_64:
-    runs-on: macos-13
+  macos:
+    strategy:
+      matrix:
+        os: [macos-13, macos-14]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - name: Build
         env:
           MAKEFLAGS: -j3
-        run: ./build-wheels-macos.sh openturns master 13
-      - uses: conda-incubator/setup-miniconda@v3
-        with:
-          miniforge-version: latest
-          conda-remove-defaults: "true"
-      - name: Upload
-        if: ${{ github.ref == 'refs/heads/master' }}
-        shell: bash -l {0}
-        run: |
-          conda install -y anaconda-client
-          anaconda -t ${{ secrets.ANACONDA_TOKEN }} upload --force -u openturns-wheels-nightly wheelhouse/*.whl
-
-  macos-arm64:
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Build
-        env:
-          MAKEFLAGS: -j3
-        run: ./build-wheels-macos.sh openturns master 14
+        run: ./build-wheels-macos.sh openturns master
       - uses: conda-incubator/setup-miniconda@v3
         with:
           miniforge-version: latest
