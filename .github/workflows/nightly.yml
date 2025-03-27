@@ -6,7 +6,7 @@ on:
     - cron:  '0 0 * * 5'
 
 jobs:
-  linux:
+  linux-x86_64:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -14,6 +14,25 @@ jobs:
         run: |
           docker pull openturns/manylinux2014_x86_64
           docker run --rm -e MAKEFLAGS='-j4' -v `pwd`:/io openturns/manylinux2014_x86_64 /io/build-wheels-linux.sh openturns master
+      - uses: conda-incubator/setup-miniconda@v3
+        with:
+          miniforge-version: latest
+          conda-remove-defaults: "true"
+      - name: Upload
+        if: ${{ github.ref == 'refs/heads/master' }}
+        shell: bash -l {0}
+        run: |
+          conda install -y anaconda-client
+          anaconda -t ${{ secrets.ANACONDA_TOKEN }} upload --force -u openturns-wheels-nightly wheelhouse/*.whl
+
+  linux-aarch64:
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        run: |
+          docker pull openturns/manylinux2014_aarch64
+          docker run --rm -e MAKEFLAGS='-j4' -v `pwd`:/io openturns/manylinux2014_aarch64 /io/build-wheels-linux.sh openturns master
       - uses: conda-incubator/setup-miniconda@v3
         with:
           miniforge-version: latest

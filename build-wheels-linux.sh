@@ -8,7 +8,8 @@ REPO="$1"
 GIT_VERSION="$2"
 
 ABI=cp39
-PLATFORM=manylinux2014_x86_64
+ARCH=`uname -m`
+PLATFORM=manylinux2014_${ARCH}
 PYTAG=${ABI/m/}
 TAG=${PYTAG}-abi3-${PLATFORM}
 
@@ -62,7 +63,7 @@ python -c "import openturns as ot; print(ot.__version__)"
 grep -q dev <<< "${VERSION}" && exit 0
 
 # lookup new OT lib name
-unzip /io/wheelhouse/openturns-${VERSION}-${TAG}.manylinux_2_17_x86_64.whl
+unzip /io/wheelhouse/openturns-${VERSION}-${TAG}.manylinux_2*.whl
 readelf -d openturns.libs/libOT-*.so*
 NEW_LIBOT=`basename openturns.libs/libOT-*.so*`
 cd -
