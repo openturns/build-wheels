@@ -39,12 +39,10 @@ VERSION=`cat VERSION`
 
 BREWPREFIX=`brew --prefix`
 PYPREFIX=`brew --cellar python@${PYVER}`
-PYLIB=`find ${PYPREFIX} -name libpython${PYVER}.dylib | grep -v config`
 PYINC=`find ${PYPREFIX} -name Python.h | xargs dirname`
 
 cmake -LAH -DCMAKE_INSTALL_PREFIX=$PWD/build/install \
       -DPython_EXECUTABLE=${BREWPREFIX}/bin/python${PYVER} \
-      -DPython_LIBRARY=${PYLIB} \
       -DPython_INCLUDE_DIR=${PYINC} \
       -DLIBXML2_LIBRARY=${BREWPREFIX}/opt/libxml2/lib/libxml2.dylib \
       -DLIBXML2_INCLUDE_DIR=${BREWPREFIX}/opt/libxml2/include \
@@ -56,7 +54,7 @@ cd build
 make install
 
 # run a few tests
-ctest -R "Ipopt|Bonmin|Dlib_std|NLopt|Study|SymbolicFunction|SquareMatrix|CMinpack|Ceres|Sample_csv|Pagmo|Cuba|KDTree" -E cppcheck --output-on-failure ${MAKEFLAGS}
+ctest -R "Ipopt|Bonmin|Dlib_std|NLopt|Study|SymbolicFunction|SquareMatrix|CMinpack|Ceres|Sequence|Mesh_std|Pagmo|Cuba|KDTree" -E cppcheck --output-on-failure ${MAKEFLAGS}
 
 cd install/lib/python*/site-packages/
 rm -rf openturns/__pycache__
