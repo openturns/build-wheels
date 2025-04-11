@@ -56,14 +56,18 @@ auditwheel repair openturns-${VERSION}-${TAG}.whl -w /io/wheelhouse/
 
 # test
 cd /tmp
+export PIP_ROOT_USER_ACTION=ignore
 pip install dill psutil
 pip install openturns --pre --no-index -f /io/wheelhouse
 python -c "import openturns as ot; print(ot.__version__)"
 
+pip install abi3audit
+abi3audit /io/wheelhouse/openturns-${VERSION}-${TAG}.manylinux*.whl --verbose --summary --assume-minimum-abi3 3.9
+
 grep -q dev <<< "${VERSION}" && exit 0
 
 # lookup new OT lib name
-unzip /io/wheelhouse/openturns-${VERSION}-${TAG}.manylinux_2*.whl
+unzip /io/wheelhouse/openturns-${VERSION}-${TAG}.manylinux*.whl
 readelf -d openturns.libs/libOT-*.so*
 NEW_LIBOT=`basename openturns.libs/libOT-*.so*`
 cd -
