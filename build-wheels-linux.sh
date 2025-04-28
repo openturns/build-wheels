@@ -29,7 +29,7 @@ VERSION=`cat VERSION`
 cmake -DCMAKE_INSTALL_PREFIX=$PWD/build/install \
       -DPython_EXECUTABLE=/opt/python/${PYTAG}-${ABI}/bin/python \
       -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 \
-      -DSWIG_COMPILE_FLAGS="-O1 -DPy_LIMITED_API=0x03090000 -DSWIG_HEAPTYPES" \
+      -DSWIG_COMPILE_FLAGS="-O1 -DPy_LIMITED_API=0x03090000"  \
       -B build .
 cd build
 make install
