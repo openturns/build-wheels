@@ -1,14 +1,36 @@
 name: Stable
 on: [push, pull_request]
 jobs:
-  linux:
+  linux-x86_64:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Build
         run: |
           docker pull openturns/manylinux2014_x86_64
-          docker run --rm -e MAKEFLAGS='-j4' -v `pwd`:/io openturns/manylinux2014_x86_64 /io/build-wheels-linux.sh openturns v1.24
+          docker run --rm -e MAKEFLAGS='-j4' -v `pwd`:/io openturns/manylinux2014_x86_64 /io/build-wheels-linux.sh openturns v1.25
+      - uses: conda-incubator/setup-miniconda@v3
+        with:
+          miniforge-version: latest
+          conda-remove-defaults: "true"
+      - name: Upload
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: bash -l {0}
+        env:
+          TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
+        run: |
+          conda install -y twine
+          twine upload --non-interactive wheelhouse/*.whl
+
+  linux-aarch64:
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        run: |
+          docker pull openturns/manylinux2014_aarch64
+          docker run --rm -e MAKEFLAGS='-j4' -v `pwd`:/io openturns/manylinux2014_aarch64 /io/build-wheels-linux.sh openturns v1.25
       - uses: conda-incubator/setup-miniconda@v3
         with:
           miniforge-version: latest
@@ -30,7 +52,7 @@ jobs:
       - name: Build
         run: |
           docker pull openturns/archlinux-mingw
-          docker run --rm -e MAKEFLAGS='-j4' -v `pwd`:/io openturns/archlinux-mingw /io/build-wheels-mingw.sh openturns v1.24
+          docker run --rm -e MAKEFLAGS='-j4' -v `pwd`:/io openturns/archlinux-mingw /io/build-wheels-mingw.sh openturns v1.25
       - uses: conda-incubator/setup-miniconda@v3
         with:
           miniforge-version: latest
@@ -52,7 +74,7 @@ jobs:
       - name: Build
         env:
           MAKEFLAGS: -j3
-        run: ./build-wheels-macos.sh openturns v1.24 13
+        run: ./build-wheels-macos.sh openturns v1.25
       - uses: conda-incubator/setup-miniconda@v3
         with:
           miniforge-version: latest
@@ -74,7 +96,7 @@ jobs:
       - name: Build
         env:
           MAKEFLAGS: -j3
-        run: ./build-wheels-macos.sh openturns v1.24 14
+        run: ./build-wheels-macos.sh openturns v1.25
       - uses: conda-incubator/setup-miniconda@v3
         with:
           miniforge-version: latest

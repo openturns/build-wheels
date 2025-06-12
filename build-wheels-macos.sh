@@ -84,7 +84,7 @@ python${PYVER} -c "import openturns as ot; print(ot.__version__)"
 grep -q dev <<< "${VERSION}" && exit 0
 
 # modules
-for pkgnamever in otmorris-0.17 otrobopt-0.15 otsvm-0.15
+for pkgnamever in otmorris-0.18 otrobopt-0.16 otsvm-0.16
 do
   pkgname=`echo ${pkgnamever} | cut -d "-" -f1`
   pkgver=`echo ${pkgnamever} | cut -d "-" -f2`
@@ -100,7 +100,7 @@ do
         -DPython_LIBRARY=${PYLIB} \
         -DPython_INCLUDE_DIR=${PYINC} \
         -DOpenTURNS_DIR=/tmp/openturns/build/install/lib/cmake/openturns \
-        -DCMAKE_OSX_DEPLOYMENT_TARGET=${SDK_VERSION}.0 \
+        -DCMAKE_OSX_DEPLOYMENT_TARGET=${SDK_MAJOR}.0 \
         -B build .
   cd build
   make install
@@ -112,11 +112,11 @@ do
   # copy libs
   mkdir ${pkgname}/.dylibs
   cp -v ../../lib${pkgname}.0.dylib ${pkgname}/.dylibs
-  install_name_tool -change @rpath/libOT.0.25.dylib @loader_path/../../openturns/.dylibs/libOT.0.25.0.dylib ${pkgname}/.dylibs/lib${pkgname}.0.dylib
+  install_name_tool -change @rpath/libOT.0.26.dylib @loader_path/../../openturns/.dylibs/libOT.0.26.0.dylib ${pkgname}/.dylibs/lib${pkgname}.0.dylib
   install_name_tool -delete_rpath /tmp/openturns/build/install/lib ${pkgname}/.dylibs/lib${pkgname}.0.dylib
   install_name_tool -delete_rpath /tmp/${pkgname}/build/install/lib ${pkgname}/.dylibs/lib${pkgname}.0.dylib
   otool -l ${pkgname}/.dylibs/lib${pkgname}.0.dylib
-  install_name_tool -change @rpath/libOT.0.25.dylib @loader_path/../openturns/.dylibs/libOT.0.25.0.dylib ${pkgname}/_${pkgname}.so
+  install_name_tool -change @rpath/libOT.0.26.dylib @loader_path/../openturns/.dylibs/libOT.0.26.0.dylib ${pkgname}/_${pkgname}.so
   install_name_tool -change @rpath/lib${pkgname}.0.dylib @loader_path/.dylibs/lib${pkgname}.0.dylib ${pkgname}/_${pkgname}.so
   install_name_tool -delete_rpath /tmp/openturns/build/install/lib ${pkgname}/_${pkgname}.so
   install_name_tool -delete_rpath /tmp/${pkgname}/build/install/lib ${pkgname}/_${pkgname}.so

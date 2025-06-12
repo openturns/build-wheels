@@ -73,14 +73,14 @@ NEW_LIBOT=`basename openturns.libs/libOT-*.so*`
 cd -
 
 # modules
-for pkgnamever in otfftw-0.16 otmixmod-0.18 otmorris-0.17 otrobopt-0.15 otsvm-0.15
+for pkgnamever in otfftw-0.17 otmixmod-0.19 otmorris-0.18 otrobopt-0.16 otsvm-0.16
 do
   pkgname=`echo ${pkgnamever} | cut -d "-" -f1`
   pkgver=`echo ${pkgnamever} | cut -d "-" -f2`
   cd /tmp
   git clone --depth 1 -b v${pkgver} https://github.com/openturns/${pkgname}.git && cd ${pkgname}
-  pkgver=${pkgver}.post1
-  ./utils/setVersionNumber.sh ${pkgver}
+  # pkgver=${pkgver}.post1
+  # ./utils/setVersionNumber.sh ${pkgver}
   cmake -DCMAKE_INSTALL_PREFIX=$PWD/build/install -DCMAKE_INSTALL_LIBDIR=lib \
         -DCMAKE_UNITY_BUILD=ON \
         -DSWIG_COMPILE_FLAGS="-O1 -DPy_LIMITED_API=0x03090000" \
