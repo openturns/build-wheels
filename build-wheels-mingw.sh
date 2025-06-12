@@ -58,14 +58,14 @@ grep -q dev <<< "${VERSION}" && exit 0
 aurman -S mingw-w64-fftw mingw-w64-agrum mingw-w64-libmixmod --noconfirm --noedit --pgp_fetch
 
 # modules
-for pkgnamever in otfftw-0.16 otmixmod-0.18 otmorris-0.17 otrobopt-0.15 otsvm-0.15
+for pkgnamever in otfftw-0.17 otmixmod-0.19 otmorris-0.18 otrobopt-0.16 otsvm-0.16
 do
   pkgname=`echo ${pkgnamever} | cut -d "-" -f1`
   pkgver=`echo ${pkgnamever} | cut -d "-" -f2`
   cd /tmp
   git clone --depth 1 -b v${pkgver} https://github.com/openturns/${pkgname}.git && cd ${pkgname}
-  pkgver=${pkgver}.post1
-  ./utils/setVersionNumber.sh ${pkgver}
+  # pkgver=${pkgver}.post1
+  # ./utils/setVersionNumber.sh ${pkgver}
   PREFIX=$PWD/install
   ${ARCH}-w64-mingw32-cmake \
     -DCMAKE_INSTALL_PREFIX=${PREFIX} \
@@ -73,7 +73,7 @@ do
     -DCMAKE_UNITY_BUILD=ON \
     -DSWIG_COMPILE_FLAGS="-O1 -DPy_LIMITED_API=0x03090000" \
     -DPython_INCLUDE_DIR=${MINGW_PREFIX}/include/python${PYVER} \
-    -DPython_LIBRARY=${MINGW_PREFIX}/lib/libpython3.dll.a \
+    -DPython_SABI_LIBRARY=${MINGW_PREFIX}/lib/libpython3.dll.a \
     -DPython_EXECUTABLE=/usr/bin/${ARCH}-w64-mingw32-python${PYVER}-bin \
     -DOpenTURNS_DIR=/tmp/openturns/install/lib/cmake/openturns \
     .
