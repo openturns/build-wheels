@@ -12,7 +12,7 @@ MINGW_PREFIX=/usr/${ARCH}-w64-mingw32
 PLATFORM=win_amd64
 
 ABI=cp39
-PYTAG=${ABI/m/}
+PYTAG=${ABI/t/}
 PYVER=${PYTAG:2}
 TAG=${PYTAG}-abi3-${PLATFORM}
 
@@ -25,6 +25,7 @@ PREFIX=$PWD/install
 ${ARCH}-w64-mingw32-cmake \
   -DCMAKE_INSTALL_PREFIX=${PREFIX} \
   -DCMAKE_LINKER_TYPE=LLD \
+  -DBLA_VENDOR=Generic \
   -DUSE_PYTHON_SABI=ON \
   -DPython_INCLUDE_DIR=${MINGW_PREFIX}/include/python${PYVER} \
   -DPython_SABI_LIBRARY=${MINGW_PREFIX}/lib/libpython3.dll.a \

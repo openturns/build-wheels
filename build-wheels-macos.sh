@@ -15,7 +15,7 @@ SDK_MAJOR=`sw_vers -productVersion | cut -d '.' -f 1`
 # this should reflect the CI image being used
 PLATFORM="macosx_${SDK_MAJOR}_0_${ARCH}"
 ABI=cp39
-PYTAG=${ABI/m/}
+PYTAG=${ABI/t/}
 TAG=${PYTAG}-abi3-${PLATFORM}
 PYVER=${PYTAG:2:1}.${PYTAG:3}
 

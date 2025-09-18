@@ -10,7 +10,7 @@ GIT_VERSION="$2"
 ABI=cp39
 ARCH=`uname -m`
 PLATFORM=manylinux2014_${ARCH}
-PYTAG=${ABI/m/}
+PYTAG=${ABI/t/}
 TAG=${PYTAG}-abi3-${PLATFORM}
 
 SCRIPT=`readlink -f "$0"`
@@ -27,9 +27,10 @@ VERSION=`cat VERSION`
 #./utils/setVersionNumber.sh ${VERSION}
 
 cmake -DCMAKE_INSTALL_PREFIX=$PWD/build/install \
+      -DBLA_VENDOR=Generic \
       -DPython_EXECUTABLE=/opt/python/${PYTAG}-${ABI}/bin/python \
       -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 \
-      -DSWIG_COMPILE_FLAGS="-O1 -DPy_LIMITED_API=0x03090000"  \
+      -DSWIG_COMPILE_FLAGS="-O1 -DPy_LIMITED_API=0x03090000" \
       -B build .
 cd build
 make install
