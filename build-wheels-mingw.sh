@@ -40,7 +40,7 @@ ${ARCH}-w64-mingw32-strip --strip-unneeded ${PREFIX}/bin/*.dll ${PREFIX}/Lib/sit
 cp -v ${PREFIX}/bin/*.dll ${PREFIX}/Lib/site-packages/openturns/
 cp -v ${PREFIX}/etc/openturns/*.conf ${PREFIX}/Lib/site-packages/openturns/
 cp -v ${MINGW_PREFIX}/bin/*.dll ${PREFIX}/Lib/site-packages/openturns/
-rm ${PREFIX}/Lib/site-packages/openturns/{python,libgraphblas}*.dll
+rm ${PREFIX}/Lib/site-packages/openturns/python*.dll
 
 cd ${PREFIX}/Lib/site-packages/
 
