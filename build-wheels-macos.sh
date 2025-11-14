@@ -20,7 +20,7 @@ TAG=${PYTAG}-abi3-${PLATFORM}
 PYVER=${PYTAG:2:1}.${PYTAG:3}
 
 # setup brew dependencies
-brew install --overwrite coreutils openblas swig boost python@${PYVER} tbb nlopt cminpack ceres-solver hdf5 ipopt primesieve spectra pagmo libxml2 nanoflann cuba
+brew install --overwrite coreutils openblas swig boost python@${PYVER} tbb nlopt cminpack hdf5 highs ipopt primesieve spectra pagmo libxml2 nanoflann cuba
 export PATH=/Library/Frameworks/Python.framework/Versions/${PYVER}/bin:$PATH
 python${PYVER} -m pip install delocate --break-system-packages
 python${PYVER} -m pip debug --verbose
