@@ -42,10 +42,10 @@ PYPREFIX=`brew --cellar python@${PYVER}`
 PYINC=`find ${PYPREFIX} -name Python.h | xargs dirname`
 
 cmake -LAH -DCMAKE_INSTALL_PREFIX=$PWD/build/install \
+      -DCMAKE_PREFIX_PATH="${BREWPREFIX}/opt/openblas;${BREWPREFIX}/opt/libxml2" \
+      -DBLA_VENDOR=OpenBLAS \
       -DPython_EXECUTABLE=${BREWPREFIX}/bin/python${PYVER} \
       -DPython_INCLUDE_DIR=${PYINC} \
-      -DLIBXML2_LIBRARY=${BREWPREFIX}/opt/libxml2/lib/libxml2.dylib \
-      -DLIBXML2_INCLUDE_DIR=${BREWPREFIX}/opt/libxml2/include \
       -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 \
       -DSWIG_COMPILE_FLAGS="-O1 -DPy_LIMITED_API=0x03090000" \
       -DCMAKE_OSX_DEPLOYMENT_TARGET=${SDK_MAJOR}.0 \
@@ -97,7 +97,6 @@ do
         -DCMAKE_UNITY_BUILD=ON \
         -DSWIG_COMPILE_FLAGS="-O1 -DPy_LIMITED_API=0x03090000" \
         -DPython_EXECUTABLE=${BREWPREFIX}/bin/python${PYVER} \
-        -DPython_LIBRARY=${PYLIB} \
         -DPython_INCLUDE_DIR=${PYINC} \
         -DOpenTURNS_DIR=/tmp/openturns/build/install/lib/cmake/openturns \
         -DCMAKE_OSX_DEPLOYMENT_TARGET=${SDK_MAJOR}.0 \
