@@ -52,7 +52,7 @@ cd build
 make install
 
 # run a few tests
-ctest -R "Ipopt|Bonmin|Dlib_std|NLopt|Study|SymbolicFunction|SquareMatrix|CMinpack|Ceres|Sequence|Mesh_std|Pagmo|Cuba|KDTree" -E cppcheck --output-on-failure ${MAKEFLAGS}
+ctest -R "Ipopt|Bonmin|Dlib_std|NLopt|Study|SymbolicFunction|SquareMatrix|CMinpack|Ceres|Sequence|Mesh_std|Pagmo|Cuba|KDTree|HiGHS" -E cppcheck --output-on-failure ${MAKEFLAGS}
 
 cd install/lib/python*/site-packages/
 rm -rf openturns/__pycache__
@@ -82,13 +82,13 @@ python${PYVER} -c "import openturns as ot; print(ot.__version__)"
 grep -q dev <<< "${VERSION}" && exit 0
 
 # modules
-for pkgnamever in otmorris-0.18 otrobopt-0.16 otsvm-0.16
+for pkgnamever in otmorris-0.19 otrobopt-0.17 otsvm-0.17
 do
   pkgname=`echo ${pkgnamever} | cut -d "-" -f1`
   pkgver=`echo ${pkgnamever} | cut -d "-" -f2`
   cd /tmp
   git clone --depth 1 -b v${pkgver} https://github.com/openturns/${pkgname}.git && cd ${pkgname}
-  pkgver=${pkgver}.post1
+  #pkgver=${pkgver}.post1
   curl -o utils/setVersionNumber.sh https://raw.githubusercontent.com/openturns/ottemplate/refs/heads/master/utils/setVersionNumber.sh
   ./utils/setVersionNumber.sh ${pkgver}
   cmake -LAH -DCMAKE_INSTALL_PREFIX=$PWD/build/install \
@@ -108,11 +108,11 @@ do
   # copy libs
   mkdir ${pkgname}/.dylibs
   cp -v ../../lib${pkgname}.0.dylib ${pkgname}/.dylibs
-  install_name_tool -change @rpath/libOT.0.26.dylib @loader_path/../../openturns/.dylibs/libOT.0.26.0.dylib ${pkgname}/.dylibs/lib${pkgname}.0.dylib
+  install_name_tool -change @rpath/libOT.0.27.dylib @loader_path/../../openturns/.dylibs/libOT.0.27.0.dylib ${pkgname}/.dylibs/lib${pkgname}.0.dylib
   install_name_tool -delete_rpath /tmp/openturns/build/install/lib ${pkgname}/.dylibs/lib${pkgname}.0.dylib
   install_name_tool -delete_rpath /tmp/${pkgname}/build/install/lib ${pkgname}/.dylibs/lib${pkgname}.0.dylib
   otool -l ${pkgname}/.dylibs/lib${pkgname}.0.dylib
-  install_name_tool -change @rpath/libOT.0.26.dylib @loader_path/../openturns/.dylibs/libOT.0.26.0.dylib ${pkgname}/_${pkgname}.so
+  install_name_tool -change @rpath/libOT.0.27.dylib @loader_path/../openturns/.dylibs/libOT.0.27.0.dylib ${pkgname}/_${pkgname}.so
   install_name_tool -change @rpath/lib${pkgname}.0.dylib @loader_path/.dylibs/lib${pkgname}.0.dylib ${pkgname}/_${pkgname}.so
   install_name_tool -delete_rpath /tmp/openturns/build/install/lib ${pkgname}/_${pkgname}.so
   install_name_tool -delete_rpath /tmp/${pkgname}/build/install/lib ${pkgname}/_${pkgname}.so

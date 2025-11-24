@@ -37,7 +37,7 @@ make install
 OLD_LIBOT=`basename install/lib64/libOT.so.0.*`
 
 # run a few tests
-ctest -R "Ipopt|Bonmin|Dlib_std|NLopt|Study|SymbolicFunction|SquareMatrix|CMinpack|Ceres|Sequence|Mesh_std|Pagmo|Cuba|KDTree" -E cppcheck --output-on-failure ${MAKEFLAGS}
+ctest -R "Ipopt|Bonmin|Dlib_std|NLopt|Study|SymbolicFunction|SquareMatrix|CMinpack|Ceres|Sequence|Mesh_std|Pagmo|Cuba|KDTree|HiGHS" -E cppcheck --output-on-failure ${MAKEFLAGS}
 
 cd install/lib*/python*/site-packages/
 rm -rf openturns/__pycache__
@@ -74,7 +74,7 @@ NEW_LIBOT=`basename openturns.libs/libOT-*.so*`
 cd -
 
 # modules
-for pkgnamever in otfftw-0.17 otmixmod-0.19 otmorris-0.18 otrobopt-0.16 otsvm-0.16
+for pkgnamever in otfftw-0.18 otmixmod-0.20 otmorris-0.19 otrobopt-0.17 otsvm-0.17
 do
   pkgname=`echo ${pkgnamever} | cut -d "-" -f1`
   pkgver=`echo ${pkgnamever} | cut -d "-" -f2`

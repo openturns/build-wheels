@@ -59,7 +59,7 @@ grep -q dev <<< "${VERSION}" && exit 0
 aurman -S mingw-w64-fftw mingw-w64-agrum mingw-w64-libmixmod --noconfirm --noedit --pgp_fetch
 
 # modules
-for pkgnamever in otfftw-0.17 otmixmod-0.19 otmorris-0.18 otrobopt-0.16 otsvm-0.16
+for pkgnamever in otfftw-0.18 otmixmod-0.20 otmorris-0.19 otrobopt-0.17 otsvm-0.17
 do
   pkgname=`echo ${pkgnamever} | cut -d "-" -f1`
   pkgver=`echo ${pkgnamever} | cut -d "-" -f2`
