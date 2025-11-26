@@ -95,9 +95,6 @@ do
   cd install/lib*/python*/site-packages/
   rm -rf ${pkgname}/__pycache__
 
-  # write metadata
-  python ${SCRIPTPATH}/write_distinfo.py ${pkgname} ${pkgver} ${TAG}
-
   # copy libs
   mkdir ${pkgname}.libs
   cp -v ../../lib${pkgname}.so.0 ${pkgname}.libs
@@ -109,6 +106,9 @@ do
   patchelf --force-rpath --set-rpath "\$ORIGIN/../${pkgname}.libs:\$ORIGIN/../openturns.libs" ${pkgname}.libs/lib${pkgname}.so.0 ${pkgname}/_${pkgname}.so
   patchelf --print-rpath ${pkgname}.libs/lib${pkgname}.so.0 ${pkgname}/_${pkgname}.so
   patchelf --replace-needed ${OLD_LIBOT} ${NEW_LIBOT} ${pkgname}.libs/lib${pkgname}.so.0 ${pkgname}/_${pkgname}.so
+
+  # write metadata
+  python ${SCRIPTPATH}/write_distinfo.py ${pkgname} ${pkgver} ${TAG}
 
   # create archive
   zip -r /io/wheelhouse/${pkgname}-${pkgver}-${TAG}.whl ${pkgname} ${pkgname}.libs ${pkgname}-${pkgver}.dist-info
