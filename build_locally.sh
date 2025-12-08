@@ -10,12 +10,12 @@ fi
 
 case $choice in
   "1" | "linux")
-    docker pull openturns/manylinux2014_x86_64
-    docker run --rm -e MAKEFLAGS -v `pwd`:/io openturns/manylinux2014_x86_64 /io/build-wheels-linux.sh openturns master
+    docker pull openturns/manylinux_2_28_x86_64
+    docker run --rm -e MAKEFLAGS -v `pwd`:/io openturns/manylinux_2_28_x86_64 /io/build-wheels-linux.sh openturns master
     ;;
   "2" | "aarch64")
-    docker pull openturns/manylinux2014_aarch64
-    docker run --rm -e MAKEFLAGS -v `pwd`:/io openturns/manylinux2014_aarch64 /io/build-wheels-linux.sh openturns master
+    docker pull openturns/manylinux_2_28_aarch64
+    docker run --rm -e MAKEFLAGS -v `pwd`:/io openturns/manylinux_2_28_aarch64 /io/build-wheels-linux.sh openturns master
     ;;
   "3" | "mingw")
     docker pull openturns/archlinux-mingw

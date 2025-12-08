@@ -9,7 +9,7 @@ GIT_VERSION="$2"
 
 ABI=cp39
 ARCH=`uname -m`
-PLATFORM=manylinux2014_${ARCH}
+PLATFORM=manylinux_2_28_${ARCH}
 PYTAG=${ABI/t/}
 TAG=${PYTAG}-abi3-${PLATFORM}
 
