@@ -110,6 +110,9 @@ do
   # write metadata
   python ${SCRIPTPATH}/write_distinfo.py ${pkgname} ${pkgver} ${TAG}
 
+  # pin OT because of the hashed auditwheel libOT soname
+  sed -i "s|Requires-Dist: openturns.*|Requires-Dist: openturns (==${VERSION})|g" ${pkgname}-${pkgver}.dist-info/METADATA
+
   # create archive
   zip -r /io/wheelhouse/${pkgname}-${pkgver}-${TAG}.whl ${pkgname} ${pkgname}.libs ${pkgname}-${pkgver}.dist-info
 
