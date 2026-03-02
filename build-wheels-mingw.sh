@@ -55,7 +55,7 @@ sudo cp -v openturns-${VERSION}-${TAG}.whl /io/wheelhouse/
 
 grep -q dev <<< "${VERSION}" && exit 0
 
-aurman -S mingw-w64-fftw mingw-w64-agrum mingw-w64-libmixmod --noconfirm --noedit --pgp_fetch
+yay -Sy mingw-w64-fftw mingw-w64-agrum mingw-w64-libmixmod --noconfirm
 
 # modules
 for pkgnamever in otfftw-0.18 otmixmod-0.20 otmorris-0.19 otrobopt-0.17 otsvm-0.17
