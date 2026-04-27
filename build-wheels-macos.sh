@@ -81,8 +81,10 @@ python${PYVER} -c "import openturns as ot; print(ot.__version__)"
 
 grep -q dev <<< "${VERSION}" && exit 0
 
+brew install --overwrite qhull cgal cddlib
+
 # modules
-for pkgnamever in otmorris-0.19 otrobopt-0.17 otsvm-0.17
+for pkgnamever in otmeshing-0.1 otmorris-0.20 otrobopt-0.18 otsvm-0.18
 do
   pkgname=`echo ${pkgnamever} | cut -d "-" -f1`
   pkgver=`echo ${pkgnamever} | cut -d "-" -f2`
@@ -108,11 +110,11 @@ do
   # copy libs
   mkdir ${pkgname}/.dylibs
   cp -v ../../lib${pkgname}.0.dylib ${pkgname}/.dylibs
-  install_name_tool -change @rpath/libOT.0.27.dylib @loader_path/../../openturns/.dylibs/libOT.0.27.0.dylib ${pkgname}/.dylibs/lib${pkgname}.0.dylib
+  install_name_tool -change @rpath/libOT.0.28.dylib @loader_path/../../openturns/.dylibs/libOT.0.28.0.dylib ${pkgname}/.dylibs/lib${pkgname}.0.dylib
   install_name_tool -delete_rpath /tmp/openturns/build/install/lib ${pkgname}/.dylibs/lib${pkgname}.0.dylib
   install_name_tool -delete_rpath /tmp/${pkgname}/build/install/lib ${pkgname}/.dylibs/lib${pkgname}.0.dylib
   otool -l ${pkgname}/.dylibs/lib${pkgname}.0.dylib
-  install_name_tool -change @rpath/libOT.0.27.dylib @loader_path/../openturns/.dylibs/libOT.0.27.0.dylib ${pkgname}/_${pkgname}.so
+  install_name_tool -change @rpath/libOT.0.28.dylib @loader_path/../openturns/.dylibs/libOT.0.28.0.dylib ${pkgname}/_${pkgname}.so
   install_name_tool -change @rpath/lib${pkgname}.0.dylib @loader_path/.dylibs/lib${pkgname}.0.dylib ${pkgname}/_${pkgname}.so
   install_name_tool -delete_rpath /tmp/openturns/build/install/lib ${pkgname}/_${pkgname}.so
   install_name_tool -delete_rpath /tmp/${pkgname}/build/install/lib ${pkgname}/_${pkgname}.so

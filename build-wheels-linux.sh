@@ -74,7 +74,7 @@ NEW_LIBOT=`basename openturns.libs/libOT-*.so*`
 cd -
 
 # modules
-for pkgnamever in otfftw-0.18 otmixmod-0.20 otmorris-0.19 otrobopt-0.17 otsvm-0.17
+for pkgnamever in otfftw-0.19 otmeshing-0.1 otmixmod-0.21 otmorris-0.20 otrobopt-0.18 otsvm-0.18
 do
   pkgname=`echo ${pkgnamever} | cut -d "-" -f1`
   pkgver=`echo ${pkgnamever} | cut -d "-" -f2`
@@ -98,7 +98,7 @@ do
   # copy libs
   mkdir ${pkgname}.libs
   cp -v ../../lib${pkgname}.so.0 ${pkgname}.libs
-  if test "${pkgname}" = "otfftw"; then cp -v /usr/local/lib/libfftw3.so.3 otfftw.libs; fi
+  if test "${pkgname}" = "otfftw"; then cp -v /usr/lib64/libfftw3.so.3 otfftw.libs; fi
   if test "${pkgname}" = "otmixmod"; then cp -v /usr/local/lib*/libmixmod.so.* otmixmod.libs; fi
 
   # relink

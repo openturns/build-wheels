@@ -56,9 +56,10 @@ sudo cp -v openturns-${VERSION}-${TAG}.whl /io/wheelhouse/
 grep -q dev <<< "${VERSION}" && exit 0
 
 yay -Sy mingw-w64-fftw mingw-w64-agrum mingw-w64-libmixmod --noconfirm
+yay -Sy mingw-w64-cgal mingw-w64-cddlib mingw-w64-qhull --noconfirm
 
 # modules
-for pkgnamever in otfftw-0.18 otmixmod-0.20 otmorris-0.19 otrobopt-0.17 otsvm-0.17
+for pkgnamever in otfftw-0.19 otmeshing-0.1 otmixmod-0.21 otmorris-0.20 otrobopt-0.18 otsvm-0.18
 do
   pkgname=`echo ${pkgnamever} | cut -d "-" -f1`
   pkgver=`echo ${pkgnamever} | cut -d "-" -f2`
@@ -83,6 +84,7 @@ do
   if test "${pkgname}" = "otfftw"; then cp -v ${MINGW_PREFIX}/bin/libfftw*.dll ${PREFIX}/Lib/site-packages/${pkgname}; fi
   if test "${pkgname}" = "otagrum"; then cp -v ${MINGW_PREFIX}/bin/libagrum.dll ${PREFIX}/Lib/site-packages/${pkgname}; fi
   if test "${pkgname}" = "otmixmod"; then cp -v ${MINGW_PREFIX}/bin/libmixmod.dll ${PREFIX}/Lib/site-packages/${pkgname}; fi
+  if test "${pkgname}" = "otmeshing"; then cp -v ${MINGW_PREFIX}/bin/libqhull_r.dll ${MINGW_PREFIX}/bin/libcdd*.dll ${PREFIX}/Lib/site-packages/${pkgname}; fi
   cd ${PREFIX}/Lib/site-packages
 
   # write metadata
