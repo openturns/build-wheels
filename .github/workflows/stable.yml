@@ -65,7 +65,7 @@ jobs:
           TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
         run: |
           conda install -y twine
-          twine upload --non-interactive wheelhouse/*.whl
+          # twine upload --non-interactive wheelhouse/*.whl
 
   macos:
     runs-on: macos-14

@@ -33,6 +33,8 @@ git clone --depth 1 -b ${GIT_VERSION} https://github.com/${REPO}/openturns.git
 cd openturns
 git diff
 VERSION=`cat VERSION`
+./utils/setVersionNumber.sh ${VERSION}.post1
+VERSION=`cat VERSION`
 
 #VERSION=${VERSION}.post2
 #./utils/setVersionNumber.sh ${VERSION}
@@ -90,7 +92,7 @@ do
   pkgver=`echo ${pkgnamever} | cut -d "-" -f2`
   cd /tmp
   git clone --depth 1 -b v${pkgver} https://github.com/openturns/${pkgname}.git && cd ${pkgname}
-  #pkgver=${pkgver}.post1
+  pkgver=${pkgver}.post1
   curl -o utils/setVersionNumber.sh https://raw.githubusercontent.com/openturns/ottemplate/refs/heads/master/utils/setVersionNumber.sh
   ./utils/setVersionNumber.sh ${pkgver}
   cmake -LAH -DCMAKE_INSTALL_PREFIX=$PWD/build/install \
