@@ -84,7 +84,7 @@ do
   if test "${pkgname}" = "otfftw"; then cp -v ${MINGW_PREFIX}/bin/libfftw*.dll ${PREFIX}/Lib/site-packages/${pkgname}; fi
   if test "${pkgname}" = "otagrum"; then cp -v ${MINGW_PREFIX}/bin/libagrum.dll ${PREFIX}/Lib/site-packages/${pkgname}; fi
   if test "${pkgname}" = "otmixmod"; then cp -v ${MINGW_PREFIX}/bin/libmixmod.dll ${PREFIX}/Lib/site-packages/${pkgname}; fi
-  if test "${pkgname}" = "otmeshing"; then cp -v ${MINGW_PREFIX}/bin/libqhull_r.dll ${MINGW_PREFIX}/bin/libcdd*.dll ${PREFIX}/Lib/site-packages/${pkgname}; fi
+  if test "${pkgname}" = "otmeshing"; then cp -v ${MINGW_PREFIX}/bin/libqhull_r.dll ${MINGW_PREFIX}/bin/libcdd*.dll ${MINGW_PREFIX}/bin/lib_coacd.dll ${PREFIX}/Lib/site-packages/${pkgname}; fi
   cd ${PREFIX}/Lib/site-packages
 
   # write metadata
