@@ -74,7 +74,7 @@ NEW_LIBOT=`basename openturns.libs/libOT-*.so*`
 cd -
 
 # modules
-for pkgnamever in otfftw-0.19 otmeshing-0.1 otmixmod-0.21 otmorris-0.20 otrobopt-0.18 otsvm-0.18
+for pkgnamever in otfftw-0.20 otmeshing-0.3 otmixmod-0.22 otmorris-0.21 otrobopt-0.19 otsvm-0.19
 do
   pkgname=`echo ${pkgnamever} | cut -d "-" -f1`
   pkgver=`echo ${pkgnamever} | cut -d "-" -f2`
